@@ -1,539 +1,713 @@
-/* ================================================================
-   STYLES.CSS — Sistema de diseño de Matchmakers
-   
-   Este archivo define CÓMO se ve todo.
-   Está organizado de arriba hacia abajo en capas:
-   
-   1. Variables globales (colores, fuentes, tamaños)
-   2. Reset (borrar estilos por defecto del navegador)
-   3. Estructura base (centrar la app como teléfono en desktop)
-   4. Sistema de pantallas (cómo se muestran/ocultan)
-   5. Componentes (splash, login, cards, nav...)
-================================================================ */
+/* ════════════════════════════════════════════════════════════════
+   STYLES.CSS — El "diseñador" de Matchmakers
+
+   ¿QUÉ HACE ESTE ARCHIVO?
+   Define CÓMO se ve todo: colores, tamaños, posiciones, animaciones.
+   El HTML dice QUÉ hay en la página; el CSS dice CÓMO se ve.
+
+   MAPA DEL ARCHIVO (de arriba hacia abajo):
+   ─────────────────────────────────────────
+   BLOQUE 1 → Variables globales (paleta de colores, tamaños)
+   BLOQUE 2 → Reset (limpieza de estilos del navegador)
+   BLOQUE 3 → Contenedor del teléfono (el "chasis" del simulador)
+   BLOQUE 4 → Sistema de pantallas (cómo se muestran/ocultan)
+   BLOQUE 5 → Splash (pantalla de bienvenida)
+   BLOQUE 6 → Login (pantalla de ingreso)
+   BLOQUE 7 → Home: Header superior
+   BLOQUE 8 → Home: Área de contenido scrolleable
+   BLOQUE 9 → Home: Tarjetas de partidos
+   BLOQUE 10 → Home: Navegación inferior
+   BLOQUE 11 → Pantallas placeholder (en construcción)
+
+   CONSEJO PARA LEER CSS:
+   Cada regla tiene este formato:
+
+     selector {
+       propiedad: valor;
+     }
+
+   El "selector" dice A QUÉ le aplica el estilo (.clase, #id, etiqueta).
+   La "propiedad" dice QUÉ se cambia (color, tamaño, posición...).
+   El "valor" dice CÓMO queda (rojo, 16px, centrado...).
+════════════════════════════════════════════════════════════════ */
 
 
-/* ----------------------------------------------------------------
-   1. VARIABLES GLOBALES
-   Las variables CSS empiezan con --
-   Se definen en :root para que estén disponibles en TODO el archivo.
-   
-   Ventaja: si quieres cambiar el verde de la app, cambias UNA línea
-   aquí y se actualiza en toda la interfaz automáticamente.
----------------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 1 — VARIABLES GLOBALES
+   ════════════════════════════════════════════════════════════════
+
+   ¿QUÉ SON LAS VARIABLES CSS?
+   Son como "cajitas con nombre" que guardan un valor.
+   En vez de escribir #1DB954 en 20 lugares distintos del archivo,
+   lo guardamos UNA VEZ en --color-accent y lo usamos donde queramos.
+
+   VENTAJA PRÁCTICA:
+   Si mañana el cliente dice "quiero el verde un poco más oscuro",
+   cambiamos UNA línea aquí y el cambio se aplica en toda la app.
+
+   Las variables van dentro de :root para que estén disponibles
+   en CUALQUIER parte del archivo (alcance global).
+════════════════════════════════════════════════════════════════ */
 :root {
-  /* COLORES */
-  --color-bg: #0D1117;          /* Negro azulado — fondo principal de la app */
-  --color-bg-outside: #111318;  /* Fondo exterior — lo que se ve fuera del teléfono */
-  --color-bg-card: #161B22;     /* Negro más claro — fondo de tarjetas */
-  --color-bg-input: #21262D;    /* Negro más claro aún — fondo de inputs */
-  --color-accent: #1DB954;      /* Verde Matchmakers — color principal de marca */
-  --color-accent-dark: #17A34A; /* Verde más oscuro — para hover de botones */
-  --color-text: #E6EDF3;        /* Blanco suave — texto principal */
-  --color-text-muted: #8B949E;  /* Gris — texto secundario, subtítulos */
-  --color-border: #30363D;      /* Gris oscuro — bordes de tarjetas e inputs */
 
-  /* TIPOGRAFÍA */
+  /* ── PALETA DE COLORES ── */
+  --color-bg:          #0D1117;   /* Negro azulado — fondo principal de la app */
+  --color-bg-outside:  #111318;   /* Gris muy oscuro — fondo visible fuera del teléfono */
+  --color-bg-card:     #161B22;   /* Negro un poco más claro — fondo de las tarjetas */
+  --color-bg-input:    #21262D;   /* Gris oscuro — fondo de los campos de texto */
+  --color-accent:      #1DB954;   /* Verde Matchmakers — el color principal de la marca */
+  --color-accent-dark: #17A34A;   /* Verde más oscuro — para cuando el mouse está encima de botones */
+  --color-text:        #E6EDF3;   /* Blanco suave — texto principal */
+  --color-text-muted:  #8B949E;   /* Gris medio — texto secundario, subtítulos, labels */
+  --color-border:      #30363D;   /* Gris oscuro — bordes de tarjetas e inputs */
+
+  /* ── FUENTES ── */
   --font-main: 'Segoe UI', system-ui, sans-serif;
   /*
-    Usamos fuentes del sistema operativo.
-    Ventaja: cargan instantáneo (no hay que descargarlas).
-    En iOS se ve San Francisco, en Android Roboto, en Windows Segoe UI.
-    Todas se ven bien y son legibles en móvil.
+    Usamos fuentes que ya vienen instaladas en el sistema operativo.
+    Ventaja: no hay que descargarlas, cargan al instante.
+    · En Windows → Segoe UI
+    · En iOS (iPhone/iPad) → San Francisco
+    · En Android → Roboto
+    Todas son legibles y se ven bien en pantallas pequeñas.
   */
 
-  /* TAMAÑOS DE FUENTE */
-  --text-xs: 11px;    /* Muy pequeño — badges, labels del nav */
-  --text-sm: 13px;    /* Pequeño — texto secundario */
-  --text-base: 15px;  /* Normal — texto principal */
-  --text-lg: 18px;    /* Grande — títulos de sección */
-  --text-xl: 24px;    /* Muy grande — títulos de pantalla */
-  --text-2xl: 32px;   /* Enorme — nombre de la app en splash */
+  /* ── ESCALA DE TAMAÑOS DE TEXTO ── */
+  /*
+    Tener tamaños predefinidos crea consistencia visual.
+    En vez de usar 14px aquí, 13px allá, 14.5px más allá
+    (lo que se ve desorganizado), siempre usamos uno de estos valores.
+  */
+  --text-xs:   11px;   /* Muy pequeño — badges, etiquetas del menú inferior */
+  --text-sm:   13px;   /* Pequeño — texto de apoyo, fechas, ubicaciones */
+  --text-base: 15px;   /* Normal — texto de lectura principal */
+  --text-lg:   18px;   /* Grande — títulos de sección */
+  --text-xl:   24px;   /* Muy grande — títulos de pantalla */
+  --text-2xl:  32px;   /* Enorme — nombre de la app en el splash */
 
-  /* ESPACIADO */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
+  /* ── ESPACIADO ── */
+  /*
+    Lo mismo aplica para los espacios entre elementos.
+    Usar valores consistentes hace que todo se vea ordenado.
+  */
+  --space-xs:  4px;    /* Espacio mínimo — entre ícono y texto */
+  --space-sm:  8px;    /* Espacio pequeño — dentro de componentes */
+  --space-md:  16px;   /* Espacio mediano — padding de cards, separación entre secciones */
+  --space-lg:  24px;   /* Espacio grande — separación entre bloques principales */
+  --space-xl:  32px;   /* Espacio muy grande — padding de pantallas completas */
 
-  /* BORDES REDONDEADOS */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-full: 9999px; /* Completamente redondo — para badges y botones pill */
+  /* ── BORDES REDONDEADOS ── */
+  /*
+    border-radius redondea las esquinas de los elementos.
+    Más número = esquinas más redondas.
+  */
+  --radius-sm:   8px;     /* Poco redondeado — botones pequeños */
+  --radius-md:   12px;    /* Medio — inputs de texto */
+  --radius-lg:   16px;    /* Bastante redondeado — tarjetas de partido */
+  --radius-full: 9999px;  /* Completamente redondo — badges, el botón + del menú */
 
-  /* DIMENSIONES DEL "TELÉFONO" */
-  --phone-width: 375px;   /* Ancho del iPhone 12/13/14 — el estándar de diseño móvil */
-  --phone-height: 812px;  /* Alto del iPhone 12/13/14 */
+  /* ── DIMENSIONES DEL "TELÉFONO" SIMULADO ── */
+  --phone-width:  375px;   /* Ancho del iPhone 12/13/14 — el estándar de diseño móvil */
+  --phone-height: 812px;   /* Alto del iPhone 12/13/14 */
 
-  /* ALTURAS DE COMPONENTES FIJOS */
-  --top-bar-height: 56px;    /* Altura del header superior */
-  --bottom-nav-height: 72px; /* Altura del nav inferior */
+  /* ── ALTURAS DE COMPONENTES FIJOS ── */
+  --top-bar-height:    56px;   /* Cuánto ocupa el header de arriba */
+  --bottom-nav-height: 72px;   /* Cuánto ocupa el menú de abajo */
 }
 
 
-/* ----------------------------------------------------------------
-   2. RESET
-   Los navegadores tienen estilos por defecto para casi todo:
-   márgenes en body, padding en inputs, bordes en botones, etc.
-   El reset los elimina para que nosotros tengamos control total.
----------------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 2 — RESET (LIMPIEZA DE ESTILOS DEL NAVEGADOR)
+   ════════════════════════════════════════════════════════════════
+
+   ¿POR QUÉ ESTO?
+   Cada navegador (Chrome, Safari, Firefox) tiene sus propios
+   estilos por defecto: márgenes en el body, padding en los botones,
+   bordes en los inputs, etc. Estos estilos son distintos entre sí
+   y hacen que la misma página se vea diferente según el navegador.
+
+   El "reset" borra todos esos estilos para que empecemos
+   desde cero y tengamos control total del diseño.
+════════════════════════════════════════════════════════════════ */
+
 *, *::before, *::after {
   /*
-    * = aplica a TODOS los elementos
-    *::before y *::after = aplica a pseudo-elementos (decorativos)
+    * → aplica a TODOS los elementos HTML de la página
+    *::before y *::after → aplica también a elementos decorativos
+                           que el CSS puede crear (como flechas, líneas, etc.)
   */
-  margin: 0;           /* Elimina márgenes por defecto */
-  padding: 0;          /* Elimina padding por defecto */
+  margin: 0;
+  padding: 0;
+  /*
+    Elimina todos los márgenes y padding que ponen los navegadores por defecto.
+    Sin esto, el <body> tendría un margen de 8px alrededor, los <h1>
+    tendrían márgenes arriba y abajo, etc.
+  */
+
   box-sizing: border-box;
   /*
-    box-sizing: border-box — IMPORTANTE.
-    Por defecto, si un div mide 300px de ancho y le pones
-    padding: 16px, el div termina midiendo 332px (300 + 16 + 16).
-    Con border-box, el padding va ADENTRO de los 300px.
-    Hace que los tamaños sean predecibles.
+    PROBLEMA QUE RESUELVE:
+    Imagina un div que mide exactamente 300px de ancho.
+    Le agregas padding: 20px de cada lado.
+
+    Sin box-sizing → el div termina midiendo 340px (300 + 20 + 20). ¡Sorpresa!
+    Con box-sizing: border-box → el div sigue midiendo 300px, el padding va adentro.
+
+    Con border-box los tamaños son predecibles y no hay sorpresas matemáticas.
   */
 }
 
 body {
-  font-family: var(--font-main);
-  font-size: var(--text-base);
-  color: var(--color-text);
+  /* El <body> es el contenedor de toda la página visible */
+
+  font-family: var(--font-main);    /* Fuente de todo el texto */
+  font-size:   var(--text-base);    /* Tamaño base de texto (15px) */
+  color:       var(--color-text);   /* Color de texto por defecto (blanco suave) */
   line-height: 1.5;
+  /*
+    line-height: 1.5 → el espacio entre líneas es 1.5 veces el tamaño de fuente.
+    Hace el texto más fácil de leer (menos apretado).
+  */
+
   -webkit-font-smoothing: antialiased;
   /*
-    antialiased: suaviza el renderizado de las fuentes en pantallas
-    de alta densidad (retina). El texto se ve más fino y limpio.
+    Hace que el texto se vea más suave y fino en pantallas de alta resolución
+    (como las pantallas Retina de Apple o las de alta densidad de Android).
+    Sin esto, el texto puede verse un poco "grueso" o pixelado.
   */
 
-  /* CENTRAR LA APP COMO TELÉFONO EN EL PREVIEW */
-  background-color: var(--color-bg-outside);
+  /* ── Centrar el teléfono simulado en la pantalla del computador ── */
+  background-color: var(--color-bg-outside); /* El "escritorio" alrededor del teléfono */
+  min-height: 100vh;       /* El body ocupa al menos toda la altura de la ventana */
+  display: flex;           /* Activa el modo flexbox para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente (eje X) */
+  align-items: center;     /* Centra verticalmente (eje Y) */
   /*
-    El body tiene un color diferente al de la app.
-    Así se ve el "fondo del escritorio" alrededor del teléfono.
+    Flexbox es el sistema más fácil para centrar cosas en CSS.
+    display: flex activa el modo, y las dos propiedades de abajo
+    centran el contenido en ambos ejes. Es como poner algo en el
+    centro de una hoja de papel, tanto horizontal como verticalmente.
   */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
 }
 
 
-/* ----------------------------------------------------------------
-   3. CONTENEDOR DEL TELÉFONO
-   
-   Este div envuelve TODAS las pantallas y simula el cuerpo
-   del teléfono en el preview de VS Code y en desktop.
-   
-   En móvil real ocupa el 100% de la pantalla.
-   En desktop/preview se ve como un teléfono centrado.
----------------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 3 — CONTENEDOR DEL TELÉFONO
+   ════════════════════════════════════════════════════════════════
+
+   ¿QUÉ ES?
+   El div con id="phone-container" en el HTML.
+   Es la "carcasa" del teléfono simulado.
+   Todo el contenido de la app vive adentro de él.
+
+   ¿POR QUÉ EXISTE?
+   En un teléfono real, el sistema operativo delimita el área
+   donde la app puede dibujar cosas. Aquí simulamos eso
+   con un div de tamaño fijo con esquinas redondeadas.
+════════════════════════════════════════════════════════════════ */
 #phone-container {
+  width:    var(--phone-width);    /* 375px — ancho fijo */
+  height:   var(--phone-height);   /* 812px — alto fijo */
+  position: relative;
   /*
-    Este es el "chasis" del teléfono simulado.
-    Todo lo que está adentro se ve como si fuera la pantalla del celular.
+    position: relative tiene un efecto en los hijos:
+    los hijos con position: absolute se posicionan
+    RELATIVO a este contenedor (no a la ventana del navegador).
+    Sin esto, las pantallas absolutas se escaparían fuera del teléfono.
   */
-  width: var(--phone-width);    /* 375px — ancho fijo de teléfono */
-  height: var(--phone-height);  /* 812px — alto fijo de teléfono */
-  position: relative;           /* Las pantallas hijas se posicionan relativas a este */
-  overflow: hidden;             /* Oculta todo lo que se salga del teléfono */
+  overflow: hidden;
+  /*
+    Si algún contenido sobresale del tamaño del teléfono,
+    se oculta automáticamente. Esto evita que elementos
+    se "salgan" del borde del teléfono simulado.
+  */
+
+  /* Apariencia de teléfono */
   border-radius: 40px;
   /*
-    border-radius: 40px — esquinas redondeadas grandes
-    que simulan los bordes del teléfono moderno.
+    Esquinas muy redondeadas — como las de un teléfono moderno.
+    40px es bastante grande, lo que crea esa curva característica.
   */
   box-shadow:
-    0 0 0 1px #2a2a2a,          /* Borde delgado del marco del teléfono */
-    0 30px 80px rgba(0,0,0,0.8); /* Sombra debajo — da profundidad */
+    0 0 0 1px #2a2a2a,             /* Capa 1: borde delgado del marco del teléfono */
+    0 30px 80px rgba(0,0,0,0.8);   /* Capa 2: sombra grande y suave debajo */
   /*
-    box-shadow puede tener múltiples capas separadas por coma.
-    Primera capa: el borde del marco.
-    Segunda capa: la sombra dramática abajo.
+    box-shadow puede tener varias sombras separadas por coma.
+    Formato de cada sombra: X  Y  desenfoque  color
+    · X=0, Y=0, desenfoque=0 → sombra que es solo un borde
+    · X=0, Y=30px, desenfoque=80px → sombra difusa que cae hacia abajo
   */
-  background-color: var(--color-bg); /* Fondo de la app */
+  background-color: var(--color-bg);
 }
 
 
-/* ----------------------------------------------------------------
-   4. SISTEMA DE PANTALLAS
-   
-   Todas las pantallas existen en el HTML al mismo tiempo,
-   pero solo una es visible. Esto simula la navegación de una app.
-   
-   .screen         → pantalla oculta por defecto
-   .screen.active  → pantalla visible
----------------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 4 — SISTEMA DE PANTALLAS
+   ════════════════════════════════════════════════════════════════
+
+   ¿CÓMO FUNCIONA LA NAVEGACIÓN?
+   Todas las pantallas (splash, login, home, etc.) existen en el
+   HTML todo el tiempo. La navegación no carga páginas nuevas —
+   solo MUESTRA u OCULTA pantallas según cuál está activa.
+
+   Es como tener varias hojas de papel apiladas:
+   solo lees la que está arriba. Las demás siguen ahí, solo
+   que debajo de la que estás viendo.
+
+   DOS ESTADOS:
+   · .screen         → pantalla oculta (opacity: 0, no recibe clics)
+   · .screen.active  → pantalla visible (opacity: 1, recibe clics)
+
+   script.js agrega o quita la clase "active" para controlar cuál se ve.
+════════════════════════════════════════════════════════════════ */
+
 .screen {
+  /* Estado por defecto: OCULTA */
+
   position: absolute;
   /*
-    absolute: se posiciona relativa al contenedor padre (#phone-container).
-    A diferencia de fixed (que se posiciona relativa a la ventana),
-    absolute respeta el contenedor del teléfono.
-    Esto es clave para que todo quede adentro del "teléfono".
+    absolute = se posiciona relativa al contenedor padre (#phone-container).
+    Todas las pantallas se apilan en el mismo lugar (top:0, left:0).
+    Parecen una baraja de cartas apiladas.
   */
-  top: 0;
-  left: 0;
-  width: 100%;    /* 100% del teléfono = 375px */
-  height: 100%;   /* 100% del teléfono = 812px */
+  top:    0;
+  left:   0;
+  width:  100%;   /* Ocupa todo el ancho del teléfono */
+  height: 100%;   /* Ocupa todo el alto del teléfono */
   background-color: var(--color-bg);
 
-  /* OCULTAMIENTO */
   opacity: 0;
   /*
-    opacity: 0 = invisible pero sigue existiendo en el DOM.
-    Combinado con pointer-events: none, el usuario no puede
-    interactuar con pantallas ocultas.
-  */
-  pointer-events: none;
-  /*
-    pointer-events: none = ignora todos los clics y toques.
-    Sin esto, el usuario podría hacer clic en botones invisibles.
+    opacity: 0 = completamente invisible.
+    El elemento sigue existiendo (ocupa espacio en memoria)
+    pero el usuario no lo ve.
   */
 
-  /* TRANSICIÓN SUAVE */
+  pointer-events: none;
+  /*
+    pointer-events: none = ignora todos los toques y clics.
+    Necesario porque aunque la pantalla es invisible (opacity: 0),
+    sin esto el usuario podría hacer clic en sus botones
+    sin darse cuenta de que existen.
+  */
+
   transition: opacity 0.25s ease;
   /*
-    transition: anima el cambio de opacity en 0.25 segundos.
-    Crea el efecto de fade in/out entre pantallas.
-    ease = empieza rápido y desacelera al final (se siente natural).
+    Hace que el cambio de invisible a visible (o viceversa)
+    ocurra gradualmente en 0.25 segundos → efecto de "fade".
+    ease = empieza el cambio rápido y desacelera al final (más natural).
+    Sin esta línea, el cambio sería instantáneo y brusco.
   */
 }
 
 .screen.active {
-  opacity: 1;          /* Visible */
-  pointer-events: all; /* Recibe clics y toques normalmente */
+  /* Estado activo: VISIBLE */
+  opacity: 1;           /* Completamente visible */
+  pointer-events: all;  /* Recibe toques y clics normalmente */
 }
 
 
-/* ----------------------------------------------------------------
-   5. COMPONENTES — Estilos específicos de cada pantalla
-   
-   Cada sección corresponde a una pantalla del prototipo.
-   Están en el mismo orden que aparecen en index.html.
----------------------------------------------------------------- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 5 — SPLASH (PANTALLA DE BIENVENIDA)
+════════════════════════════════════════════════════════════════ */
 
-/* --- SPLASH --- */
 .screen#screen-splash {
-  display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
-  flex-direction: column;  /* Apila los elementos verticalmente */
+  /* Centra el logo y el texto en el medio de la pantalla */
+  display:         flex;
+  justify-content: center;   /* Centra horizontalmente */
+  align-items:     center;   /* Centra verticalmente */
+  flex-direction:  column;   /* Apila los elementos de arriba a abajo */
 }
 
 .splash-content {
-  text-align: center;
-  display: flex;
+  text-align: center;   /* Texto centrado */
+  display:        flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-md); /* Espacio entre logo, título y tagline */
+  align-items:    center;
+  gap: var(--space-md); /* Espacio entre el emoji, el título y el tagline */
 }
 
 .logo {
-  font-size: 72px;
-  line-height: 1;
+  font-size:   72px;   /* El ⚽ ocupa 72px — bien grande y visible */
+  line-height: 1;      /* Sin espacio extra arriba y abajo del emoji */
 }
 
 .app-name {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--color-accent); /* Verde */
-  letter-spacing: -0.5px;    /* Letras un poco más juntas — más moderno */
+  font-size:      var(--text-2xl);   /* 32px — grande */
+  font-weight:    700;               /* Negrita fuerte */
+  color:          var(--color-accent); /* Verde Matchmakers */
+  letter-spacing: -0.5px;
+  /*
+    letter-spacing negativo = letras un poco más juntas.
+    En títulos grandes se ve más moderno y profesional.
+  */
 }
 
 .app-tagline {
-  font-size: var(--text-base);
-  color: var(--color-text-muted); /* Gris */
+  font-size: var(--text-base);       /* 15px — tamaño normal */
+  color:     var(--color-text-muted); /* Gris — menos importante que el nombre */
 }
 
 
-/* --- LOGIN --- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 6 — LOGIN (PANTALLA DE INGRESO)
+════════════════════════════════════════════════════════════════ */
+
 .screen#screen-login {
-  display: flex;
+  display:         flex;
   justify-content: center;
-  align-items: center;
-  padding: var(--space-xl);
+  align-items:     center;
+  padding:         var(--space-xl); /* 32px de margen en los cuatro lados */
 }
 
 .login-content {
-  width: 100%;
-  display: flex;
+  width:          100%;   /* Ocupa todo el ancho disponible */
+  display:        flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap:            var(--space-lg); /* 24px entre el título, el campo y el botón */
 }
 
 .login-content h2 {
-  font-size: var(--text-xl);
+  font-size:   var(--text-xl);   /* 24px */
   font-weight: 700;
 }
 
 .subtitle {
-  color: var(--color-text-muted);
-  margin-top: calc(var(--space-sm) * -1); /* Acerca el subtítulo al h2 */
+  color:      var(--color-text-muted);               /* Gris */
+  margin-top: calc(var(--space-sm) * -1);            /* -8px: acerca el subtítulo al h2 */
+  /*
+    calc() hace una operación matemática.
+    var(--space-sm) es 8px, multiplicado por -1 es -8px.
+    Un margen negativo "jala" el elemento hacia arriba.
+  */
 }
 
+/* ── Campo de texto (label + input juntos) ── */
 .input-group {
-  display: flex;
+  display:        flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap:            var(--space-sm); /* Espacio entre el label y el input */
 }
 
 .input-group label {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size:   var(--text-sm);         /* 13px — más pequeño que el input */
+  color:       var(--color-text-muted); /* Gris */
   font-weight: 500;
 }
 
 .input-group input {
-  background-color: var(--color-bg-input);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  font-size: var(--text-base);
-  font-family: var(--font-main);
-  padding: var(--space-md);
-  outline: none;
+  background-color: var(--color-bg-input); /* Fondo gris oscuro */
+  border:           1px solid var(--color-border); /* Borde gris */
+  border-radius:    var(--radius-md);  /* Esquinas redondeadas */
+  color:            var(--color-text);
+  font-size:        var(--text-base);
+  font-family:      var(--font-main); /* Misma fuente que el resto */
+  padding:          var(--space-md);  /* Espacio interno para que el texto no toque el borde */
+  outline:          none;
   /*
-    outline: none — elimina el borde azul que pone el navegador
-    cuando el input está activo. Lo reemplazamos con nuestro propio
-    estilo de focus abajo.
+    Por defecto, cuando un input está activo, el navegador
+    dibuja un borde azul brillante. outline: none lo elimina.
+    Nosotros definimos nuestro propio estilo en :focus abajo.
   */
-  transition: border-color 0.2s ease;
-  width: 100%;
+  transition:       border-color 0.2s ease; /* El borde cambia de color suavemente */
+  width:            100%;
 }
 
 .input-group input:focus {
-  /* :focus — cuando el usuario está escribiendo en el input */
-  border-color: var(--color-accent); /* Borde verde cuando está activo */
+  /*
+    :focus = cuando el usuario toca el input y el cursor aparece adentro.
+    Le ponemos borde verde para indicar visualmente que está activo.
+  */
+  border-color: var(--color-accent); /* Borde verde cuando está escribiendo */
 }
 
 .input-group input::placeholder {
-  color: var(--color-text-muted);
+  /*
+    ::placeholder = el texto de ejemplo que se ve cuando el input está vacío.
+  */
+  color: var(--color-text-muted); /* Gris claro, para diferenciarlo del texto real */
 }
 
+/* ── Botón de ingreso ── */
 button#btn-login {
-  background-color: var(--color-accent);
-  color: #000; /* Negro sobre verde — mejor contraste que blanco */
-  border: none;
-  border-radius: var(--radius-full);
-  padding: var(--space-md) var(--space-lg);
-  font-size: var(--text-base);
-  font-weight: 700;
-  font-family: var(--font-main);
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  background-color: var(--color-accent); /* Fondo verde */
+  color:            #000;
+  /*
+    Texto negro sobre verde — mejor contraste que texto blanco.
+    Contraste alto = más fácil de leer = mejor accesibilidad.
+  */
+  border:           none;
+  border-radius:    var(--radius-full); /* Completamente redondeado (estilo "pill") */
+  padding:          var(--space-md) var(--space-lg); /* Vertical | Horizontal */
+  font-size:        var(--text-base);
+  font-weight:      700;
+  font-family:      var(--font-main);
+  cursor:           pointer; /* El cursor cambia a manito al pasar por encima */
+  width:            100%;
+  transition:       background-color 0.2s ease, transform 0.1s ease;
 }
 
 button#btn-login:hover {
-  background-color: var(--color-accent-dark);
+  /*
+    :hover = cuando el mouse está encima (en computador).
+    En móvil esto no aplica, pero siempre incluirlo
+    para quienes prueben en navegador de escritorio.
+  */
+  background-color: var(--color-accent-dark); /* Verde un poco más oscuro */
 }
 
 button#btn-login:active {
   /*
-    :active — cuando el usuario está presionando el botón.
-    scale(0.98) lo hace "hundirse" levemente — feedback táctil visual.
+    :active = mientras el usuario está presionando el botón.
+    scale(0.98) lo hace "hundirse" levemente — simula el
+    feedback físico de presionar un botón real.
   */
   transform: scale(0.98);
 }
 
 
-/* --- HOME: HEADER SUPERIOR --- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 7 — HOME: HEADER SUPERIOR FIJO
+   ════════════════════════════════════════════════════════════════
+
+   El header siempre está visible en la parte de arriba.
+   El contenido (tarjetas) se mueve debajo de él al hacer scroll.
+════════════════════════════════════════════════════════════════ */
+
 .top-bar {
-  position: absolute;
-  /*
-    absolute dentro de .screen (que ya es absolute dentro de #phone-container).
-    Se queda fijo en la parte superior de la pantalla activa.
-  */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--top-bar-height);
+  position: absolute; /* Se queda en su lugar, no sube al hacer scroll */
+  top:      0;
+  left:     0;
+  width:    100%;
+  height:   var(--top-bar-height); /* 56px de alto */
+
   background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-  display: flex;
-  justify-content: space-between; /* Nombre equipo a la izq, íconos a la der */
-  align-items: center;
-  padding: 0 var(--space-md);
-  z-index: 10; /* Encima del contenido scrolleable */
+  border-bottom:    1px solid var(--color-border); /* Línea separadora abajo */
+
+  display:         flex;
+  justify-content: space-between; /* Nombre equipo a la izquierda, íconos a la derecha */
+  align-items:     center;
+  padding:         0 var(--space-md); /* Solo padding horizontal */
+  z-index:         10;
+  /*
+    z-index controla qué elemento aparece "encima" cuando dos se solapan.
+    z-index: 10 asegura que el header siempre se vea por encima del contenido
+    que sube al hacer scroll.
+  */
 }
 
 .team-selector {
-  display: flex;
+  display:     flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap:         var(--space-xs); /* Espacio entre el nombre y la flecha ▾ */
   font-weight: 600;
-  font-size: var(--text-base);
-  cursor: pointer;
+  font-size:   var(--text-base);
+  cursor:      pointer;
 }
 
 .chevron {
-  color: var(--color-accent);
+  color:     var(--color-accent); /* La flecha ▾ es verde */
   font-size: var(--text-sm);
 }
 
 .top-bar-icons {
   display: flex;
-  gap: var(--space-sm);
+  gap:     var(--space-sm); /* Espacio entre el ícono de 🔔 y 👤 */
 }
 
 .icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  padding: var(--space-xs);
+  background:    none;    /* Sin fondo */
+  border:        none;    /* Sin borde */
+  cursor:        pointer;
+  font-size:     20px;
+  padding:       var(--space-xs);
   border-radius: var(--radius-sm);
-  transition: background-color 0.2s ease;
+  transition:    background-color 0.2s ease;
 }
 
 .icon-btn:hover {
-  background-color: var(--color-bg-card);
+  background-color: var(--color-bg-card); /* Fondo suave al pasar el mouse */
 }
 
 
-/* --- HOME: ÁREA SCROLLEABLE --- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 8 — HOME: ÁREA DE CONTENIDO SCROLLEABLE
+   ════════════════════════════════════════════════════════════════
+
+   El espacio entre el header y el menú inferior donde
+   viven las tarjetas de partidos. Si hay muchas tarjetas,
+   el usuario puede hacer scroll aquí.
+════════════════════════════════════════════════════════════════ */
+
 .screen-content {
-  /*
-    El área entre el header y el nav que hace scroll.
-    Usamos position absolute con top y bottom para que
-    respete exactamente el espacio de header y nav.
-  */
   position: absolute;
-  top: var(--top-bar-height);       /* Empieza debajo del header */
-  bottom: var(--bottom-nav-height); /* Termina encima del nav */
-  left: 0;
-  right: 0;
-  overflow-y: auto; /* Permite scroll vertical */
-  padding: var(--space-md);
-  display: flex;
+  top:      var(--top-bar-height);       /* Empieza JUSTO debajo del header (56px) */
+  bottom:   var(--bottom-nav-height);    /* Termina JUSTO encima del nav (72px) */
+  left:     0;
+  right:    0;
+  /*
+    Al definir top y bottom, el div ocupa el espacio ENTRE
+    el header y el nav, sin necesidad de calcular la altura manualmente.
+    Matemáticamente sería: 812px - 56px - 72px = 684px de alto.
+  */
+
+  overflow-y: auto; /* Si el contenido es más alto que 684px, aparece scroll vertical */
+
+  padding:        var(--space-md);  /* Margen interno en los cuatro lados */
+  display:        flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap:            var(--space-md);  /* Espacio entre tarjetas */
+
   -webkit-overflow-scrolling: touch;
   /*
-    overflow-scrolling: touch — scroll con inercia en iOS.
-    El scroll se siente más fluido y natural.
+    Activa el scroll con inercia en iPhones y iPads.
+    Sin esto, el scroll se siente "seco" en iOS.
+    Con esto, el scroll tiene la fluidez característica de las apps nativas.
   */
 }
 
 .section-title {
-  font-size: var(--text-lg);
+  font-size:   var(--text-lg);    /* 18px */
   font-weight: 700;
-  color: var(--color-text);
+  color:       var(--color-text);
 }
 
 
-/* --- CARDS DE PARTIDO --- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 9 — HOME: TARJETAS DE PARTIDOS
+   ════════════════════════════════════════════════════════════════
+
+   Cada partido se muestra como una "tarjeta" con:
+   · Parte superior: hora + badge de estado (Abierto/Cerrado)
+   · Parte inferior: nombre, ubicación y formato del partido
+════════════════════════════════════════════════════════════════ */
+
+/* ── Contenedor de cada tarjeta ── */
 .match-card {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.1s ease;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+  background-color: var(--color-bg-card);      /* Fondo gris oscuro */
+  border:           1px solid var(--color-border); /* Borde gris */
+  border-radius:    var(--radius-lg);           /* Esquinas bien redondeadas */
+  padding:          var(--space-md);
+  cursor:           pointer; /* Manito al pasar el mouse — indica que es clickeable */
+  transition:       border-color 0.2s ease, transform 0.1s ease;
+  display:          flex;
+  flex-direction:   column;
+  gap:              var(--space-sm); /* Espacio entre el header y el body de la card */
 }
 
 .match-card:hover {
-  border-color: var(--color-accent); /* Borde verde al hacer hover */
+  border-color: var(--color-accent); /* Borde verde al pasar el mouse — feedback visual */
 }
 
 .match-card:active {
-  transform: scale(0.99); /* Se "hunde" levemente al presionar */
+  transform: scale(0.99); /* Se "hunde" un 1% al presionar — feedback táctil visual */
 }
 
+/* ── Parte superior de la tarjeta (hora + badge) ── */
 .match-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display:         flex;
+  justify-content: space-between; /* Hora a la izquierda, badge a la derecha */
+  align-items:     center;
 }
 
 .match-time {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size:   var(--text-sm);          /* 13px — más pequeño que el nombre */
+  color:       var(--color-text-muted); /* Gris */
   font-weight: 500;
 }
 
+/* ── Badge de estado (Abierto / Cerrado) ── */
 .match-badge {
-  font-size: var(--text-xs);
-  font-weight: 700;
-  padding: 2px var(--space-sm);
-  border-radius: var(--radius-full);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size:      var(--text-xs);   /* 11px — bien pequeño */
+  font-weight:    700;
+  padding:        2px var(--space-sm); /* Poco padding vertical, más horizontal */
+  border-radius:  var(--radius-full);  /* Forma de "píldora" */
+  text-transform: uppercase;           /* ABIERTO en vez de Abierto */
+  letter-spacing: 0.5px;               /* Letras un poco más separadas — legible en mayúsculas */
 }
 
 .match-badge.open {
-  background-color: rgba(29, 185, 84, 0.15); /* Verde muy transparente */
-  color: var(--color-accent);                 /* Texto verde */
+  background-color: rgba(29, 185, 84, 0.15);  /* Verde muy transparente como fondo */
+  color:            var(--color-accent);        /* Verde sólido como texto */
+  /*
+    rgba(R, G, B, A) — el 4to valor (0.15) es la transparencia:
+    0 = completamente transparente, 1 = completamente opaco.
+    0.15 = apenas un toque de verde de fondo, muy sutil.
+  */
 }
 
 .match-badge.closed {
-  background-color: rgba(139, 148, 158, 0.15); /* Gris muy transparente */
-  color: var(--color-text-muted);               /* Texto gris */
+  background-color: rgba(139, 148, 158, 0.15); /* Gris muy transparente como fondo */
+  color:            var(--color-text-muted);    /* Gris sólido como texto */
 }
 
+/* ── Parte inferior de la tarjeta (nombre, ubicación, formato) ── */
 .match-card-body {
-  display: flex;
+  display:        flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap:            var(--space-xs); /* Poco espacio entre las tres líneas de texto */
 }
 
 .match-team {
-  font-size: var(--text-base);
-  font-weight: 700;
-  color: var(--color-text);
+  font-size:   var(--text-base);  /* 15px — el texto más grande de la card */
+  font-weight: 700;               /* Negrita — es lo más importante */
+  color:       var(--color-text);
 }
 
 .match-location,
 .match-format {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size: var(--text-sm);          /* 13px — texto secundario */
+  color:     var(--color-text-muted); /* Gris */
 }
 
 
-/* --- NAV INFERIOR --- */
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 10 — HOME: NAVEGACIÓN INFERIOR FIJA
+   ════════════════════════════════════════════════════════════════
+
+   El menú de 5 tabs que siempre está visible en la parte inferior.
+   Similar al navigation bar de apps como Instagram o WhatsApp.
+════════════════════════════════════════════════════════════════ */
+
 .bottom-nav {
-  position: absolute;
-  /*
-    absolute dentro de .screen — se queda fijo en la parte inferior
-    de la pantalla activa, dentro del teléfono simulado.
-  */
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: var(--bottom-nav-height);
+  position: absolute; /* Fijo en la parte inferior, no se mueve con el scroll */
+  bottom:   0;
+  left:     0;
+  width:    100%;
+  height:   var(--bottom-nav-height); /* 72px de alto */
+
   background-color: var(--color-bg);
-  border-top: 1px solid var(--color-border);
-  display: flex;
-  justify-content: space-around; /* Distribuye los 5 botones uniformemente */
-  align-items: center;
-  padding: 0 var(--space-sm);
-  z-index: 10;
+  border-top:       1px solid var(--color-border); /* Línea separadora arriba */
+
+  display:         flex;
+  justify-content: space-around; /* Distribuye los 5 botones con espacio igual entre ellos */
+  align-items:     center;
+  padding:         0 var(--space-sm);
+  z-index:         10; /* Siempre visible por encima del contenido */
 }
 
+/* ── Botón de cada tab ── */
 .nav-btn {
   background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
-  transition: opacity 0.2s ease;
-  opacity: 0.5; /* Inactivo: semitransparente */
-  flex: 1;
+  border:     none;
+  cursor:     pointer;
+  display:        flex;
+  flex-direction: column; /* Ícono arriba, texto abajo */
+  align-items:    center;
+  gap:            2px;    /* Espacio pequeño entre ícono y texto */
+  padding:        var(--space-xs) var(--space-sm);
+  border-radius:  var(--radius-sm);
+  transition:     opacity 0.2s ease;
+  opacity:        0.5;    /* Por defecto, los tabs inactivos se ven semitransparentes */
+  flex:           1;      /* Cada tab ocupa el mismo espacio horizontal */
 }
 
 .nav-btn.active {
-  opacity: 1; /* Activo: completamente visible */
+  opacity: 1; /* El tab activo se ve completamente opaco */
 }
 
 .nav-btn:active {
-  opacity: 0.7;
+  opacity: 0.7; /* Al presionar, se atenúa ligeramente — feedback visual */
 }
 
 .nav-icon {
@@ -541,90 +715,109 @@ button#btn-login:active {
 }
 
 .nav-label {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  font-size:   var(--text-xs);           /* 11px — muy pequeño, es solo una etiqueta */
+  color:       var(--color-text-muted);
   font-weight: 500;
 }
 
 .nav-btn.active .nav-label {
-  color: var(--color-accent); /* Label verde en tab activo */
+  color: var(--color-accent); /* La etiqueta del tab activo se pone verde */
 }
 
-/* Botón central (+) — más grande y destacado que los demás */
+/* ── Botón central (+) — especial, más grande y destacado ── */
 .nav-btn-main {
-  background-color: var(--color-accent);
-  border-radius: var(--radius-full); /* Círculo perfecto */
-  width: 52px;
-  height: 52px;
-  flex: 0 0 52px; /* Tamaño fijo — no crece ni se encoge */
-  opacity: 1 !important;
+  background-color: var(--color-accent); /* Fondo verde sólido */
+  border-radius:    var(--radius-full);  /* Forma circular perfecta */
+  width:            52px;
+  height:           52px;
+  flex:             0 0 52px;
   /*
-    !important: fuerza este valor aunque haya otros estilos que digan opacity: 0.5
-    Lo necesitamos porque .nav-btn base pone opacity: 0.5
-    y el botón + siempre debe verse completo.
+    flex: 0 0 52px → este botón no crece (0) ni se encoge (0),
+    siempre mide exactamente 52px de ancho.
+    Los otros botones tienen flex: 1 (se reparten el espacio restante).
   */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  opacity:          1 !important;
+  /*
+    !important fuerza este valor aunque haya otra regla que diga opacity: 0.5
+    El botón + siempre debe verse completo, nunca semitransparente.
+  */
+  display:         flex;
+  justify-content: center; /* Centra el símbolo + horizontalmente */
+  align-items:     center; /* Centra el símbolo + verticalmente */
 }
 
 .nav-btn-main .nav-icon {
-  color: #000;
-  font-size: 24px;
+  color:       #000;   /* + negro sobre verde — buen contraste */
+  font-size:   24px;
   font-weight: 700;
 }
 
 .nav-btn-main:active {
-  transform: scale(0.95);
+  transform: scale(0.95); /* Se "hunde" al presionar */
 }
 
 
-/* --- PANTALLAS PLACEHOLDER --- */
-/*
-  Estas son las pantallas que aún no tienen contenido real.
-  Las iremos construyendo sesión por sesión.
-*/
+/* ════════════════════════════════════════════════════════════════
+   BLOQUE 11 — PANTALLAS PLACEHOLDER (EN CONSTRUCCIÓN)
+   ════════════════════════════════════════════════════════════════
+
+   Estilos para las pantallas que aún no tienen contenido real.
+   Son pantallas vacías con un mensaje y un botón de volver.
+   Las iremos completando sesión por sesión.
+════════════════════════════════════════════════════════════════ */
+
 .placeholder-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  gap: var(--space-md);
-  text-align: center;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center; /* Contenido centrado verticalmente */
+  align-items:     center; /* Contenido centrado horizontalmente */
+  height:          100%;
+  gap:             var(--space-md);
+  text-align:      center;
 }
 
 .placeholder-screen p {
-  font-size: var(--text-xl);
+  font-size:   var(--text-xl); /* 24px — texto grande y visible */
   font-weight: 600;
 }
 
 .placeholder-note {
-  font-size: var(--text-base) !important;
-  color: var(--color-text-muted) !important;
-  font-weight: 400 !important;
+  font-size:   var(--text-base) !important; /* 15px — más pequeño que el título */
+  color:       var(--color-text-muted) !important; /* Gris — menos énfasis */
+  font-weight: 400 !important; /* Normal, sin negrita */
+  /*
+    Los !important son necesarios porque la regla de arriba
+    (.placeholder-screen p) aplica a todos los <p> incluyendo este.
+    !important le dice al CSS: "esta regla gana sin importar el orden".
+  */
 }
 
+/* ── Botones de las pantallas placeholder ── */
 .placeholder-screen button,
 .back-btn {
-  background: none;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  font-family: var(--font-main);
-  font-size: var(--text-sm);
-  transition: border-color 0.2s ease, color 0.2s ease;
+  /*
+    Esta regla aplica a DOS selectores a la vez (separados por coma).
+    Cualquier <button> dentro de .placeholder-screen
+    Y también cualquier elemento con clase .back-btn.
+  */
+  background:    none;
+  border:        1px solid var(--color-border); /* Borde gris */
+  color:         var(--color-text-muted);
+  padding:       var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full); /* Forma de píldora */
+  cursor:        pointer;
+  font-family:   var(--font-main);
+  font-size:     var(--text-sm);
+  transition:    border-color 0.2s ease, color 0.2s ease;
 }
 
 .placeholder-screen button:hover,
 .back-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-accent); /* Borde verde al pasar el mouse */
+  color:        var(--color-accent); /* Texto verde al pasar el mouse */
 }
 
 .back-btn {
-  align-self: flex-start;
-  margin: var(--space-md);
+  align-self: flex-start; /* Alineado a la izquierda (no centrado como el resto) */
+  margin:     var(--space-md); /* Margen en los cuatro lados */
 }
