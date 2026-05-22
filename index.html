@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<!--
+  ¿QUÉ ES ESTO?
+  Esta línea le avisa al navegador (Chrome, Safari, etc.) que lo que sigue
+  es una página web moderna. Sin ella, el navegador entra en "modo antiguo"
+  y las cosas se ven chuecas. Siempre va en la primera línea, sin excepción.
+-->
+
+<html lang="es">
+<!--
+  <html> es la "caja grande" que contiene TODO el contenido de la página.
+  lang="es" le dice al navegador que el texto está en español,
+  lo cual ayuda a lectores de pantalla y al corrector ortográfico del navegador.
+-->
+
+<head>
+  <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  HEAD — La "mochila" de la página                       ║
+    ║                                                          ║
+    ║  El usuario NO ve lo que hay aquí, pero el navegador    ║
+    ║  lo necesita para preparar todo correctamente antes      ║
+    ║  de mostrar la pantalla.                                 ║
+    ╚══════════════════════════════════════════════════════════╝
+  -->
+
+  <meta charset="UTF-8">
+  <!--
+    PROBLEMA QUE RESUELVE: sin esta línea, las tildes (á, é, í, ó, ú)
+    y la ñ se ven como símbolos raros tipo "Ã©".
+    UTF-8 es el "diccionario de caracteres" que le permite al navegador
+    entender todos los idiomas del mundo.
+  -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    PROBLEMA QUE RESUELVE: sin esto, un teléfono abriría la página
+    como si fuera una pantalla de computador y la haría diminuta.
+    Esta línea le dice: "muéstrate en el tamaño real del teléfono".
+  -->
+
+  <title>Matchmakers</title>
+  <!--
+    Este texto aparece en la pestaña del navegador.
+    Si tienes varias pestañas abiertas, es lo que te ayuda a
+    identificar cuál es cuál.
+  -->
+
+  <link rel="stylesheet" href="styles.css">
+  <!--
+    Conecta este archivo HTML con el archivo styles.css.
+    Piénsalo como: el HTML es el esqueleto, el CSS es la ropa.
+    Sin esta línea, la página se vería como texto plano sin diseño.
+  -->
+
+</head>
+
+<body>
+  <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  BODY — Todo lo que el usuario VE                       ║
+    ║                                                          ║
+    ║  Aquí viven todas las pantallas de la app.              ║
+    ║  El script.js (cargado al final) controla cuál          ║
+    ║  pantalla se muestra en cada momento.                    ║
+    ╚══════════════════════════════════════════════════════════╝
+  -->
+
+
+  <!-- ════════════════════════════════════════════════════════
+       CONTENEDOR DEL TELÉFONO
+       ════════════════════════════════════════════════════════
+
+       ¿QUÉ ES ESTO?
+       Es la "carcasa" del teléfono que vemos en el preview.
+       Todas las pantallas de la app viven ADENTRO de este div.
+
+       ¿POR QUÉ EXISTE?
+       Cuando diseñamos en computador, queremos ver la app
+       exactamente como se vería en un celular (375x812 píxeles,
+       con esquinas redondeadas y sombra). Este div lo simula.
+
+       En el archivo styles.css, este elemento tiene:
+       · Tamaño fijo (375px × 812px) — el de un iPhone 13
+       · Esquinas redondeadas (como las de un teléfono real)
+       · Sombra debajo (para que "flote" sobre el fondo)
+       · overflow: hidden (lo que se salga no se ve, como una pantalla real)
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="phone-container">
+
+
+    <!-- ════════════════════════════════════════════════════════
+         PANTALLA 1 DE 7: SPLASH (BIENVENIDA)
+         ════════════════════════════════════════════════════════
+
+         ¿QUÉ ES?
+         La primera pantalla que ve el usuario al abrir la app.
+         Solo dura unos segundos y luego pasa sola al Login.
+
+         ¿CÓMO SE CONTROLA?
+         · class="screen" → estilo base, oculta por defecto
+         · class="active" → esta es la excepción: empieza visible
+         · El temporizador en script.js la reemplaza por el Login
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="screen-splash" class="screen active">
+
+      <!-- Contenedor central del logo y texto -->
+      <div class="splash-content">
+        <div class="logo">⚽</div>
+        <h1 class="app-name">Matchmakers</h1>
+        <p class="app-tagline">Fútbol amateur, sin drama</p>
+      </div>
+
+    </div>
+    <!-- ── Fin Pantalla 1: Splash ── -->
+
+
+    <!-- ════════════════════════════════════════════════════════
+         PANTALLA 2 DE 7: LOGIN (INGRESO)
+         ════════════════════════════════════════════════════════
+
+         ¿QUÉ ES?
+         El formulario donde el usuario escribe su número
+         de celular para entrar a la app.
+
+         ¿CÓMO FUNCIONA EN EL PROTOTIPO?
+         No hay validación real — cualquier número (o incluso
+         ninguno) permite entrar. El botón "Entrar" llama a la
+         función goTo('screen-home') en script.js y listo.
+
+         En una app real aquí iría: verificación por SMS,
+         Google Sign-In, o algún sistema de autenticación.
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="screen-login" class="screen">
+      <!--
+        NOTA: esta pantalla NO tiene class="active"
+        porque empieza oculta. script.js la muestra
+        después del splash automáticamente.
+      -->
+
+      <div class="login-content">
+
+        <h2>Bienvenido</h2>
+        <p class="subtitle">Ingresa tu número para continuar</p>
+
+        <!-- Campo de teléfono -->
+        <div class="input-group">
+
+          <label for="phone-input">Número de celular</label>
+          <!--
+            for="phone-input": conecta este label con el input de abajo.
+            Beneficio práctico: al tocar el texto del label en móvil,
+            el cursor va directo al campo de texto.
+          -->
+
+          <input
+            type="tel"
+            id="phone-input"
+            placeholder="300 123 4567"
+          >
+          <!--
+            type="tel": en móvil abre el teclado numérico automáticamente
+                        (en vez del teclado completo con letras)
+            placeholder: texto gris de ejemplo que desaparece cuando
+                         el usuario empieza a escribir
+          -->
+
+        </div>
+        <!-- ── Fin campo teléfono ── -->
+
+        <!-- Botón de ingreso -->
+        <button id="btn-login" onclick="goTo('screen-home')">
+          Entrar
+        </button>
+        <!--
+          onclick="goTo('screen-home')":
+          Cuando el usuario toca este botón, se llama la función
+          goTo() del archivo script.js con el argumento 'screen-home'.
+          Esa función oculta esta pantalla y muestra el Home.
+        -->
+
+      </div>
+
+    </div>
+    <!-- ── Fin Pantalla 2: Login ── -->
+
+
+    <!-- ════════════════════════════════════════════════════════
+         PANTALLA 3 DE 7: HOME (INICIO / FEED PRINCIPAL)
+         ════════════════════════════════════════════════════════
+
+         ¿QUÉ ES?
+         La pantalla principal de la app. Muestra los partidos
+         disponibles como "tarjetas" que el usuario puede tocar.
+
+         ESTRUCTURA DE ESTA PANTALLA (3 bloques):
+         ┌──────────────────────────┐
+         │  HEADER FIJO (top-bar)   │  ← siempre visible arriba
+         ├──────────────────────────┤
+         │                          │
+         │  ÁREA SCROLLEABLE        │  ← aquí van las tarjetas
+         │  (screen-content)        │
+         │                          │
+         ├──────────────────────────┤
+         │  NAV FIJO (bottom-nav)   │  ← siempre visible abajo
+         └──────────────────────────┘
+    ═══════════════════════════════════════════════════════════ -->
+    <div id="screen-home" class="screen">
+
+
+      <!-- ·· BLOQUE A: Header superior fijo ·· -->
+      <div class="top-bar">
+        <!--
+          Este header no hace scroll — se queda pegado arriba.
+          Tiene dos partes: el selector de equipo (izquierda)
+          y los íconos de notificaciones y perfil (derecha).
+        -->
+
+        <!-- Nombre del equipo actual (izquierda) -->
+        <div class="team-selector">
+          <span>Águilas Calvas FC</span>
+          <span class="chevron">▾</span>
+          <!--
+            ▾ es la flecha hacia abajo que indica "hay un menú aquí".
+            En el prototipo no hace nada; en la app real abriría
+            un menú para cambiar de equipo.
+          -->
+        </div>
+
+        <!-- Íconos de acción (derecha) -->
+        <div class="top-bar-icons">
+          <button class="icon-btn">🔔</button>
+          <!-- Notificaciones — funcionalidad futura -->
+          <button class="icon-btn">👤</button>
+          <!-- Perfil del usuario — funcionalidad futura -->
+        </div>
+
+      </div>
+      <!-- ·· Fin header ·· -->
+
+
+      <!-- ·· BLOQUE B: Área scrolleable con las tarjetas ·· -->
+      <div class="screen-content">
+        <!--
+          Este div tiene overflow-y: auto en el CSS,
+          lo que significa que SI el contenido es más largo
+          que el espacio disponible, aparece una barra de scroll.
+
+          El espacio disponible = altura del teléfono
+                                  - header (56px)
+                                  - nav inferior (72px)
+        -->
+
+        <h3 class="section-title">Partidos disponibles</h3>
+
+
+        <!-- ·· TARJETA DE PARTIDO 1 ·· -->
+        <div class="match-card" onclick="goTo('screen-match-detail')">
+          <!--
+            onclick="goTo('screen-match-detail')":
+            Al tocar la tarjeta, va a la pantalla de detalle del partido.
+            Cualquier parte de la tarjeta sirve como botón.
+          -->
+
+          <!-- Parte superior de la tarjeta: hora y estado -->
+          <div class="match-card-header">
+            <span class="match-time">Sábado 8:00 AM</span>
+            <span class="match-badge open">Abierto</span>
+            <!--
+              class="match-badge open": el badge verde de "Abierto"
+              class="match-badge closed" sería el badge gris de "Cerrado"
+            -->
+          </div>
+
+          <!-- Parte inferior de la tarjeta: datos del partido -->
+          <div class="match-card-body">
+            <p class="match-team">Los Galácticos FC</p>
+            <p class="match-location">📍 Cancha El Campín, Chapinero</p>
+            <p class="match-format">🏟 Fútbol 11 · Pasto sintético</p>
+          </div>
+
+        </div>
+        <!-- ·· Fin tarjeta 1 ·· -->
+
+
+        <!-- ·· TARJETA DE PARTIDO 2 ·· -->
+        <div class="match-card" onclick="goTo('screen-match-detail')">
+
+          <div class="match-card-header">
+            <span class="match-time">Domingo 10:00 AM</span>
+            <span class="match-badge open">Abierto</span>
+          </div>
+
+          <div class="match-card-body">
+            <p class="match-team">Tigres del Norte</p>
+            <p class="match-location">📍 Cancha Simón Bolívar, Teusaquillo</p>
+            <p class="match-format">🏟 Fútbol 7 · Pasto natural</p>
+          </div>
+
+        </div>
+        <!-- ·· Fin tarjeta 2 ·· -->
+
+
+        <!-- ·· TARJETA DE PARTIDO 3 ·· -->
+        <div class="match-card" onclick="goTo('screen-match-detail')">
+
+          <div class="match-card-header">
+            <span class="match-time">Sábado 2:00 PM</span>
+            <span class="match-badge open">Abierto</span>
+          </div>
+
+          <div class="match-card-body">
+            <p class="match-team">Deportivo Kennedy</p>
+            <p class="match-location">📍 Cancha La Gaitana, Suba</p>
+            <p class="match-format">🏟 Fútbol 11 · Pasto sintético</p>
+          </div>
+
+        </div>
+        <!-- ·· Fin tarjeta 3 ·· -->
+
+
+      </div>
+      <!-- ·· Fin área scrolleable ·· -->
+
+
+      <!-- ·· BLOQUE C: Navegación inferior fija ·· -->
+      <nav class="bottom-nav">
+        <!--
+          <nav> es una etiqueta especial para menús de navegación.
+          Le dice al navegador "esto es un menú", lo que ayuda
+          a la accesibilidad (lectores de pantalla, SEO, etc.).
+
+          Tiene 5 botones: Inicio, Buscar, Crear (+), Comunidad, Chat.
+          El botón central (+) es más grande y tiene fondo verde.
+        -->
+
+        <!-- Tab 1: Inicio -->
+        <button class="nav-btn active" onclick="goTo('screen-home')">
+          <!--
+            class="nav-btn active": este tab está activo (estamos en Home).
+            Los otros tabs no tienen "active" y se ven más tenues.
+          -->
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Inicio</span>
+        </button>
+
+        <!-- Tab 2: Buscar -->
+        <button class="nav-btn" onclick="goTo('screen-search')">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Buscar</span>
+        </button>
+
+        <!-- Tab 3: Crear partido (botón principal, más grande) -->
+        <button class="nav-btn nav-btn-main" onclick="goTo('screen-create')">
+          <!--
+            nav-btn-main: clase extra que le da el estilo especial
+            (círculo verde, más grande que los otros tabs).
+          -->
+          <span class="nav-icon">＋</span>
+        </button>
+
+        <!-- Tab 4: Comunidad -->
+        <button class="nav-btn" onclick="goTo('screen-community')">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Comunidad</span>
+        </button>
+
+        <!-- Tab 5: Chat -->
+        <button class="nav-btn" onclick="goTo('screen-chat')">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Chat</span>
+        </button>
+
+      </nav>
+      <!-- ·· Fin navegación inferior ·· -->
+
+
+    </div>
+    <!-- ── Fin Pantalla 3: Home ── -->
+
+
+    <!-- ════════════════════════════════════════════════════════
+         PANTALLAS 4–7: PLACEHOLDERS (EN CONSTRUCCIÓN)
+         ════════════════════════════════════════════════════════
+
+         ¿QUÉ SON?
+         Pantallas vacías que existen para que los botones de
+         navegación funcionen sin generar errores.
+         Cuando el usuario toca "Buscar", va a screen-search.
+         Como aún no tiene contenido, ve un mensaje "Próxima sesión".
+
+         ¿POR QUÉ NO ESTÁN COMPLETAS?
+         Las construiremos una por una en sesiones futuras.
+         Tener el placeholder ahora permite navegar y
+         probar el flujo general de la app.
+
+         CONTENIDO DE CADA UNA:
+         · Un botón "← Volver" para regresar
+         · Un ícono y nombre de la pantalla
+         · El texto "Próxima sesión" indicando que viene después
+    ═══════════════════════════════════════════════════════════ -->
+
+    <!-- PANTALLA 4: Detalle de partido -->
+    <div id="screen-match-detail" class="screen">
+      <div class="placeholder-screen">
+        <button class="back-btn" onclick="goBack()">← Volver</button>
+        <!--
+          goBack() en script.js consulta el historial de pantallas
+          y regresa a la última que visitamos.
+        -->
+        <p>🏟 Detalle del partido</p>
+        <p class="placeholder-note">Próxima sesión</p>
+      </div>
+    </div>
+
+    <!-- PANTALLA 5: Buscar -->
+    <div id="screen-search" class="screen">
+      <div class="placeholder-screen">
+        <p>🔍 Buscar</p>
+        <p class="placeholder-note">Próxima sesión</p>
+        <button onclick="goTo('screen-home')">← Volver</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 6: Crear partido -->
+    <div id="screen-create" class="screen">
+      <div class="placeholder-screen">
+        <p>＋ Crear partido</p>
+        <p class="placeholder-note">Próxima sesión</p>
+        <button onclick="goTo('screen-home')">← Volver</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 7: Comunidad -->
+    <div id="screen-community" class="screen">
+      <div class="placeholder-screen">
+        <p>👥 Comunidad</p>
+        <p class="placeholder-note">Próxima sesión</p>
+        <button onclick="goTo('screen-home')">← Volver</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 8: Chat -->
+    <div id="screen-chat" class="screen">
+      <div class="placeholder-screen">
+        <p>💬 Chat</p>
+        <p class="placeholder-note">Próxima sesión</p>
+        <button onclick="goTo('screen-home')">← Volver</button>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- ── Fin #phone-container ── -->
+
+
+  <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  SCRIPT AL FINAL — ¿Por qué aquí y no en el <head>?    ║
+    ║                                                          ║
+    ║  El navegador lee el archivo de arriba hacia abajo.     ║
+    ║  Si el script estuviera en el <head>, intentaría        ║
+    ║  controlar botones y pantallas que aún no existen        ║
+    ║  (porque el HTML de abajo todavía no se ha leído).      ║
+    ║                                                          ║
+    ║  Al poner el script al FINAL del body, garantizamos     ║
+    ║  que cuando JavaScript empieza a correr, todos los       ║
+    ║  elementos del HTML ya existen en la página.             ║
+    ╚══════════════════════════════════════════════════════════╝
+  -->
+  <script src="script.js"></script>
+
+</body>
+</html>
