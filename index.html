@@ -1,474 +1,1618 @@
 <!DOCTYPE html>
-<!--
-  ¿QUÉ ES ESTO?
-  Esta línea le avisa al navegador (Chrome, Safari, etc.) que lo que sigue
-  es una página web moderna. Sin ella, el navegador entra en "modo antiguo"
-  y las cosas se ven chuecas. Siempre va en la primera línea, sin excepción.
--->
-
 <html lang="es">
-<!--
-  <html> es la "caja grande" que contiene TODO el contenido de la página.
-  lang="es" le dice al navegador que el texto está en español,
-  lo cual ayuda a lectores de pantalla y al corrector ortográfico del navegador.
--->
-
 <head>
-  <!--
-    ╔══════════════════════════════════════════════════════════╗
-    ║  HEAD — La "mochila" de la página                       ║
-    ║                                                          ║
-    ║  El usuario NO ve lo que hay aquí, pero el navegador    ║
-    ║  lo necesita para preparar todo correctamente antes      ║
-    ║  de mostrar la pantalla.                                 ║
-    ╚══════════════════════════════════════════════════════════╝
-  -->
-
   <meta charset="UTF-8">
-  <!--
-    PROBLEMA QUE RESUELVE: sin esta línea, las tildes (á, é, í, ó, ú)
-    y la ñ se ven como símbolos raros tipo "Ã©".
-    UTF-8 es el "diccionario de caracteres" que le permite al navegador
-    entender todos los idiomas del mundo.
-  -->
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--
-    PROBLEMA QUE RESUELVE: sin esto, un teléfono abriría la página
-    como si fuera una pantalla de computador y la haría diminuta.
-    Esta línea le dice: "muéstrate en el tamaño real del teléfono".
-  -->
-
   <title>Matchmakers</title>
-  <!--
-    Este texto aparece en la pestaña del navegador.
-    Si tienes varias pestañas abiertas, es lo que te ayuda a
-    identificar cuál es cuál.
-  -->
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <!--
-    Conecta este archivo HTML con el archivo styles.css.
-    Piénsalo como: el HTML es el esqueleto, el CSS es la ropa.
-    Sin esta línea, la página se vería como texto plano sin diseño.
-  -->
-
 </head>
-
 <body>
-  <!--
-    ╔══════════════════════════════════════════════════════════╗
-    ║  BODY — Todo lo que el usuario VE                       ║
-    ║                                                          ║
-    ║  Aquí viven todas las pantallas de la app.              ║
-    ║  El script.js (cargado al final) controla cuál          ║
-    ║  pantalla se muestra en cada momento.                    ║
-    ╚══════════════════════════════════════════════════════════╝
-  -->
-
-
-  <!-- ════════════════════════════════════════════════════════
-       CONTENEDOR DEL TELÉFONO
-       ════════════════════════════════════════════════════════
-
-       ¿QUÉ ES ESTO?
-       Es la "carcasa" del teléfono que vemos en el preview.
-       Todas las pantallas de la app viven ADENTRO de este div.
-
-       ¿POR QUÉ EXISTE?
-       Cuando diseñamos en computador, queremos ver la app
-       exactamente como se vería en un celular (375x812 píxeles,
-       con esquinas redondeadas y sombra). Este div lo simula.
-
-       En el archivo styles.css, este elemento tiene:
-       · Tamaño fijo (375px × 812px) — el de un iPhone 13
-       · Esquinas redondeadas (como las de un teléfono real)
-       · Sombra debajo (para que "flote" sobre el fondo)
-       · overflow: hidden (lo que se salga no se ve, como una pantalla real)
-  ═══════════════════════════════════════════════════════════ -->
   <div id="phone-container">
 
-
-    <!-- ════════════════════════════════════════════════════════
-         PANTALLA 1 DE 7: SPLASH (BIENVENIDA)
-         ════════════════════════════════════════════════════════
-
-         ¿QUÉ ES?
-         La primera pantalla que ve el usuario al abrir la app.
-         Solo dura unos segundos y luego pasa sola al Login.
-
-         ¿CÓMO SE CONTROLA?
-         · class="screen" → estilo base, oculta por defecto
-         · class="active" → esta es la excepción: empieza visible
-         · El temporizador en script.js la reemplaza por el Login
-    ═══════════════════════════════════════════════════════════ -->
+    <!-- SPLASH -->
     <div id="screen-splash" class="screen active">
-
-      <!-- Contenedor central del logo y texto -->
+      <div class="splash-glow"></div>
       <div class="splash-content">
-        <div class="logo">⚽</div>
-        <h1 class="app-name">Matchmakers</h1>
-        <p class="app-tagline">Fútbol amateur, sin drama</p>
-      </div>
-
-    </div>
-    <!-- ── Fin Pantalla 1: Splash ── -->
-
-
-    <!-- ════════════════════════════════════════════════════════
-         PANTALLA 2 DE 7: LOGIN (INGRESO)
-         ════════════════════════════════════════════════════════
-
-         ¿QUÉ ES?
-         El formulario donde el usuario escribe su número
-         de celular para entrar a la app.
-
-         ¿CÓMO FUNCIONA EN EL PROTOTIPO?
-         No hay validación real — cualquier número (o incluso
-         ninguno) permite entrar. El botón "Entrar" llama a la
-         función goTo('screen-home') en script.js y listo.
-
-         En una app real aquí iría: verificación por SMS,
-         Google Sign-In, o algún sistema de autenticación.
-    ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-login" class="screen">
-      <!--
-        NOTA: esta pantalla NO tiene class="active"
-        porque empieza oculta. script.js la muestra
-        después del splash automáticamente.
-      -->
-
-      <div class="login-content">
-
-        <h2>Bienvenido</h2>
-        <p class="subtitle">Ingresa tu número para continuar</p>
-
-        <!-- Campo de teléfono -->
-        <div class="input-group">
-
-          <label for="phone-input">Número de celular</label>
-          <!--
-            for="phone-input": conecta este label con el input de abajo.
-            Beneficio práctico: al tocar el texto del label en móvil,
-            el cursor va directo al campo de texto.
-          -->
-
-          <input
-            type="tel"
-            id="phone-input"
-            placeholder="300 123 4567"
-          >
-          <!--
-            type="tel": en móvil abre el teclado numérico automáticamente
-                        (en vez del teclado completo con letras)
-            placeholder: texto gris de ejemplo que desaparece cuando
-                         el usuario empieza a escribir
-          -->
-
+        <div class="splash-icon">⚽</div>
+        <h1 class="splash-title">Matchmakers</h1>
+        <p class="splash-tagline">Encuentra equipos, organiza partidos y<br>conecta con jugadores cerca de ti</p>
+        <div class="splash-actions">
+          <button class="btn-green" onclick="goTo('screen-home')">Crear Cuenta</button>
+          <button class="btn-outline" onclick="goTo('screen-home')">Iniciar Sesión</button>
         </div>
-        <!-- ── Fin campo teléfono ── -->
-
-        <!-- Botón de ingreso -->
-        <button id="btn-login" onclick="goTo('screen-home')">
-          Entrar
-        </button>
-        <!--
-          onclick="goTo('screen-home')":
-          Cuando el usuario toca este botón, se llama la función
-          goTo() del archivo script.js con el argumento 'screen-home'.
-          Esa función oculta esta pantalla y muestra el Home.
-        -->
-
+        <div class="divider-row">
+          <span class="divider-line"></span>
+          <span class="divider-text">o continúa con</span>
+          <span class="divider-line"></span>
+        </div>
+        <div class="social-row">
+          <button class="btn-social" onclick="goTo('screen-home')"><span>🍎</span> Apple</button>
+          <button class="btn-social" onclick="goTo('screen-home')"><span>🌐</span> Google</button>
+        </div>
+        <p class="legal-text">Al registrarte aceptas los <a href="#">términos de uso</a> y la <a href="#">política de privacidad</a></p>
       </div>
-
     </div>
-    <!-- ── Fin Pantalla 2: Login ── -->
 
-
-    <!-- ════════════════════════════════════════════════════════
-         PANTALLA 3 DE 7: HOME (INICIO / FEED PRINCIPAL)
-         ════════════════════════════════════════════════════════
-
-         ¿QUÉ ES?
-         La pantalla principal de la app. Muestra los partidos
-         disponibles como "tarjetas" que el usuario puede tocar.
-
-         ESTRUCTURA DE ESTA PANTALLA (3 bloques):
-         ┌──────────────────────────┐
-         │  HEADER FIJO (top-bar)   │  ← siempre visible arriba
-         ├──────────────────────────┤
-         │                          │
-         │  ÁREA SCROLLEABLE        │  ← aquí van las tarjetas
-         │  (screen-content)        │
-         │                          │
-         ├──────────────────────────┤
-         │  NAV FIJO (bottom-nav)   │  ← siempre visible abajo
-         └──────────────────────────┘
-    ═══════════════════════════════════════════════════════════ -->
+    <!-- HOME -->
     <div id="screen-home" class="screen">
+      <!-- Profile dropdown -->
+      <div id="profile-dropdown" class="profile-dropdown hidden">
+        <div class="dropdown-header">👑 Águilas Calvas FC</div>
+        <button class="dropdown-item" onclick="goTo('screen-create-team'); closeDropdown()">➕ Crear equipo</button>
+        <button class="dropdown-item" onclick="goTo('screen-profile'); closeDropdown()">👤 Mi perfil</button>
+        <button class="dropdown-item" onclick="closeDropdown()">⚙️ Ajustes</button>
+        <button class="dropdown-item danger" onclick="closeDropdown()">🚪 Cerrar sesión</button>
+      </div>
 
-
-      <!-- ·· BLOQUE A: Header superior fijo ·· -->
       <div class="top-bar">
-        <!--
-          Este header no hace scroll — se queda pegado arriba.
-          Tiene dos partes: el selector de equipo (izquierda)
-          y los íconos de notificaciones y perfil (derecha).
-        -->
-
-        <!-- Nombre del equipo actual (izquierda) -->
-        <div class="team-selector">
-          <span>Águilas Calvas FC</span>
-          <span class="chevron">▾</span>
-          <!--
-            ▾ es la flecha hacia abajo que indica "hay un menú aquí".
-            En el prototipo no hace nada; en la app real abriría
-            un menú para cambiar de equipo.
-          -->
+        <button class="avatar-btn" onclick="toggleDropdown()">
+          <img src="https://i.pravatar.cc/40?img=11" class="avatar-img" alt="avatar">
+          <span class="online-dot"></span>
+        </button>
+        <div class="top-bar-greeting">
+          <span class="greeting-name">Hola, Andrés 👋</span>
+          <span class="greeting-sub">Listo para jugar hoy?</span>
         </div>
+        <button class="icon-btn notif-btn" onclick="void(0)">
+          🔔<span class="notif-badge">2</span>
+        </button>
+      </div>
 
-        <!-- Íconos de acción (derecha) -->
-        <div class="top-bar-icons">
-          <button class="icon-btn">🔔</button>
-          <!-- Notificaciones — funcionalidad futura -->
-          <button class="icon-btn">👤</button>
-          <!-- Perfil del usuario — funcionalidad futura -->
-        </div>
+      <div class="screen-content" id="home-content">
+
+        <!-- PRÓXIMO PARTIDO hero -->
+        <section class="section">
+          <div class="hero-card" onclick="goTo('screen-match-detail')" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800')">
+            <div class="hero-overlay"></div>
+            <div class="hero-body">
+              <span class="pill-green hero-pill">PRÓXIMO PARTIDO</span>
+              <div class="hero-teams">
+                <div class="team-logo-sm logo-green">AC</div>
+                <span class="vs-text">VS</span>
+                <div class="team-logo-sm logo-blue">MF</div>
+              </div>
+              <div class="hero-names">Águilas Calvas vs Macondo FC</div>
+              <div class="hero-meta">Hoy · 8:00 PM &nbsp;📍 SportCenter Chapinero · Fútbol 11</div>
+            </div>
+            <div class="hero-footer">
+              <span class="hero-players">👥 11/11 jugadores confirmados</span>
+              <span class="btn-ghost-sm">Ver partido ›</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- RETOS PENDIENTES -->
+        <section class="section">
+          <div class="section-header">
+            <span class="section-title">Retos pendientes <span class="badge-red">2</span></span>
+            <button class="see-all">Ver todos ›</button>
+          </div>
+          <div class="reto-card" onclick="goTo('screen-reto-detail')">
+            <div class="team-logo-sm logo-brown">GF</div>
+            <div class="reto-info">
+              <div class="reto-title">Los Guerreros FC te retó</div>
+              <div class="reto-meta">📍 Chapinero &nbsp; 📅 Mañana · 6:00 PM</div>
+            </div>
+            <button class="btn-outline-sm" onclick="event.stopPropagation(); goTo('screen-reto-detail')">Ver reto</button>
+          </div>
+          <div class="reto-card" onclick="goTo('screen-reto-detail')">
+            <div class="team-logo-sm logo-blue2">VF</div>
+            <div class="reto-info">
+              <div class="reto-title">Villa FC te envió una solicitud</div>
+              <div class="reto-meta">📍 Teusaquillo &nbsp; 📅 Domingo · 9:00 AM</div>
+            </div>
+            <button class="btn-outline-sm" onclick="event.stopPropagation(); goTo('screen-reto-detail')">Ver reto</button>
+          </div>
+        </section>
+
+        <!-- PARTIDOS EN LOS QUE ESTÁS -->
+        <section class="section">
+          <div class="section-header">
+            <span class="section-title">Partidos en los que estás</span>
+            <button class="see-all" onclick="goTo('screen-mis-partidos')">Ver todos ›</button>
+          </div>
+          <div class="match-row-card" onclick="goTo('screen-match-detail')">
+            <div class="match-thumb-wrap">
+              <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=200" class="match-thumb" alt="cancha">
+              <span class="pill-green thumb-badge">Te uniste</span>
+            </div>
+            <div class="match-row-info">
+              <div class="match-row-title">Fútbol 7 · El Lago</div>
+              <div class="match-row-meta">📅 Hoy · 7:00 PM</div>
+              <div class="match-row-meta">📍 Chapinero</div>
+              <div class="match-row-meta">👥 5/7 jugadores</div>
+            </div>
+            <span class="arrow-icon">›</span>
+          </div>
+        </section>
+
+        <!-- ACCIONES RÁPIDAS -->
+        <section class="section">
+          <div class="section-header"><span class="section-title">Acciones rápidas</span></div>
+          <div class="quick-grid">
+            <button class="quick-card" onclick="goTo('screen-search'); setSearchTab('partidos')">
+              <span class="quick-icon" style="color:#F59E0B">⚡</span>
+              <span class="quick-label">Buscar partido</span>
+            </button>
+            <button class="quick-card" onclick="goTo('screen-search'); setSearchTab('rivales')">
+              <span class="quick-icon" style="color:#4CAF50">⚔️</span>
+              <span class="quick-label">Buscar rival</span>
+            </button>
+            <button class="quick-card" onclick="goTo('screen-fichajes')">
+              <span class="quick-icon" style="color:#A855F7">👥</span>
+              <span class="quick-label">Buscar jugadores</span>
+            </button>
+            <button class="quick-card" onclick="goTo('screen-search'); setSearchTab('canchas')">
+              <span class="quick-icon" style="color:#3B82F6">🏟️</span>
+              <span class="quick-label">Ver canchas</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ACTIVIDAD RECIENTE -->
+        <section class="section">
+          <div class="section-header">
+            <span class="section-title">Actividad reciente</span>
+            <button class="see-all">Ver todo ›</button>
+          </div>
+          <div class="activity-card">
+            <div class="activity-row">
+              <span class="act-icon" style="background:#F59E0B22">🟠</span>
+              <span class="act-text">Los Guerreros FC te retó</span>
+              <span class="act-time">Hace 2h</span>
+              <span class="act-arrow">›</span>
+            </div>
+            <div class="activity-row">
+              <span class="act-icon" style="background:#A855F722">🟣</span>
+              <span class="act-text">Andrés V. está disponible para jugar</span>
+              <span class="act-time">Hace 4h</span>
+              <span class="act-arrow">›</span>
+            </div>
+            <div class="activity-row">
+              <span class="act-icon" style="background:#4CAF5022">🟢</span>
+              <span class="act-text">Te uniste al partido Fútbol 7 · El Lago</span>
+              <span class="act-time">Hace 6h</span>
+              <span class="act-arrow">›</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- JUGADORES DISPONIBLES CERCA -->
+        <section class="section">
+          <div class="section-header">
+            <span class="section-title">Jugadores disponibles cerca</span>
+            <button class="see-all" onclick="goTo('screen-fichajes')">Ver todos ›</button>
+          </div>
+          <div class="players-scroll">
+            <div class="player-mini-card" onclick="goTo('screen-player-profile')">
+              <div class="player-avatar-wrap">
+                <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">CM</div>
+                <span class="player-online-dot"></span>
+              </div>
+              <div class="player-mini-name">Carlos M.</div>
+              <div class="player-mini-pos">Delantero</div>
+              <div class="player-mini-zone">Chapinero</div>
+              <button class="pill-green-xs">Invitar</button>
+            </div>
+            <div class="player-mini-card" onclick="goTo('screen-player-profile')">
+              <div class="player-avatar-wrap">
+                <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af)">JT</div>
+                <span class="player-online-dot"></span>
+              </div>
+              <div class="player-mini-name">Juan T.</div>
+              <div class="player-mini-pos">Defensa</div>
+              <div class="player-mini-zone">Chapinero</div>
+              <button class="pill-green-xs">Invitar</button>
+            </div>
+            <div class="player-mini-card" onclick="goTo('screen-player-profile')">
+              <div class="player-avatar-wrap">
+                <div class="player-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309)">AV</div>
+                <span class="player-online-dot"></span>
+              </div>
+              <div class="player-mini-name">Andrés V.</div>
+              <div class="player-mini-pos">Portero</div>
+              <div class="player-mini-zone">Teusaquén</div>
+              <button class="pill-green-xs">Invitar</button>
+            </div>
+            <div class="player-mini-card more-card" onclick="goTo('screen-fichajes')">
+              <div class="more-count">+12</div>
+              <div class="more-label" style="color:#4CAF50">más</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BANNER CTA -->
+        <section class="section">
+          <div class="banner-card" style="background-image:url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800')" onclick="goTo('screen-search'); setSearchTab('partidos')">
+            <div class="banner-overlay"></div>
+            <div class="banner-body">
+              <div>
+                <div class="banner-title">¿No tienes equipo?</div>
+                <div class="banner-sub">Únete a un partido abierto cerca de ti</div>
+              </div>
+              <button class="btn-green-sm">Ver partidos abiertos ›</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ESTADÍSTICAS RÁPIDAS -->
+        <section class="section">
+          <div class="section-header"><span class="section-title">Estadísticas rápidas</span></div>
+          <div class="stats-scroll">
+            <div class="stat-card">
+              <span class="stat-icon" style="color:#4CAF50">⚽</span>
+              <span class="stat-num">16</span>
+              <span class="stat-label">Partidos jugados</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon" style="color:#F59E0B">🏆</span>
+              <span class="stat-num">71%</span>
+              <span class="stat-label">Win rate</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon" style="color:#3B82F6">⭐</span>
+              <span class="stat-num">4.6</span>
+              <span class="stat-label">Rating equipo</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon" style="color:#F59E0B">👥</span>
+              <span class="stat-num">12</span>
+              <span class="stat-label">Jugadores activos</span>
+            </div>
+          </div>
+        </section>
 
       </div>
-      <!-- ·· Fin header ·· -->
 
-
-      <!-- ·· BLOQUE B: Área scrolleable con las tarjetas ·· -->
-      <div class="screen-content">
-        <!--
-          Este div tiene overflow-y: auto en el CSS,
-          lo que significa que SI el contenido es más largo
-          que el espacio disponible, aparece una barra de scroll.
-
-          El espacio disponible = altura del teléfono
-                                  - header (56px)
-                                  - nav inferior (72px)
-        -->
-
-        <h3 class="section-title">Partidos disponibles</h3>
-
-
-        <!-- ·· TARJETA DE PARTIDO 1 ·· -->
-        <div class="match-card" onclick="goTo('screen-match-detail')">
-          <!--
-            onclick="goTo('screen-match-detail')":
-            Al tocar la tarjeta, va a la pantalla de detalle del partido.
-            Cualquier parte de la tarjeta sirve como botón.
-          -->
-
-          <!-- Parte superior de la tarjeta: hora y estado -->
-          <div class="match-card-header">
-            <span class="match-time">Sábado 8:00 AM</span>
-            <span class="match-badge open">Abierto</span>
-            <!--
-              class="match-badge open": el badge verde de "Abierto"
-              class="match-badge closed" sería el badge gris de "Cerrado"
-            -->
-          </div>
-
-          <!-- Parte inferior de la tarjeta: datos del partido -->
-          <div class="match-card-body">
-            <p class="match-team">Los Galácticos FC</p>
-            <p class="match-location">📍 Cancha El Campín, Chapinero</p>
-            <p class="match-format">🏟 Fútbol 11 · Pasto sintético</p>
-          </div>
-
-        </div>
-        <!-- ·· Fin tarjeta 1 ·· -->
-
-
-        <!-- ·· TARJETA DE PARTIDO 2 ·· -->
-        <div class="match-card" onclick="goTo('screen-match-detail')">
-
-          <div class="match-card-header">
-            <span class="match-time">Domingo 10:00 AM</span>
-            <span class="match-badge open">Abierto</span>
-          </div>
-
-          <div class="match-card-body">
-            <p class="match-team">Tigres del Norte</p>
-            <p class="match-location">📍 Cancha Simón Bolívar, Teusaquillo</p>
-            <p class="match-format">🏟 Fútbol 7 · Pasto natural</p>
-          </div>
-
-        </div>
-        <!-- ·· Fin tarjeta 2 ·· -->
-
-
-        <!-- ·· TARJETA DE PARTIDO 3 ·· -->
-        <div class="match-card" onclick="goTo('screen-match-detail')">
-
-          <div class="match-card-header">
-            <span class="match-time">Sábado 2:00 PM</span>
-            <span class="match-badge open">Abierto</span>
-          </div>
-
-          <div class="match-card-body">
-            <p class="match-team">Deportivo Kennedy</p>
-            <p class="match-location">📍 Cancha La Gaitana, Suba</p>
-            <p class="match-format">🏟 Fútbol 11 · Pasto sintético</p>
-          </div>
-
-        </div>
-        <!-- ·· Fin tarjeta 3 ·· -->
-
-
-      </div>
-      <!-- ·· Fin área scrolleable ·· -->
-
-
-      <!-- ·· BLOQUE C: Navegación inferior fija ·· -->
       <nav class="bottom-nav">
-        <!--
-          <nav> es una etiqueta especial para menús de navegación.
-          Le dice al navegador "esto es un menú", lo que ayuda
-          a la accesibilidad (lectores de pantalla, SEO, etc.).
-
-          Tiene 5 botones: Inicio, Buscar, Crear (+), Comunidad, Chat.
-          El botón central (+) es más grande y tiene fondo verde.
-        -->
-
-        <!-- Tab 1: Inicio -->
-        <button class="nav-btn active" onclick="goTo('screen-home')">
-          <!--
-            class="nav-btn active": este tab está activo (estamos en Home).
-            Los otros tabs no tienen "active" y se ven más tenues.
-          -->
+        <button class="nav-btn active" onclick="navTo('screen-home',this)">
           <span class="nav-icon">🏠</span>
           <span class="nav-label">Inicio</span>
+          <span class="nav-dot"></span>
         </button>
-
-        <!-- Tab 2: Buscar -->
-        <button class="nav-btn" onclick="goTo('screen-search')">
+        <button class="nav-btn" onclick="navTo('screen-search',this)">
           <span class="nav-icon">🔍</span>
           <span class="nav-label">Buscar</span>
+          <span class="nav-dot"></span>
         </button>
-
-        <!-- Tab 3: Crear partido (botón principal, más grande) -->
-        <button class="nav-btn nav-btn-main" onclick="goTo('screen-create')">
-          <!--
-            nav-btn-main: clase extra que le da el estilo especial
-            (círculo verde, más grande que los otros tabs).
-          -->
-          <span class="nav-icon">＋</span>
-        </button>
-
-        <!-- Tab 4: Comunidad -->
-        <button class="nav-btn" onclick="goTo('screen-community')">
+        <button class="nav-btn" onclick="navTo('screen-community',this)">
           <span class="nav-icon">👥</span>
           <span class="nav-label">Comunidad</span>
+          <span class="nav-dot"></span>
         </button>
-
-        <!-- Tab 5: Chat -->
-        <button class="nav-btn" onclick="goTo('screen-chat')">
+        <button class="nav-btn" onclick="navTo('screen-chat',this)">
           <span class="nav-icon">💬</span>
           <span class="nav-label">Chat</span>
+          <span class="nav-dot"></span>
+          <span class="notif-badge nav-badge">2</span>
         </button>
-
+        <button class="nav-btn" onclick="navTo('screen-profile',this)">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Perfil</span>
+          <span class="nav-dot"></span>
+        </button>
       </nav>
-      <!-- ·· Fin navegación inferior ·· -->
-
-
-    </div>
-    <!-- ── Fin Pantalla 3: Home ── -->
-
-
-    <!-- ════════════════════════════════════════════════════════
-         PANTALLAS 4–7: PLACEHOLDERS (EN CONSTRUCCIÓN)
-         ════════════════════════════════════════════════════════
-
-         ¿QUÉ SON?
-         Pantallas vacías que existen para que los botones de
-         navegación funcionen sin generar errores.
-         Cuando el usuario toca "Buscar", va a screen-search.
-         Como aún no tiene contenido, ve un mensaje "Próxima sesión".
-
-         ¿POR QUÉ NO ESTÁN COMPLETAS?
-         Las construiremos una por una en sesiones futuras.
-         Tener el placeholder ahora permite navegar y
-         probar el flujo general de la app.
-
-         CONTENIDO DE CADA UNA:
-         · Un botón "← Volver" para regresar
-         · Un ícono y nombre de la pantalla
-         · El texto "Próxima sesión" indicando que viene después
-    ═══════════════════════════════════════════════════════════ -->
-
-    <!-- PANTALLA 4: Detalle de partido -->
-    <div id="screen-match-detail" class="screen">
-      <div class="placeholder-screen">
-        <button class="back-btn" onclick="goBack()">← Volver</button>
-        <!--
-          goBack() en script.js consulta el historial de pantallas
-          y regresa a la última que visitamos.
-        -->
-        <p>🏟 Detalle del partido</p>
-        <p class="placeholder-note">Próxima sesión</p>
-      </div>
     </div>
 
-    <!-- PANTALLA 5: Buscar -->
+    <!-- BUSCAR -->
     <div id="screen-search" class="screen">
-      <div class="placeholder-screen">
-        <p>🔍 Buscar</p>
-        <p class="placeholder-note">Próxima sesión</p>
-        <button onclick="goTo('screen-home')">← Volver</button>
+      <div class="top-bar-simple">
+        <div class="tbs-title">¿Qué buscas?</div>
+        <div class="tbs-sub">Bogotá · basado en tu ubicación</div>
       </div>
+      <div class="screen-content no-top-pad">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" placeholder="Zona, barrio, cancha o jugador...">
+        </div>
+        <div class="tab-pills" id="search-tabs">
+          <button class="tab-pill active" onclick="setSearchTab('rivales',this)">Rivales</button>
+          <button class="tab-pill" onclick="setSearchTab('partidos',this)">Partidos</button>
+          <button class="tab-pill" onclick="setSearchTab('canchas',this)">Canchas</button>
+        </div>
+
+        <!-- TAB: RIVALES -->
+        <div id="tab-rivales" class="tab-content active">
+          <div class="filter-pills-row">
+            <span class="filter-pill">Chapinero ×</span>
+            <span class="filter-pill">Hoy y mañana ×</span>
+            <span class="filter-pill">11v11 ×</span>
+          </div>
+          <div class="results-count">11 equipos encontrados</div>
+
+          <div class="team-card featured" onclick="goTo('screen-retar-step1')">
+            <span class="badge-top-right pill-green">Mejor coincidencia</span>
+            <div class="team-card-row">
+              <div class="team-logo-md logo-brown">MF</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Macondo FC</div>
+                <div class="team-card-sub">Amateur B · 11v11</div>
+                <div class="team-card-meta">📍 Chapinero &nbsp; 📅 Sáb 17 may 8:00 PM</div>
+                <div class="team-card-meta">👥 11/11 Plantel completo &nbsp; ⭐ 4.4 (23)</div>
+              </div>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+            </div>
+          </div>
+
+          <div class="team-card" onclick="goTo('screen-retar-step1')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-blue2">LF</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Lobos FC</div>
+                <div class="team-card-sub">Amateur B · 11v11</div>
+                <div class="team-card-meta">📍 Teusaquillo &nbsp; 📅 Dom 18 may 6:00 PM</div>
+                <div class="team-card-meta">👥 10/11 Falta 1 jugador &nbsp; ⭐ 4.1 (18)</div>
+              </div>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+            </div>
+          </div>
+
+          <div class="team-card" onclick="goTo('screen-retar-step1')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-red">GF</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Los Guerreros FC</div>
+                <div class="team-card-sub">Amateur A · 11v11</div>
+                <div class="team-card-meta">📍 Usaquén &nbsp; 📅 Sáb 17 may 4:00 PM</div>
+                <div class="team-card-meta">👥 9/11 Faltan 2 jugadores &nbsp; ⭐ 3.9 (15)</div>
+              </div>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+            </div>
+          </div>
+
+          <div class="cta-dark-card">
+            <div>
+              <div class="cta-dark-title">¿No encuentras rival?</div>
+              <div class="cta-dark-sub">Publica un reto y los equipos te encontrarán</div>
+            </div>
+            <button class="btn-green-sm" onclick="goTo('screen-retar-step1')">Publicar reto ›</button>
+          </div>
+
+          <div class="section-header mt-16">
+            <span class="section-title" style="font-size:14px">También te puede interesar</span>
+            <button class="see-all" onclick="setSearchTab('partidos')">Ver partidos abiertos ›</button>
+          </div>
+          <div class="mini-matches-scroll">
+            <div class="mini-match-card" onclick="goTo('screen-match-detail')">
+              <div class="mini-match-photo" style="background-image:url('https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=200')">
+                <span class="mini-badge">5/7</span>
+              </div>
+              <div class="mini-match-info">
+                <div class="mini-match-name">Fútbol 7 · El Lago</div>
+                <div class="mini-match-loc">Chapinero · 7:00 PM</div>
+                <span class="pill-green-xs">Partido abierto</span>
+              </div>
+            </div>
+            <div class="mini-match-card" onclick="goTo('screen-match-detail')">
+              <div class="mini-match-photo" style="background:linear-gradient(135deg,#1a2235,#2d3a52)">
+                <span class="mini-badge">8/11</span>
+              </div>
+              <div class="mini-match-info">
+                <div class="mini-match-name">Fútbol 11 · SportCenter</div>
+                <div class="mini-match-loc">Chapinero · 9:00 AM</div>
+                <span class="pill-yellow-xs">Quedan 3 cupos</span>
+              </div>
+            </div>
+            <div class="mini-match-card" onclick="goTo('screen-match-detail')">
+              <div class="mini-match-photo" style="background:linear-gradient(135deg,#2d1a35,#3d2a52)">
+                <span class="mini-badge">4/6</span>
+              </div>
+              <div class="mini-match-info">
+                <div class="mini-match-name">Fútbol 6 · La 93</div>
+                <div class="mini-match-loc">Chapinero · 10:00 PM</div>
+                <span class="pill-yellow-xs">Quedan 2 cupos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PARTIDOS -->
+        <div id="tab-partidos" class="tab-content">
+          <div class="filter-pills-row">
+            <span class="filter-pill">Fútbol 7 ×</span>
+            <span class="filter-pill">Hoy ×</span>
+            <span class="filter-pill">Chapinero ×</span>
+          </div>
+          <div class="results-count">12 partidos encontrados</div>
+
+          <div class="live-section-header">● EN VIVO AHORA</div>
+          <div class="live-match-card" onclick="goTo('screen-match-detail')">
+            <span class="live-badge">● Live</span>
+            <div class="live-match-title">Fútbol 7 — Cancha El Lago</div>
+            <div class="live-match-meta">📍 Chapinero · hace 18 min</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar red" style="width:71%"></div>
+            </div>
+            <div class="live-match-footer">
+              <span class="live-match-slots">5/7 jugadores · Mixto · 2 cupos</span>
+              <span class="live-alert">¡Quedan pocos! ›</span>
+            </div>
+          </div>
+          <div class="live-match-card" onclick="goTo('screen-match-detail')">
+            <span class="live-badge">● Live</span>
+            <div class="live-match-title">Fútbol 5 — Cancha Suba Norte</div>
+            <div class="live-match-meta">📍 Suba · hace 5 min</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar green" style="width:60%"></div>
+            </div>
+            <div class="live-match-footer">
+              <span class="live-match-slots">3/5 jugadores · Masc. · 2 cupos</span>
+              <span style="color:#4CAF50;font-size:12px">Disponible ›</span>
+            </div>
+          </div>
+
+          <div class="live-section-header green-text mt-16">PRÓXIMOS PARTIDOS</div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <div class="upcoming-match-title">Fútbol 11 — Club Los Lagartos</div>
+              <div class="upcoming-match-meta">📍 Usaquén &nbsp; 🕐 Hoy 4:00 PM</div>
+              <div class="upcoming-match-meta">👥 14/22 · Masc. · 8 cupos disponibles</div>
+            </div>
+            <span class="pill-green-xs">Disponible</span>
+          </div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <div class="upcoming-match-title">Fútbol 7 — Cancha San Felipe</div>
+              <div class="upcoming-match-meta">📍 Barrios Unidos &nbsp; 🕐 Hoy 6:30 PM</div>
+              <div class="upcoming-match-meta">👥 8/14 · Mixto · 6 cupos disponibles</div>
+            </div>
+            <span class="pill-green-xs">Disponible</span>
+          </div>
+        </div>
+
+        <!-- TAB: CANCHAS -->
+        <div id="tab-canchas" class="tab-content">
+          <div class="filter-pills-row">
+            <span class="filter-pill">Sintética ×</span>
+            <span class="filter-pill">Chapinero ×</span>
+            <span class="filter-pill">Hoy ×</span>
+          </div>
+          <div class="map-placeholder">
+            <div class="map-pin" style="top:40%;left:30%">📍<span class="map-label">Cancha Norte</span></div>
+            <div class="map-pin" style="top:55%;left:60%">📍<span class="map-label">Cancha 93</span></div>
+            <div class="map-pin" style="top:30%;left:65%">📍<span class="map-label">Sportlife</span></div>
+            <div class="map-text">🗺 Mapa de canchas · Bogotá</div>
+          </div>
+
+          <div class="section-header mt-8">
+            <span class="section-title" style="font-size:14px">★ FAVORITAS DEL EQUIPO</span>
+          </div>
+          <div class="cancha-row" onclick="goTo('screen-cancha-detail')">
+            <div class="cancha-row-info">
+              <div class="cancha-row-name">Cancha Norte — Mazuren</div>
+              <div class="cancha-row-meta">Sintética 7vs7 · Cra 68 #80-20 · $120.000/h</div>
+            </div>
+            <span class="pill-green-xs">Disponible</span>
+          </div>
+          <div class="cancha-row" onclick="goTo('screen-cancha-detail')">
+            <div class="cancha-row-info">
+              <div class="cancha-row-name">Cancha 93 — Chapinero</div>
+              <div class="cancha-row-meta">Sintética 7vs7 · Cra 13 #93-40 · $110.000/h</div>
+            </div>
+            <span class="pill-red-xs">No disponible</span>
+          </div>
+
+          <div class="section-header mt-16">
+            <span class="section-title" style="font-size:14px">OTRAS DISPONIBLES</span>
+          </div>
+          <div class="cancha-row" onclick="goTo('screen-cancha-detail')">
+            <div class="cancha-row-info">
+              <div class="cancha-row-name">Sportlife Suba</div>
+              <div class="cancha-row-meta">Sintética 7vs7 · Av. Suba #115 · $95.000/h</div>
+            </div>
+            <span class="pill-green-xs">Disponible</span>
+          </div>
+          <div class="cancha-row" onclick="goTo('screen-cancha-detail')">
+            <div class="cancha-row-info">
+              <div class="cancha-row-name">Cancha El Lago</div>
+              <div class="cancha-row-meta">Césped 7vs7 · Cra 60 #75-10 · $80.000/h</div>
+            </div>
+            <span class="pill-red-xs">No disponible</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn active" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-profile',this)"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span><span class="nav-dot"></span></button>
+      </nav>
     </div>
 
-    <!-- PANTALLA 6: Crear partido -->
-    <div id="screen-create" class="screen">
-      <div class="placeholder-screen">
-        <p>＋ Crear partido</p>
-        <p class="placeholder-note">Próxima sesión</p>
-        <button onclick="goTo('screen-home')">← Volver</button>
-      </div>
-    </div>
-
-    <!-- PANTALLA 7: Comunidad -->
+    <!-- COMUNIDAD -->
     <div id="screen-community" class="screen">
-      <div class="placeholder-screen">
-        <p>👥 Comunidad</p>
-        <p class="placeholder-note">Próxima sesión</p>
-        <button onclick="goTo('screen-home')">← Volver</button>
+      <div class="top-bar-simple">
+        <div class="tbs-title">Comunidad</div>
+        <div class="tbs-sub">Bogotá · tu red de fútbol</div>
       </div>
+      <div class="screen-content no-top-pad">
+        <div class="tab-pills">
+          <button class="tab-pill active">Para ti</button>
+          <button class="tab-pill">Resultados</button>
+          <button class="tab-pill">Videos</button>
+          <button class="tab-pill">Convocatorias</button>
+        </div>
+
+        <!-- POST: Video -->
+        <div class="post-card">
+          <div class="post-header">
+            <span class="post-type-badge" style="background:#A855F722;color:#A855F7">▶ Video</span>
+            <div class="post-author-info">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>
+              <div>
+                <div class="post-author-name">Andrés Vega</div>
+                <div class="post-author-sub">Águilas Calvas · Cap.</div>
+              </div>
+            </div>
+            <button class="btn-outline-sm ml-auto">Seguir</button>
+          </div>
+          <div class="post-video-thumb">
+            <div class="video-play-btn">▶</div>
+            <div class="video-meta-bottom">
+              <span>Fútbol 7 · Cancha Norte</span>
+              <span>0:34</span>
+            </div>
+          </div>
+          <div class="post-caption">Golazo de tijera — Fútbol 7 vs Los Bravos</div>
+          <div class="post-subcap">Chapinero · Sáb 10 de mayo</div>
+          <div class="post-actions">
+            <button class="post-action-btn">♡ 41</button>
+            <button class="post-action-btn">💬 12</button>
+            <button class="post-action-btn">↗ Compartir</button>
+            <span class="post-likes-right">41 likes</span>
+          </div>
+        </div>
+
+        <!-- POST: Convocatoria -->
+        <div class="post-card">
+          <div class="post-header">
+            <span class="post-type-badge" style="background:#3B82F622;color:#3B82F6">👤 Convocatoria</span>
+            <div class="post-author-info">
+              <div class="post-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c)">JR</div>
+              <div>
+                <div class="post-author-name">Juan Roa</div>
+                <div class="post-author-sub">Bravos del Sur · Cap.</div>
+              </div>
+            </div>
+            <span class="post-time">hace 5h</span>
+            <button class="btn-outline-sm ml-auto">Seguir</button>
+          </div>
+          <div class="conv-body">
+            <div class="conv-pos-row">
+              <span class="pill-green">CAM</span>
+              <span class="conv-title">Se busca mediapunta</span>
+            </div>
+            <div class="conv-meta">11vs11 · Amateur B · Chapinero</div>
+            <div class="conv-pills">
+              <span class="filter-pill">Sáb 17</span>
+              <span class="filter-pill">Usaquén</span>
+              <span class="filter-pill">3 Postulados</span>
+            </div>
+          </div>
+          <button class="btn-green w-full mt-8">Postular</button>
+        </div>
+
+        <!-- POST: Trending -->
+        <div class="post-card">
+          <div class="post-header-simple">
+            <span class="post-type-badge" style="background:#F59E0B22;color:#F59E0B">📈 Equipos en tendencia · Bogotá</span>
+            <button class="see-all">Ver más</button>
+          </div>
+          <div class="trend-row">
+            <span class="trend-rank" style="background:#4CAF5033;color:#4CAF50">1</span>
+            <div class="trend-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AC</div>
+            <div class="trend-info">
+              <div class="trend-name">Águilas Calvas</div>
+              <div class="trend-sub">🔥 3 victorias seguidas</div>
+            </div>
+            <div class="trend-stats">
+              <div class="trend-pct">87%</div>
+              <div class="trend-form"><span class="form-w">G</span><span class="form-w">G</span><span class="form-l">P</span><span class="form-w">G</span><span class="form-w">G</span></div>
+            </div>
+          </div>
+          <div class="trend-row">
+            <span class="trend-rank" style="background:#3B82F633;color:#3B82F6">2</span>
+            <div class="trend-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af)">MC</div>
+            <div class="trend-info">
+              <div class="trend-name">Macondo FC</div>
+              <div class="trend-sub">🏆 Invicto en mayo</div>
+            </div>
+            <div class="trend-stats">
+              <div class="trend-pct">76%</div>
+              <div class="trend-form"><span class="form-w">G</span><span class="form-w">G</span><span class="form-w">G</span><span class="form-w">G</span><span class="form-e">E</span></div>
+            </div>
+          </div>
+          <div class="trend-row">
+            <span class="trend-rank" style="background:#F59E0B33;color:#F59E0B">3</span>
+            <div class="trend-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309)">LB</div>
+            <div class="trend-info">
+              <div class="trend-name">Los Bravos</div>
+              <div class="trend-sub">👥 +12 jugadores nuevos</div>
+            </div>
+            <div class="trend-stats">
+              <div class="trend-pct">60%</div>
+              <div class="trend-form"><span class="form-w">G</span><span class="form-w">G</span><span class="form-e">E</span><span class="form-l">P</span><span class="form-w">G</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn active" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-profile',this)"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span><span class="nav-dot"></span></button>
+      </nav>
     </div>
 
-    <!-- PANTALLA 8: Chat -->
+    <!-- MIS PARTIDOS -->
+    <div id="screen-mis-partidos" class="screen">
+      <div class="top-bar-simple">
+        <div class="tbs-title">Mis partidos</div>
+        <button class="team-pill-selector">Águilas Calvas FC ▾</button>
+      </div>
+      <div class="screen-content no-top-pad">
+        <div class="tab-pills" id="partidos-tabs">
+          <button class="tab-pill active" onclick="setPartidosTab('proximos',this)">Próximos</button>
+          <button class="tab-pill" onclick="setPartidosTab('pasados',this)">Pasados</button>
+          <button class="tab-pill" onclick="setPartidosTab('estadisticas',this)">Estadísticas</button>
+        </div>
+
+        <!-- TAB: PRÓXIMOS -->
+        <div id="tab-proximos" class="tab-content active">
+          <div class="live-section-header">● EN CURSO</div>
+          <div class="result-card live-glow" onclick="goTo('screen-match-detail')">
+            <div class="rc-live-badge">● Live · Hoy 10:00 PM</div>
+            <div class="rc-score-row">
+              <span class="rc-score-team">AC</span>
+              <span class="rc-score">2 · 1</span>
+              <span class="rc-score-team">JA</span>
+            </div>
+            <div class="rc-sub">Águilas Calvas vs Jaguares · FT5 · 11v11</div>
+            <div class="rc-meta">📍 Cancha Norte</div>
+            <div class="rc-footer">
+              <span class="live-badge">En vivo</span>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-match-detail')">Ver partido</button>
+            </div>
+          </div>
+
+          <div class="live-section-header green-text mt-16">ESTA SEMANA</div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <span class="pill-green-xs">Confirmado</span>
+              <div class="upcoming-match-title">📅 Sáb 10 May · 8:00 AM</div>
+              <div class="upcoming-match-meta">AC vs Macondo FC · Mazurén · 11v11</div>
+              <div class="upcoming-match-meta">📍 Cancha Los Pinos</div>
+            </div>
+            <span class="arrow-icon">›</span>
+          </div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left" style="border-left:3px solid #F59E0B;padding-left:12px">
+              <span class="pill-yellow-xs">Reto enviado</span>
+              <div class="upcoming-match-title">📅 Dom 11 May · 3:00 PM</div>
+              <div class="upcoming-match-meta">AC vs Por definir · Chapinero · 7v7</div>
+              <div class="upcoming-match-meta" style="color:#EF4444">⏱ Expira en 4h</div>
+            </div>
+            <button class="btn-yellow-sm" onclick="event.stopPropagation()">Ver reto ›</button>
+          </div>
+
+          <div class="live-section-header green-text mt-16">PRÓXIMO MES</div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <span class="pill-green-xs">Confirmado</span>
+              <div class="upcoming-match-title">📅 Vie 16 May · 7:00 PM</div>
+              <div class="upcoming-match-meta">AC vs Los Bravos · Usaquén · 5v5</div>
+              <div class="upcoming-match-meta">📍 Por confirmar</div>
+            </div>
+            <span class="arrow-icon">›</span>
+          </div>
+        </div>
+
+        <!-- TAB: PASADOS -->
+        <div id="tab-pasados" class="tab-content">
+          <div class="live-section-header green-text">ESTE MES</div>
+          <div class="result-card" onclick="goTo('screen-match-detail')">
+            <span class="result-badge" style="background:#4CAF5022;color:#4CAF50">Victoria</span>
+            <div class="rc-score-row">
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-green">AC</span><span class="rc-score-name">Águilas Calvas</span></div>
+              <span class="rc-big-score">3 - 1</span>
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-purple">LP</span><span class="rc-score-name">Los Pumas</span></div>
+            </div>
+            <div class="rc-meta">vs Los Pumas · Sáb 3 May · Chapinero · 7v7</div>
+            <button class="see-all">Ver detalle ›</button>
+          </div>
+          <div class="result-card" onclick="goTo('screen-match-detail')">
+            <span class="result-badge" style="background:#F59E0B22;color:#F59E0B">Empate</span>
+            <div class="rc-score-row">
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-green">AC</span><span class="rc-score-name">Águilas Calvas</span></div>
+              <span class="rc-big-score">2 - 2</span>
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-red">BT</span><span class="rc-score-name">Buitres</span></div>
+            </div>
+            <div class="rc-meta">vs Buitres · Mié 30 Abr · Teusaquillo · 11v11</div>
+            <button class="see-all">Ver detalle ›</button>
+          </div>
+          <div class="result-card" onclick="goTo('screen-match-detail')">
+            <span class="result-badge" style="background:#EF444422;color:#EF4444">Derrota</span>
+            <div class="rc-score-row">
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-green">AC</span><span class="rc-score-name">Águilas Calvas</span></div>
+              <span class="rc-big-score">0 - 2</span>
+              <div class="rc-score-team-col"><span class="team-logo-sm logo-blue2">GF</span><span class="rc-score-name">Galácticos</span></div>
+            </div>
+            <div class="rc-meta">vs Galácticos FC · Dom 27 Abr · Chapinero · 5v5</div>
+            <button class="see-all">Ver detalle ›</button>
+          </div>
+        </div>
+
+        <!-- TAB: ESTADÍSTICAS -->
+        <div id="tab-estadisticas" class="tab-content">
+          <div class="stats-hero-row">
+            <div class="team-logo-md logo-green">AC</div>
+            <div>
+              <div class="stats-hero-name">Águilas Calvas FC</div>
+              <div class="stats-hero-sub">Mayo 2026</div>
+            </div>
+          </div>
+          <div class="stats-top-row">
+            <div class="stat-big-card"><span class="stat-big-num">24</span><span class="stat-big-label">Partidos jugados</span></div>
+            <div class="stat-big-card"><span class="stat-big-num">87%</span><span class="stat-big-label">Efectividad</span></div>
+            <div class="stat-big-card"><span class="stat-big-num">14</span><span class="stat-big-label">Goles este mes</span></div>
+          </div>
+          <div class="form-section">
+            <div class="form-title">G-E-P este mes: <strong>5-0-1</strong></div>
+            <div class="bar-chart">
+              <div class="bar-col"><div class="bar green-bar" style="height:80%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:90%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar red-bar" style="height:40%"></div><span class="bar-label">P</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:75%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:85%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar yellow-bar" style="height:55%"></div><span class="bar-label">E</span></div>
+            </div>
+          </div>
+          <div class="section-header mt-16"><span class="section-title" style="font-size:14px">Top jugadores</span></div>
+          <div class="top-player-row">
+            <span class="top-rank">1</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:36px;height:36px;font-size:12px">AV</div>
+            <div class="top-player-info"><div class="top-player-name">Andrés Vega</div><div class="top-player-pos">Mediocampista</div></div>
+            <div class="top-player-stats">5G · 3A</div>
+          </div>
+          <div class="top-player-row">
+            <span class="top-rank">2</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:36px;height:36px;font-size:12px">JR</div>
+            <div class="top-player-info"><div class="top-player-name">Juan Roa</div><div class="top-player-pos">Delantero</div></div>
+            <div class="top-player-stats">4G · 1A</div>
+          </div>
+          <div class="top-player-row">
+            <span class="top-rank">3</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:36px;height:36px;font-size:12px">CM</div>
+            <div class="top-player-info"><div class="top-player-name">Carlos M.</div><div class="top-player-pos">Portero</div></div>
+            <div class="top-player-stats">0G · 2A</div>
+          </div>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-profile',this)"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span><span class="nav-dot"></span></button>
+      </nav>
+    </div>
+
+    <!-- CHAT LIST -->
     <div id="screen-chat" class="screen">
-      <div class="placeholder-screen">
-        <p>💬 Chat</p>
-        <p class="placeholder-note">Próxima sesión</p>
-        <button onclick="goTo('screen-home')">← Volver</button>
+      <div class="top-bar-simple">
+        <div class="tbs-title">Mensajes</div>
+      </div>
+      <div class="screen-content no-top-pad">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" placeholder="Buscar conversación...">
+        </div>
+        <div class="tab-pills">
+          <button class="tab-pill active">Todos</button>
+          <button class="tab-pill">Equipos</button>
+          <button class="tab-pill">Partidos</button>
+          <button class="tab-pill">No leídos</button>
+        </div>
+        <div class="convo-list">
+          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+            <div class="convo-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">RC</div>
+            <div class="convo-body">
+              <div class="convo-name">Real Chapinero</div>
+              <div class="convo-last">Carlos: ya estoy llegando</div>
+            </div>
+            <div class="convo-right">
+              <div class="convo-time" style="color:#4CAF50">8:14 PM</div>
+              <span class="convo-badge">3</span>
+            </div>
+          </div>
+          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+            <div class="convo-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed)">CR</div>
+            <div class="convo-body">
+              <div class="convo-name">Camilo Restrepo</div>
+              <div class="convo-last">Tú: dale, te paso la dirección</div>
+            </div>
+            <div class="convo-right">
+              <div class="convo-time">7:42 PM</div>
+            </div>
+          </div>
+          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+            <div class="convo-avatar" style="background:#2a2a2a">⚽</div>
+            <div class="convo-body">
+              <div class="convo-name">Live Match · Hoy 8:30</div>
+              <div class="convo-last">Andrea: alguien tiene peto extra?</div>
+            </div>
+            <div class="convo-right">
+              <div class="convo-time" style="color:#4CAF50">7:31 PM</div>
+              <span class="convo-badge">1</span>
+            </div>
+          </div>
+          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+            <div class="convo-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af)">FS</div>
+            <div class="convo-body">
+              <div class="convo-name">FC Salitre</div>
+              <div class="convo-last">Capitán: confirmen pa' el sábado</div>
+            </div>
+            <div class="convo-right">
+              <div class="convo-time">Ayer</div>
+            </div>
+          </div>
+          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+            <div class="convo-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309)">C9</div>
+            <div class="convo-body">
+              <div class="convo-name">Cancha 93</div>
+              <div class="convo-last">Reservación confirmada · 7:00 PM</div>
+            </div>
+            <div class="convo-right">
+              <div class="convo-time">Ayer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn active" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-profile',this)"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span><span class="nav-dot"></span></button>
+      </nav>
+    </div>
+
+    <!-- CHAT DETAIL -->
+    <div id="screen-chat-detail" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <div class="convo-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:36px;height:36px;font-size:13px">RC</div>
+        <div class="chat-header-info">
+          <div class="chat-header-name">Real Chapinero</div>
+          <span class="online-dot-inline"></span><span class="chat-online-text">En línea</span>
+        </div>
+      </div>
+      <div class="chat-messages">
+        <div class="bubble-them">¡Listo para el partido del sábado?</div>
+        <div class="bubble-me">Claro, a qué hora nos vemos?</div>
+        <div class="bubble-them">A las 7AM en la cancha</div>
+        <div class="bubble-me">Perfecto, ahí estaré 💪</div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="chat-input" placeholder="Escribe un mensaje...">
+        <button class="send-btn">➤</button>
       </div>
     </div>
 
+    <!-- PERFIL -->
+    <div id="screen-profile" class="screen">
+      <div class="top-bar-simple">
+        <div class="tbs-title">Mi perfil</div>
+        <button class="see-all" style="color:#4CAF50">Editar ›</button>
+      </div>
+      <div class="screen-content no-top-pad">
+        <div class="profile-hero">
+          <div class="profile-avatar-lg">AV</div>
+          <div class="profile-name">Andrés Vega</div>
+          <div class="profile-handle">@andresalo</div>
+          <div class="profile-sub">Chapinero · Mediocampista</div>
+          <div class="profile-stats-row">
+            <div class="profile-stat"><span class="ps-num">28</span><span class="ps-label">Partidos</span></div>
+            <div class="ps-divider"></div>
+            <div class="profile-stat"><span class="ps-num">4.4 ⭐</span><span class="ps-label">Rating</span></div>
+            <div class="ps-divider"></div>
+            <div class="profile-stat"><span class="ps-num">87%</span><span class="ps-label">Asistencia</span></div>
+          </div>
+        </div>
 
-  </div>
-  <!-- ── Fin #phone-container ── -->
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">MIS EQUIPOS</span></div>
+        <div class="team-row-item">
+          <div class="team-logo-sm logo-green">AC</div>
+          <div class="team-row-info">
+            <div class="team-row-name">Águilas Calvas FC</div>
+            <div class="team-row-sub">Capitán · 14 miembros</div>
+          </div>
+          <span>👑</span>
+        </div>
+        <div class="team-row-item">
+          <div class="team-logo-sm logo-purple">LS</div>
+          <div class="team-row-info">
+            <div class="team-row-name">Los Sabaderos</div>
+            <div class="team-row-sub">Jugador · 11 miembros</div>
+          </div>
+        </div>
+        <button class="btn-outline w-full mt-8" onclick="goTo('screen-create-team')">Crear equipo +</button>
 
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">INFORMACIÓN</span></div>
+        <div class="info-card">
+          <div class="info-row"><span class="info-label">Posición principal</span><span class="info-val">Delantero</span></div>
+          <div class="info-row"><span class="info-label">Posición secundaria</span><span class="info-val">Mediocampista</span></div>
+          <div class="info-row"><span class="info-label">Disponibilidad</span><span class="info-val">Noches · Fines de semana</span></div>
+          <div class="info-row"><span class="info-label">Modalidades</span><span class="info-val">5v5 · 7v7</span></div>
+          <div class="info-row no-border"><span class="info-label">Barrio</span><span class="info-val">Chapinero</span></div>
+        </div>
 
-  <!--
-    ╔══════════════════════════════════════════════════════════╗
-    ║  SCRIPT AL FINAL — ¿Por qué aquí y no en el <head>?    ║
-    ║                                                          ║
-    ║  El navegador lee el archivo de arriba hacia abajo.     ║
-    ║  Si el script estuviera en el <head>, intentaría        ║
-    ║  controlar botones y pantallas que aún no existen        ║
-    ║  (porque el HTML de abajo todavía no se ha leído).      ║
-    ║                                                          ║
-    ║  Al poner el script al FINAL del body, garantizamos     ║
-    ║  que cuando JavaScript empieza a correr, todos los       ║
-    ║  elementos del HTML ya existen en la página.             ║
-    ╚══════════════════════════════════════════════════════════╝
-  -->
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">SOBRE MÍ</span></div>
+        <div class="sobre-mi-card">Mediocampista con experiencia en fútbol 7. Busco equipo serio con buen ambiente.</div>
+
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">EQUIPOS ANTERIORES</span></div>
+        <div class="team-row-item">
+          <div class="team-logo-sm logo-red">BT</div>
+          <div class="team-row-info">
+            <div class="team-row-name">Buitres de Teusaquillo</div>
+            <div class="team-row-sub">2023 – 2024 · 7v7</div>
+          </div>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn active" onclick="navTo('screen-profile',this)"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span><span class="nav-dot"></span></button>
+      </nav>
+    </div>
+
+    <!-- MATCH DETAIL -->
+    <div id="screen-match-detail" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Detalle del partido</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="match-detail-hero">
+          <div class="mdh-teams">
+            <div class="mdh-team">
+              <div class="team-logo-lg logo-green">AC</div>
+              <div class="mdh-team-name">Águilas Calvas</div>
+            </div>
+            <div class="mdh-vs">
+              <div class="mdh-vs-text">VS</div>
+              <div class="mdh-status pill-green">Confirmado</div>
+            </div>
+            <div class="mdh-team">
+              <div class="team-logo-lg logo-blue">MF</div>
+              <div class="mdh-team-name">Macondo FC</div>
+            </div>
+          </div>
+        </div>
+        <div class="info-card mt-16">
+          <div class="info-row"><span class="info-label">Fecha</span><span class="info-val">Sábado 10 de mayo</span></div>
+          <div class="info-row"><span class="info-label">Hora</span><span class="info-val">8:00 PM</span></div>
+          <div class="info-row"><span class="info-label">Cancha</span><span class="info-val">SportCenter Chapinero</span></div>
+          <div class="info-row"><span class="info-label">Modalidad</span><span class="info-val">Fútbol 11</span></div>
+          <div class="info-row"><span class="info-label">Nivel</span><span class="info-val">Amateur B</span></div>
+          <div class="info-row no-border"><span class="info-label">Costo</span><span class="info-val">$15.000 c/u</span></div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">JUGADORES (11/11)</span></div>
+        <div class="players-grid">
+          <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:40px;height:40px;font-size:13px">AV</div><span class="slot-name">Andrés</span></div>
+          <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:40px;height:40px;font-size:13px">CM</div><span class="slot-name">Carlos</span></div>
+          <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309);width:40px;height:40px;font-size:13px">JR</div><span class="slot-name">Juan</span></div>
+          <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed);width:40px;height:40px;font-size:13px">DR</div><span class="slot-name">Daniel</span></div>
+          <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:40px;height:40px;font-size:13px">MP</div><span class="slot-name">Mario</span></div>
+          <div class="player-slot empty"><span class="slot-plus">+</span></div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">ORGANIZADOR</span></div>
+        <div class="organizer-card">
+          <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:44px;height:44px">AV</div>
+          <div class="org-info">
+            <div class="org-name">Andrés Vega</div>
+            <div class="org-role">Capitán · Águilas Calvas FC</div>
+          </div>
+          <button class="btn-outline-sm">💬</button>
+        </div>
+        <div class="notes-card">ℹ️ Partido amistoso, buen ambiente. Llevar peto claro y oscuro.</div>
+        <button class="btn-green w-full mt-16" onclick="goTo('screen-join-success')">▶ Unirme al partido</button>
+      </div>
+    </div>
+
+    <!-- JOIN SUCCESS -->
+    <div id="screen-join-success" class="screen">
+      <div class="success-screen">
+        <div class="success-icon">✅</div>
+        <div class="success-title">¡Ya estás dentro!</div>
+        <div class="success-sub">Te has unido al partido Fútbol 11 · SportCenter Chapinero</div>
+        <button class="btn-green" onclick="goTo('screen-mis-partidos')">Ver mis partidos</button>
+        <button class="btn-outline mt-8" onclick="goTo('screen-home')">Seguir explorando</button>
+      </div>
+    </div>
+
+    <!-- RETAR STEP 1 -->
+    <div id="screen-retar-step1" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Retar equipo · Paso 1 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="form-label">Tu equipo</div>
+        <button class="team-pill-selector w-full">Águilas Calvas FC ▾</button>
+        <div class="form-label mt-16">Formato</div>
+        <div class="format-pills">
+          <button class="format-pill active">Fútbol 5</button>
+          <button class="format-pill">Fútbol 7</button>
+          <button class="format-pill">11 vs 11</button>
+        </div>
+        <div class="form-label mt-16">Fecha</div>
+        <input class="form-input" type="date" placeholder="Elige una fecha 📅">
+        <div class="form-label mt-16">Zona</div>
+        <input class="form-input" placeholder="Cualquier zona 📍">
+        <div class="form-label mt-16">Nivel</div>
+        <div class="format-pills">
+          <button class="format-pill active">Casual</button>
+          <button class="format-pill">Amateur B</button>
+          <button class="format-pill">Amateur A</button>
+        </div>
+        <button class="btn-green w-full mt-24" onclick="goTo('screen-retar-step2')">Siguiente → buscar rival</button>
+      </div>
+    </div>
+
+    <!-- RETAR STEP 2 -->
+    <div id="screen-retar-step2" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Elegir rival · Paso 2 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" placeholder="Buscar equipo por nombre...">
+        </div>
+        <div class="results-count">DISPONIBLES ESTA SEMANA</div>
+        <div class="team-card" onclick="goTo('screen-retar-step3')">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-brown">MF</div>
+            <div class="team-card-info">
+              <div class="team-card-name">Macondo FC</div>
+              <div class="team-card-meta">Mazuren · 11vs11 · 4-0-0</div>
+            </div>
+            <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step3')">Retar</button>
+          </div>
+        </div>
+        <div class="team-card" onclick="goTo('screen-retar-step3')">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-blue2">LB</div>
+            <div class="team-card-info">
+              <div class="team-card-name">Los Bravos</div>
+              <div class="team-card-meta">Chapinero · 11vs11 · 3-1-1</div>
+            </div>
+            <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step3')">Retar</button>
+          </div>
+        </div>
+        <div class="team-card" onclick="goTo('screen-retar-step3')">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-purple">PR</div>
+            <div class="team-card-info">
+              <div class="team-card-name">Pumas del Sur</div>
+              <div class="team-card-meta">Soacha · 11vs11 · 2-2-1</div>
+            </div>
+            <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step3')">Retar</button>
+          </div>
+        </div>
+        <button class="btn-outline w-full mt-8" onclick="goTo('screen-retar-step3')">Publicar sin rival (busca rival abierto)</button>
+      </div>
+    </div>
+
+    <!-- RETAR STEP 3 -->
+    <div id="screen-retar-step3" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Confirmar reto · Paso 3 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="form-label">TU EQUIPO</div>
+        <div class="team-card">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-green">AC</div>
+            <div class="team-card-info"><div class="team-card-name">Águilas Calvas FC</div><div class="team-card-meta">Amateur B · 11v11</div></div>
+          </div>
+        </div>
+        <div class="form-label mt-16">EQUIPOS RETADOS</div>
+        <div class="team-card">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-brown">MF</div>
+            <div class="team-card-info"><div class="team-card-name">Macondo FC</div></div>
+            <span class="pill-yellow-xs">Esperando</span>
+            <button class="icon-text-btn" onclick="void(0)">✕</button>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-card-row">
+            <div class="team-logo-md logo-blue2">LB</div>
+            <div class="team-card-info"><div class="team-card-name">Los Bravos</div></div>
+            <span class="pill-yellow-xs">Esperando</span>
+            <button class="icon-text-btn" onclick="void(0)">✕</button>
+          </div>
+        </div>
+        <button class="dashed-add-btn">+ Agregar otro equipo</button>
+        <div class="summary-card mt-16">
+          <div class="info-row"><span class="info-label">Formato</span><span class="info-val">11 vs 11</span></div>
+          <div class="info-row"><span class="info-label">Fecha</span><span class="info-val">Sábado 17 mayo</span></div>
+          <div class="info-row"><span class="info-label">Hora</span><span class="info-val">8:00 PM</span></div>
+          <div class="info-row no-border"><span class="info-label">Zona</span><span class="info-val">Chapinero</span></div>
+        </div>
+        <div class="notes-card mt-8">ℹ️ El primero que acepte confirma el partido. El reto se cancela para los demás.</div>
+        <button class="btn-green w-full mt-16" onclick="goTo('screen-reto-success')">Enviar retos</button>
+      </div>
+    </div>
+
+    <!-- RETO SUCCESS -->
+    <div id="screen-reto-success" class="screen">
+      <div class="success-screen">
+        <div class="success-icon">⚡</div>
+        <div class="success-title">¡Reto enviado!</div>
+        <div class="success-sub">2 equipos recibieron tu reto. El primero en aceptar confirmará el partido.</div>
+        <button class="btn-green" onclick="goTo('screen-mis-partidos')">Ver mis partidos</button>
+        <button class="btn-outline mt-8" onclick="goTo('screen-home')">Seguir explorando</button>
+      </div>
+    </div>
+
+    <!-- RETO DETAIL -->
+    <div id="screen-reto-detail" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Reto recibido</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="match-detail-hero">
+          <div class="mdh-teams">
+            <div class="mdh-team">
+              <div class="team-logo-lg logo-brown">GF</div>
+              <div class="mdh-team-name">Los Guerreros FC</div>
+            </div>
+            <div class="mdh-vs">
+              <div class="mdh-vs-text">VS</div>
+            </div>
+            <div class="mdh-team">
+              <div class="team-logo-lg logo-green">AC</div>
+              <div class="mdh-team-name">Águilas Calvas</div>
+            </div>
+          </div>
+        </div>
+        <div class="info-card mt-16">
+          <div class="info-row"><span class="info-label">Fecha</span><span class="info-val">Mañana</span></div>
+          <div class="info-row"><span class="info-label">Hora</span><span class="info-val">6:00 PM</span></div>
+          <div class="info-row"><span class="info-label">Zona</span><span class="info-val">Chapinero</span></div>
+          <div class="info-row no-border"><span class="info-label">Formato</span><span class="info-val">11 vs 11</span></div>
+        </div>
+        <div class="reto-actions mt-16">
+          <button class="btn-green" onclick="goTo('screen-join-success')">✓ Aceptar reto</button>
+          <button class="btn-red" onclick="goBack()">✕ Rechazar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CANCHA DETAIL -->
+    <div id="screen-cancha-detail" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Cancha Norte — Mazuren</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="field-illustration">
+          <div class="field-lines"></div>
+          <div class="field-label">🏟 Sintética · 7vs7</div>
+        </div>
+        <div class="info-card mt-16">
+          <div class="info-row"><span class="info-label">Dirección</span><span class="info-val">Cra 68 #80-20</span></div>
+          <div class="info-row"><span class="info-label">Precio</span><span class="info-val">$120.000/hora</span></div>
+          <div class="info-row no-border"><span class="info-label">Superficie</span><span class="info-val">Sintética</span></div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">HORARIOS DISPONIBLES</span></div>
+        <div class="time-slots-grid">
+          <button class="time-slot occupied">6:00 AM</button>
+          <button class="time-slot occupied">7:00 AM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">8:00 AM</button>
+          <button class="time-slot selected" onclick="selectSlot(this)">9:00 AM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">10:00 AM</button>
+          <button class="time-slot occupied">11:00 AM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">3:00 PM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">4:00 PM</button>
+          <button class="time-slot occupied">5:00 PM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">6:00 PM</button>
+          <button class="time-slot selected" onclick="selectSlot(this)">7:00 PM</button>
+          <button class="time-slot free" onclick="selectSlot(this)">8:00 PM</button>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">DURACIÓN</span></div>
+        <div class="format-pills">
+          <button class="format-pill active">1h</button>
+          <button class="format-pill">1.5h</button>
+          <button class="format-pill">2h</button>
+        </div>
+        <button class="btn-green w-full mt-24" onclick="goTo('screen-cancha-success')">Reservar — $120.000</button>
+      </div>
+    </div>
+
+    <!-- CANCHA SUCCESS -->
+    <div id="screen-cancha-success" class="screen">
+      <div class="success-screen">
+        <div class="success-icon">🏟️</div>
+        <div class="success-title">¡Cancha reservada!</div>
+        <div class="success-sub">Código de reserva: <strong>CN-8291</strong><br>Cancha Norte · 9:00 AM · Sábado 17 mayo</div>
+        <button class="btn-green" onclick="goTo('screen-home')">Ir al inicio</button>
+        <button class="btn-outline mt-8" onclick="goTo('screen-search')">Seguir explorando</button>
+      </div>
+    </div>
+
+    <!-- CREAR EQUIPO STEP 1 -->
+    <div id="screen-create-team" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Crear equipo · Paso 1 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="create-team-avatar" id="new-team-avatar">NK</div>
+        <div class="form-label mt-16">Nombre del equipo *</div>
+        <input class="form-input" placeholder="Nombre del equipo" oninput="updateTeamInitials(this.value)">
+        <div class="form-label mt-16">Color del equipo</div>
+        <div class="color-picker-row">
+          <button class="color-dot active" style="background:#4CAF50" onclick="selectColor(this)"></button>
+          <button class="color-dot" style="background:#F59E0B" onclick="selectColor(this)"></button>
+          <button class="color-dot" style="background:#3B82F6" onclick="selectColor(this)"></button>
+          <button class="color-dot" style="background:#EF4444" onclick="selectColor(this)"></button>
+          <button class="color-dot" style="background:#A855F7" onclick="selectColor(this)"></button>
+          <button class="color-dot" style="background:#D97706" onclick="selectColor(this)"></button>
+        </div>
+        <div class="form-label mt-16">Formato</div>
+        <div class="format-grid">
+          <button class="format-pill active">Fútbol 11</button>
+          <button class="format-pill">Fútbol 8</button>
+          <button class="format-pill">Fútbol 5</button>
+          <button class="format-pill">Fútbol 7</button>
+        </div>
+        <button class="btn-green w-full mt-24" onclick="goTo('screen-create-team-2')">Continuar</button>
+      </div>
+    </div>
+
+    <!-- CREAR EQUIPO STEP 2 -->
+    <div id="screen-create-team-2" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Crear equipo · Paso 2 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="form-label">Barrio del equipo</div>
+        <input class="form-input" placeholder="Barrio del equipo">
+        <div class="form-label mt-16">Cancha favorita (opcional)</div>
+        <input class="form-input" placeholder="Cancha favorita">
+        <div class="form-label mt-16">Disponibilidad</div>
+        <div class="day-pills">
+          <button class="day-pill active">L</button>
+          <button class="day-pill">M</button>
+          <button class="day-pill active">X</button>
+          <button class="day-pill">J</button>
+          <button class="day-pill">V</button>
+          <button class="day-pill active">S</button>
+          <button class="day-pill active">D</button>
+        </div>
+        <div class="format-pills mt-8">
+          <button class="format-pill">Mañana</button>
+          <button class="format-pill active">Tarde</button>
+          <button class="format-pill active">Noche</button>
+        </div>
+        <div class="form-label mt-16">Tipo de equipo</div>
+        <div class="radio-group">
+          <label class="radio-option active-radio"><input type="radio" name="tipo" checked> Abierto <span class="radio-sub">— Acepta jugadores y busca rivales</span></label>
+          <label class="radio-option"><input type="radio" name="tipo"> Solo miembros <span class="radio-sub">— Acepta jugadores, no busca rivales</span></label>
+          <label class="radio-option"><input type="radio" name="tipo"> Cerrado <span class="radio-sub">— Solo por código de invitación</span></label>
+        </div>
+        <div class="form-label mt-16">INVITAR MIEMBROS</div>
+        <input class="form-input" placeholder="Buscar jugador por nombre...">
+        <button class="btn-green w-full mt-24" onclick="goTo('screen-create-team-3')">Continuar · 0 invitados</button>
+      </div>
+    </div>
+
+    <!-- CREAR EQUIPO STEP 3 -->
+    <div id="screen-create-team-3" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Confirmar · Paso 3 de 3</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="team-card featured">
+          <div class="team-card-row">
+            <div class="create-team-avatar-sm">NK</div>
+            <div class="team-card-info">
+              <div class="team-card-name">Nuevo equipo</div>
+              <div class="team-card-meta">Fútbol 11 · Chapinero</div>
+            </div>
+          </div>
+        </div>
+        <div class="info-card mt-16">
+          <div class="form-label" style="padding:12px 12px 4px">LOGÍSTICA</div>
+          <div class="info-row"><span class="info-label">Barrio</span><span class="info-val">Chapinero</span></div>
+          <div class="info-row"><span class="info-label">Días</span><span class="info-val">L · X · S · D</span></div>
+          <div class="info-row no-border"><span class="info-label">Franja</span><span class="info-val">Tarde · Noche</span></div>
+        </div>
+        <div class="info-card mt-8">
+          <div class="form-label" style="padding:12px 12px 4px">VISIBILIDAD</div>
+          <div class="info-row no-border"><span class="info-label">Tipo</span><span class="info-val">Abierto</span></div>
+        </div>
+        <div class="info-card mt-8">
+          <div class="form-label" style="padding:12px 12px 4px">MIEMBROS</div>
+          <div class="info-row no-border">
+            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:32px;height:32px;font-size:11px">AV</div>
+            <span class="info-val" style="margin-left:8px">Tú (capitán)</span>
+          </div>
+        </div>
+        <div class="notes-card mt-8">ℹ️ Les llegará notificación al crear el equipo.</div>
+        <button class="btn-green w-full mt-16" onclick="goTo('screen-create-team-success')">✓ Crear equipo</button>
+        <button class="btn-ghost-center mt-8" onclick="goBack()">Editar información</button>
+      </div>
+    </div>
+
+    <!-- CREATE TEAM SUCCESS -->
+    <div id="screen-create-team-success" class="screen">
+      <div class="success-screen">
+        <div class="success-icon">🏆</div>
+        <div class="success-title">¡Equipo creado!</div>
+        <div class="success-sub">Código de invitación: <strong>AC-7X3K</strong></div>
+        <div class="share-row">
+          <button class="share-btn">💬 WhatsApp</button>
+          <button class="share-btn">🔗 Copiar link</button>
+          <button class="share-btn">··· Más...</button>
+        </div>
+        <button class="btn-green mt-16" onclick="goTo('screen-profile')">Ir a mi equipo</button>
+      </div>
+    </div>
+
+    <!-- FICHAJES -->
+    <div id="screen-fichajes" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Fichajes</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="tab-pills" id="fichajes-tabs">
+          <button class="tab-pill active" onclick="setFichajesTab('jugadores',this)">Buscar jugador</button>
+          <button class="tab-pill" onclick="setFichajesTab('equipos',this)">Buscar equipo</button>
+        </div>
+
+        <!-- TAB JUGADORES -->
+        <div id="tab-jugadores" class="tab-content active">
+          <div class="search-bar-wrap">
+            <span class="search-icon">🔍</span>
+            <input class="search-input" placeholder="Posición, barrio, disponibilidad...">
+          </div>
+          <div class="results-count">24 jugadores encontrados</div>
+          <div class="player-card" onclick="goTo('screen-player-profile')">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">CM</div>
+              <span class="player-online-dot"></span>
+            </div>
+            <div class="player-card-info">
+              <div class="player-card-name">Carlos Mendoza <span class="no-team-badge">Sin equipo</span></div>
+              <div class="player-card-pos">⚽ Delantero · Chapinero · Amateur</div>
+              <div class="player-card-pills">
+                <span class="pill-green-xs">Disponible ya</span>
+                <span class="filter-pill">Noches</span>
+              </div>
+              <div class="player-card-stats">⭐ 4.4 · 28 partidos</div>
+            </div>
+          </div>
+          <div class="player-card" onclick="goTo('screen-player-profile')">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed)">LG</div>
+              <span class="player-offline-dot"></span>
+            </div>
+            <div class="player-card-info">
+              <div class="player-card-name">Laura Gómez <span class="in-team-badge">Galácticos FC</span></div>
+              <div class="player-card-pos">🧤 Portero · Usaquén · Amateur</div>
+              <div class="player-card-pills">
+                <span class="filter-pill">Fines de sem.</span>
+              </div>
+              <div class="player-card-stats">⭐ 4.7 · 52 partidos</div>
+            </div>
+          </div>
+          <div class="player-card" onclick="goTo('screen-player-profile')">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af)">DR</div>
+              <span class="player-online-dot"></span>
+            </div>
+            <div class="player-card-info">
+              <div class="player-card-name">Daniel Rojas <span class="no-team-badge">Sin equipo</span></div>
+              <div class="player-card-pos">🛡 Defensa · Barrios Unidos</div>
+              <div class="player-card-pills">
+                <span class="pill-green-xs">Disponible ya</span>
+                <span class="filter-pill">Mañanas</span>
+              </div>
+              <div class="player-card-stats">⭐ 4.1 · 15 partidos</div>
+            </div>
+          </div>
+          <div class="player-card" onclick="goTo('screen-player-profile')">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309)">MP</div>
+              <span class="player-offline-dot"></span>
+            </div>
+            <div class="player-card-info">
+              <div class="player-card-name">Mario Pedraza <span class="in-team-badge">Tigres FC</span></div>
+              <div class="player-card-pos">⚙️ Mediocampista · Kennedy</div>
+              <div class="player-card-pills">
+                <span class="filter-pill">Entre sem.</span>
+              </div>
+              <div class="player-card-stats">⭐ 4.3 · 33 partidos</div>
+            </div>
+          </div>
+          <div class="player-card" onclick="goTo('screen-player-profile')">
+            <div class="player-avatar-wrap">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c)">JS</div>
+              <span class="player-online-dot"></span>
+            </div>
+            <div class="player-card-info">
+              <div class="player-card-name">Juan Suárez <span class="no-team-badge">Sin equipo</span></div>
+              <div class="player-card-pos">⚽ Delantero · Chapinero</div>
+              <div class="player-card-pills">
+                <span class="pill-green-xs">Disponible ya</span>
+                <span class="filter-pill">Noches</span>
+              </div>
+              <div class="player-card-stats">⭐ 4.2 · 19 partidos</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB EQUIPOS -->
+        <div id="tab-equipos" class="tab-content">
+          <div class="team-card" style="border-left:3px solid #EF4444" onclick="goTo('screen-team-profile')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-red">BT</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Buitres de Teusaquillo</div>
+                <div class="team-card-meta">7v7 · Teusaquillo · ⭐ 4.6</div>
+                <div class="team-card-meta">Busca: Delantero, Portero</div>
+                <div class="team-card-meta">🕐 Noches · Fines de semana</div>
+              </div>
+            </div>
+            <div class="team-card-actions">
+              <button class="btn-red-outline" onclick="event.stopPropagation()">Fichar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation()">Miembro</button>
+            </div>
+          </div>
+          <div class="team-card" style="border-left:3px solid #A855F7" onclick="goTo('screen-team-profile')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-purple">GF</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Galácticos FC</div>
+                <div class="team-card-meta">7v7 · Chapinero · ⭐ 4.1</div>
+                <div class="team-card-meta">Busca: Delantero, Mediocampista</div>
+              </div>
+            </div>
+            <div class="team-card-actions">
+              <button class="btn-green-sm" onclick="event.stopPropagation()">Miembro</button>
+            </div>
+          </div>
+          <div class="team-card" style="border-left:3px solid #4CAF50" onclick="goTo('screen-team-profile')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-green">RP</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Rápidos FC</div>
+                <div class="team-card-meta">7v7 · Kennedy · ⭐ 3.9</div>
+                <div class="team-card-meta">Busca: Portero</div>
+              </div>
+            </div>
+            <div class="team-card-actions">
+              <button class="btn-red-outline" onclick="event.stopPropagation()">Fichar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation()">Miembro</button>
+            </div>
+          </div>
+          <div class="team-card" style="border-left:3px solid #3B82F6" onclick="goTo('screen-team-profile')">
+            <div class="team-card-row">
+              <div class="team-logo-md logo-blue2">LN</div>
+              <div class="team-card-info">
+                <div class="team-card-name">Los Nocturnos</div>
+                <div class="team-card-meta">7v7 · Usaquén · ⭐ 4.3</div>
+                <div class="team-card-meta">Busca: Delantero, Defensa</div>
+              </div>
+            </div>
+            <div class="team-card-actions">
+              <button class="btn-green-sm" onclick="event.stopPropagation()">Miembro</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYER PROFILE -->
+    <div id="screen-player-profile" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Perfil del jugador</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="profile-hero">
+          <div class="player-avatar-wrap" style="justify-content:center;margin-bottom:8px">
+            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:72px;height:72px;font-size:22px">CM</div>
+            <span class="player-online-dot" style="width:14px;height:14px;right:2px;bottom:2px"></span>
+          </div>
+          <div class="profile-name">Carlos Mendoza</div>
+          <div class="profile-sub">⚽ Delantero · Chapinero</div>
+          <div class="profile-stats-row">
+            <div class="profile-stat"><span class="ps-num">28</span><span class="ps-label">Partidos</span></div>
+            <div class="ps-divider"></div>
+            <div class="profile-stat"><span class="ps-num">4.4 ⭐</span><span class="ps-label">Rating</span></div>
+            <div class="ps-divider"></div>
+            <div class="profile-stat"><span class="ps-num">87%</span><span class="ps-label">Asistencia</span></div>
+          </div>
+        </div>
+        <div class="info-card mt-16">
+          <div class="info-row"><span class="info-label">Posición principal</span><span class="info-val">Delantero</span></div>
+          <div class="info-row"><span class="info-label">Disponibilidad</span><span class="info-val">Noches</span></div>
+          <div class="info-row"><span class="info-label">Modalidades</span><span class="info-val">5v5 · 7v7</span></div>
+          <div class="info-row no-border"><span class="info-label">Estado</span><span class="info-val no-team-badge" style="border-radius:50px;padding:2px 8px">Sin equipo</span></div>
+        </div>
+        <div class="sobre-mi-card mt-8">Delantero con buena llegada al arco. Disponible para partidos entre semana y fines de semana.</div>
+        <div class="reto-actions mt-16">
+          <button class="btn-green">⚡ Invitar al equipo</button>
+          <button class="btn-outline">💬 Enviar mensaje</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM PROFILE -->
+    <div id="screen-team-profile" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Perfil del equipo</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="team-card featured" style="border-left:3px solid #EF4444">
+          <div class="team-card-row">
+            <div class="team-logo-lg logo-red">BT</div>
+            <div class="team-card-info">
+              <div class="team-card-name" style="font-size:17px">Buitres de Teusaquillo</div>
+              <div class="team-card-meta">7v7 · Teusaquillo · ⭐ 4.6 · 28 partidos</div>
+              <div class="team-card-meta">👥 16 miembros</div>
+            </div>
+          </div>
+          <div class="team-card-actions mt-8">
+            <button class="btn-red-outline">Fichar</button>
+            <button class="btn-green-sm">Miembro</button>
+          </div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">BUSCAN JUGADORES</span></div>
+        <div class="info-card">
+          <div class="info-row"><span class="info-label">Delantero</span><span class="in-team-badge">Ficha</span></div>
+          <div class="info-row no-border"><span class="info-label">Portero</span><span class="in-team-badge">Miembro</span></div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">INFO DEL EQUIPO</span></div>
+        <div class="info-card">
+          <div class="info-row"><span class="info-label">Barrio</span><span class="info-val">Teusaquillo</span></div>
+          <div class="info-row"><span class="info-label">Disponibilidad</span><span class="info-val">Noches · Fines de sem.</span></div>
+          <div class="info-row"><span class="info-label">Nivel</span><span class="info-val">Amateur B</span></div>
+          <div class="info-row no-border"><span class="info-label">Cancha favorita</span><span class="info-val">Cancha Norte</span></div>
+        </div>
+        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">MIEMBROS (16)</span></div>
+        <div class="players-grid" style="gap:8px">
+          <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:40px;height:40px;font-size:13px">JR</div>
+          <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:40px;height:40px;font-size:13px">CM</div>
+          <div class="player-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309);width:40px;height:40px;font-size:13px">AV</div>
+          <div class="player-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed);width:40px;height:40px;font-size:13px">+13</div>
+        </div>
+        <button class="btn-green w-full mt-16" onclick="goTo('screen-join-success')">⚡ Solicitar ficha</button>
+      </div>
+    </div>
+
+  </div><!-- /phone-container -->
   <script src="script.js"></script>
-
 </body>
 </html>

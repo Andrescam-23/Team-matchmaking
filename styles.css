@@ -1,823 +1,1149 @@
-/* ════════════════════════════════════════════════════════════════
-   STYLES.CSS — El "diseñador" de Matchmakers
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-   ¿QUÉ HACE ESTE ARCHIVO?
-   Define CÓMO se ve todo: colores, tamaños, posiciones, animaciones.
-   El HTML dice QUÉ hay en la página; el CSS dice CÓMO se ve.
-
-   MAPA DEL ARCHIVO (de arriba hacia abajo):
-   ─────────────────────────────────────────
-   BLOQUE 1 → Variables globales (paleta de colores, tamaños)
-   BLOQUE 2 → Reset (limpieza de estilos del navegador)
-   BLOQUE 3 → Contenedor del teléfono (el "chasis" del simulador)
-   BLOQUE 4 → Sistema de pantallas (cómo se muestran/ocultan)
-   BLOQUE 5 → Splash (pantalla de bienvenida)
-   BLOQUE 6 → Login (pantalla de ingreso)
-   BLOQUE 7 → Home: Header superior
-   BLOQUE 8 → Home: Área de contenido scrolleable
-   BLOQUE 9 → Home: Tarjetas de partidos
-   BLOQUE 10 → Home: Navegación inferior
-   BLOQUE 11 → Pantallas placeholder (en construcción)
-
-   CONSEJO PARA LEER CSS:
-   Cada regla tiene este formato:
-
-     selector {
-       propiedad: valor;
-     }
-
-   El "selector" dice A QUÉ le aplica el estilo (.clase, #id, etiqueta).
-   La "propiedad" dice QUÉ se cambia (color, tamaño, posición...).
-   El "valor" dice CÓMO queda (rojo, 16px, centrado...).
-════════════════════════════════════════════════════════════════ */
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 1 — VARIABLES GLOBALES
-   ════════════════════════════════════════════════════════════════
-
-   ¿QUÉ SON LAS VARIABLES CSS?
-   Son como "cajitas con nombre" que guardan un valor.
-   En vez de escribir #1DB954 en 20 lugares distintos del archivo,
-   lo guardamos UNA VEZ en --color-accent y lo usamos donde queramos.
-
-   VENTAJA PRÁCTICA:
-   Si mañana el cliente dice "quiero el verde un poco más oscuro",
-   cambiamos UNA línea aquí y el cambio se aplica en toda la app.
-
-   Las variables van dentro de :root para que estén disponibles
-   en CUALQUIER parte del archivo (alcance global).
-════════════════════════════════════════════════════════════════ */
 :root {
-
-  /* ── PALETA DE COLORES ── */
-  --color-bg:          #0D1117;   /* Negro azulado — fondo principal de la app */
-  --color-bg-outside:  #111318;   /* Gris muy oscuro — fondo visible fuera del teléfono */
-  --color-bg-card:     #161B22;   /* Negro un poco más claro — fondo de las tarjetas */
-  --color-bg-input:    #21262D;   /* Gris oscuro — fondo de los campos de texto */
-  --color-accent:      #1DB954;   /* Verde Matchmakers — el color principal de la marca */
-  --color-accent-dark: #17A34A;   /* Verde más oscuro — para cuando el mouse está encima de botones */
-  --color-text:        #E6EDF3;   /* Blanco suave — texto principal */
-  --color-text-muted:  #8B949E;   /* Gris medio — texto secundario, subtítulos, labels */
-  --color-border:      #30363D;   /* Gris oscuro — bordes de tarjetas e inputs */
-
-  /* ── FUENTES ── */
-  --font-main: 'Segoe UI', system-ui, sans-serif;
-  /*
-    Usamos fuentes que ya vienen instaladas en el sistema operativo.
-    Ventaja: no hay que descargarlas, cargan al instante.
-    · En Windows → Segoe UI
-    · En iOS (iPhone/iPad) → San Francisco
-    · En Android → Roboto
-    Todas son legibles y se ven bien en pantallas pequeñas.
-  */
-
-  /* ── ESCALA DE TAMAÑOS DE TEXTO ── */
-  /*
-    Tener tamaños predefinidos crea consistencia visual.
-    En vez de usar 14px aquí, 13px allá, 14.5px más allá
-    (lo que se ve desorganizado), siempre usamos uno de estos valores.
-  */
-  --text-xs:   11px;   /* Muy pequeño — badges, etiquetas del menú inferior */
-  --text-sm:   13px;   /* Pequeño — texto de apoyo, fechas, ubicaciones */
-  --text-base: 15px;   /* Normal — texto de lectura principal */
-  --text-lg:   18px;   /* Grande — títulos de sección */
-  --text-xl:   24px;   /* Muy grande — títulos de pantalla */
-  --text-2xl:  32px;   /* Enorme — nombre de la app en el splash */
-
-  /* ── ESPACIADO ── */
-  /*
-    Lo mismo aplica para los espacios entre elementos.
-    Usar valores consistentes hace que todo se vea ordenado.
-  */
-  --space-xs:  4px;    /* Espacio mínimo — entre ícono y texto */
-  --space-sm:  8px;    /* Espacio pequeño — dentro de componentes */
-  --space-md:  16px;   /* Espacio mediano — padding de cards, separación entre secciones */
-  --space-lg:  24px;   /* Espacio grande — separación entre bloques principales */
-  --space-xl:  32px;   /* Espacio muy grande — padding de pantallas completas */
-
-  /* ── BORDES REDONDEADOS ── */
-  /*
-    border-radius redondea las esquinas de los elementos.
-    Más número = esquinas más redondas.
-  */
-  --radius-sm:   8px;     /* Poco redondeado — botones pequeños */
-  --radius-md:   12px;    /* Medio — inputs de texto */
-  --radius-lg:   16px;    /* Bastante redondeado — tarjetas de partido */
-  --radius-full: 9999px;  /* Completamente redondo — badges, el botón + del menú */
-
-  /* ── DIMENSIONES DEL "TELÉFONO" SIMULADO ── */
-  --phone-width:  375px;   /* Ancho del iPhone 12/13/14 — el estándar de diseño móvil */
-  --phone-height: 812px;   /* Alto del iPhone 12/13/14 */
-
-  /* ── ALTURAS DE COMPONENTES FIJOS ── */
-  --top-bar-height:    56px;   /* Cuánto ocupa el header de arriba */
-  --bottom-nav-height: 72px;   /* Cuánto ocupa el menú de abajo */
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 2 — RESET (LIMPIEZA DE ESTILOS DEL NAVEGADOR)
-   ════════════════════════════════════════════════════════════════
-
-   ¿POR QUÉ ESTO?
-   Cada navegador (Chrome, Safari, Firefox) tiene sus propios
-   estilos por defecto: márgenes en el body, padding en los botones,
-   bordes en los inputs, etc. Estos estilos son distintos entre sí
-   y hacen que la misma página se vea diferente según el navegador.
-
-   El "reset" borra todos esos estilos para que empecemos
-   desde cero y tengamos control total del diseño.
-════════════════════════════════════════════════════════════════ */
-
-*, *::before, *::after {
-  /*
-    * → aplica a TODOS los elementos HTML de la página
-    *::before y *::after → aplica también a elementos decorativos
-                           que el CSS puede crear (como flechas, líneas, etc.)
-  */
-  margin: 0;
-  padding: 0;
-  /*
-    Elimina todos los márgenes y padding que ponen los navegadores por defecto.
-    Sin esto, el <body> tendría un margen de 8px alrededor, los <h1>
-    tendrían márgenes arriba y abajo, etc.
-  */
-
-  box-sizing: border-box;
-  /*
-    PROBLEMA QUE RESUELVE:
-    Imagina un div que mide exactamente 300px de ancho.
-    Le agregas padding: 20px de cada lado.
-
-    Sin box-sizing → el div termina midiendo 340px (300 + 20 + 20). ¡Sorpresa!
-    Con box-sizing: border-box → el div sigue midiendo 300px, el padding va adentro.
-
-    Con border-box los tamaños son predecibles y no hay sorpresas matemáticas.
-  */
+  --bg:        #0A0E1A;
+  --bg2:       #111827;
+  --card:      #1A2235;
+  --card-border: rgba(255,255,255,0.05);
+  --green:     #4CAF50;
+  --green-dark:#45a049;
+  --green-glow:rgba(76,175,80,0.15);
+  --red:       #EF4444;
+  --yellow:    #F59E0B;
+  --blue:      #3B82F6;
+  --text:      #FFFFFF;
+  --text2:     #94A3B8;
+  --text3:     #4B5563;
+  --radius-card: 16px;
+  --radius-btn:  12px;
+  --radius-pill: 50px;
 }
 
 body {
-  /* El <body> es el contenedor de toda la página visible */
-
-  font-family: var(--font-main);    /* Fuente de todo el texto */
-  font-size:   var(--text-base);    /* Tamaño base de texto (15px) */
-  color:       var(--color-text);   /* Color de texto por defecto (blanco suave) */
-  line-height: 1.5;
-  /*
-    line-height: 1.5 → el espacio entre líneas es 1.5 veces el tamaño de fuente.
-    Hace el texto más fácil de leer (menos apretado).
-  */
-
-  -webkit-font-smoothing: antialiased;
-  /*
-    Hace que el texto se vea más suave y fino en pantallas de alta resolución
-    (como las pantallas Retina de Apple o las de alta densidad de Android).
-    Sin esto, el texto puede verse un poco "grueso" o pixelado.
-  */
-
-  /* ── Centrar el teléfono simulado en la pantalla del computador ── */
-  background-color: var(--color-bg-outside); /* El "escritorio" alrededor del teléfono */
-  min-height: 100vh;       /* El body ocupa al menos toda la altura de la ventana */
-  display: flex;           /* Activa el modo flexbox para centrar el contenido */
-  justify-content: center; /* Centra horizontalmente (eje X) */
-  align-items: center;     /* Centra verticalmente (eje Y) */
-  /*
-    Flexbox es el sistema más fácil para centrar cosas en CSS.
-    display: flex activa el modo, y las dos propiedades de abajo
-    centran el contenido en ambos ejes. Es como poner algo en el
-    centro de una hoja de papel, tanto horizontal como verticalmente.
-  */
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 3 — CONTENEDOR DEL TELÉFONO
-   ════════════════════════════════════════════════════════════════
-
-   ¿QUÉ ES?
-   El div con id="phone-container" en el HTML.
-   Es la "carcasa" del teléfono simulado.
-   Todo el contenido de la app vive adentro de él.
-
-   ¿POR QUÉ EXISTE?
-   En un teléfono real, el sistema operativo delimita el área
-   donde la app puede dibujar cosas. Aquí simulamos eso
-   con un div de tamaño fijo con esquinas redondeadas.
-════════════════════════════════════════════════════════════════ */
-#phone-container {
-  width:    var(--phone-width);    /* 375px — ancho fijo */
-  height:   var(--phone-height);   /* 812px — alto fijo */
-  position: relative;
-  /*
-    position: relative tiene un efecto en los hijos:
-    los hijos con position: absolute se posicionan
-    RELATIVO a este contenedor (no a la ventana del navegador).
-    Sin esto, las pantallas absolutas se escaparían fuera del teléfono.
-  */
-  overflow: hidden;
-  /*
-    Si algún contenido sobresale del tamaño del teléfono,
-    se oculta automáticamente. Esto evita que elementos
-    se "salgan" del borde del teléfono simulado.
-  */
-
-  /* Apariencia de teléfono */
-  border-radius: 40px;
-  /*
-    Esquinas muy redondeadas — como las de un teléfono moderno.
-    40px es bastante grande, lo que crea esa curva característica.
-  */
-  box-shadow:
-    0 0 0 1px #2a2a2a,             /* Capa 1: borde delgado del marco del teléfono */
-    0 30px 80px rgba(0,0,0,0.8);   /* Capa 2: sombra grande y suave debajo */
-  /*
-    box-shadow puede tener varias sombras separadas por coma.
-    Formato de cada sombra: X  Y  desenfoque  color
-    · X=0, Y=0, desenfoque=0 → sombra que es solo un borde
-    · X=0, Y=30px, desenfoque=80px → sombra difusa que cae hacia abajo
-  */
-  background-color: var(--color-bg);
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 4 — SISTEMA DE PANTALLAS
-   ════════════════════════════════════════════════════════════════
-
-   ¿CÓMO FUNCIONA LA NAVEGACIÓN?
-   Todas las pantallas (splash, login, home, etc.) existen en el
-   HTML todo el tiempo. La navegación no carga páginas nuevas —
-   solo MUESTRA u OCULTA pantallas según cuál está activa.
-
-   Es como tener varias hojas de papel apiladas:
-   solo lees la que está arriba. Las demás siguen ahí, solo
-   que debajo de la que estás viendo.
-
-   DOS ESTADOS:
-   · .screen         → pantalla oculta (opacity: 0, no recibe clics)
-   · .screen.active  → pantalla visible (opacity: 1, recibe clics)
-
-   script.js agrega o quita la clase "active" para controlar cuál se ve.
-════════════════════════════════════════════════════════════════ */
-
-.screen {
-  /* Estado por defecto: OCULTA */
-
-  position: absolute;
-  /*
-    absolute = se posiciona relativa al contenedor padre (#phone-container).
-    Todas las pantallas se apilan en el mismo lugar (top:0, left:0).
-    Parecen una baraja de cartas apiladas.
-  */
-  top:    0;
-  left:   0;
-  width:  100%;   /* Ocupa todo el ancho del teléfono */
-  height: 100%;   /* Ocupa todo el alto del teléfono */
-  background-color: var(--color-bg);
-
-  opacity: 0;
-  /*
-    opacity: 0 = completamente invisible.
-    El elemento sigue existiendo (ocupa espacio en memoria)
-    pero el usuario no lo ve.
-  */
-
-  pointer-events: none;
-  /*
-    pointer-events: none = ignora todos los toques y clics.
-    Necesario porque aunque la pantalla es invisible (opacity: 0),
-    sin esto el usuario podría hacer clic en sus botones
-    sin darse cuenta de que existen.
-  */
-
-  transition: opacity 0.25s ease;
-  /*
-    Hace que el cambio de invisible a visible (o viceversa)
-    ocurra gradualmente en 0.25 segundos → efecto de "fade".
-    ease = empieza el cambio rápido y desacelera al final (más natural).
-    Sin esta línea, el cambio sería instantáneo y brusco.
-  */
-}
-
-.screen.active {
-  /* Estado activo: VISIBLE */
-  opacity: 1;           /* Completamente visible */
-  pointer-events: all;  /* Recibe toques y clics normalmente */
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 5 — SPLASH (PANTALLA DE BIENVENIDA)
-════════════════════════════════════════════════════════════════ */
-
-.screen#screen-splash {
-  /* Centra el logo y el texto en el medio de la pantalla */
-  display:         flex;
-  justify-content: center;   /* Centra horizontalmente */
-  align-items:     center;   /* Centra verticalmente */
-  flex-direction:  column;   /* Apila los elementos de arriba a abajo */
-}
-
-.splash-content {
-  text-align: center;   /* Texto centrado */
-  display:        flex;
-  flex-direction: column;
-  align-items:    center;
-  gap: var(--space-md); /* Espacio entre el emoji, el título y el tagline */
-}
-
-.logo {
-  font-size:   72px;   /* El ⚽ ocupa 72px — bien grande y visible */
-  line-height: 1;      /* Sin espacio extra arriba y abajo del emoji */
-}
-
-.app-name {
-  font-size:      var(--text-2xl);   /* 32px — grande */
-  font-weight:    700;               /* Negrita fuerte */
-  color:          var(--color-accent); /* Verde Matchmakers */
-  letter-spacing: -0.5px;
-  /*
-    letter-spacing negativo = letras un poco más juntas.
-    En títulos grandes se ve más moderno y profesional.
-  */
-}
-
-.app-tagline {
-  font-size: var(--text-base);       /* 15px — tamaño normal */
-  color:     var(--color-text-muted); /* Gris — menos importante que el nombre */
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 6 — LOGIN (PANTALLA DE INGRESO)
-════════════════════════════════════════════════════════════════ */
-
-.screen#screen-login {
-  display:         flex;
-  justify-content: center;
-  align-items:     center;
-  padding:         var(--space-xl); /* 32px de margen en los cuatro lados */
-}
-
-.login-content {
-  width:          100%;   /* Ocupa todo el ancho disponible */
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--space-lg); /* 24px entre el título, el campo y el botón */
-}
-
-.login-content h2 {
-  font-size:   var(--text-xl);   /* 24px */
-  font-weight: 700;
-}
-
-.subtitle {
-  color:      var(--color-text-muted);               /* Gris */
-  margin-top: calc(var(--space-sm) * -1);            /* -8px: acerca el subtítulo al h2 */
-  /*
-    calc() hace una operación matemática.
-    var(--space-sm) es 8px, multiplicado por -1 es -8px.
-    Un margen negativo "jala" el elemento hacia arriba.
-  */
-}
-
-/* ── Campo de texto (label + input juntos) ── */
-.input-group {
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--space-sm); /* Espacio entre el label y el input */
-}
-
-.input-group label {
-  font-size:   var(--text-sm);         /* 13px — más pequeño que el input */
-  color:       var(--color-text-muted); /* Gris */
-  font-weight: 500;
-}
-
-.input-group input {
-  background-color: var(--color-bg-input); /* Fondo gris oscuro */
-  border:           1px solid var(--color-border); /* Borde gris */
-  border-radius:    var(--radius-md);  /* Esquinas redondeadas */
-  color:            var(--color-text);
-  font-size:        var(--text-base);
-  font-family:      var(--font-main); /* Misma fuente que el resto */
-  padding:          var(--space-md);  /* Espacio interno para que el texto no toque el borde */
-  outline:          none;
-  /*
-    Por defecto, cuando un input está activo, el navegador
-    dibuja un borde azul brillante. outline: none lo elimina.
-    Nosotros definimos nuestro propio estilo en :focus abajo.
-  */
-  transition:       border-color 0.2s ease; /* El borde cambia de color suavemente */
-  width:            100%;
-}
-
-.input-group input:focus {
-  /*
-    :focus = cuando el usuario toca el input y el cursor aparece adentro.
-    Le ponemos borde verde para indicar visualmente que está activo.
-  */
-  border-color: var(--color-accent); /* Borde verde cuando está escribiendo */
-}
-
-.input-group input::placeholder {
-  /*
-    ::placeholder = el texto de ejemplo que se ve cuando el input está vacío.
-  */
-  color: var(--color-text-muted); /* Gris claro, para diferenciarlo del texto real */
-}
-
-/* ── Botón de ingreso ── */
-button#btn-login {
-  background-color: var(--color-accent); /* Fondo verde */
-  color:            #000;
-  /*
-    Texto negro sobre verde — mejor contraste que texto blanco.
-    Contraste alto = más fácil de leer = mejor accesibilidad.
-  */
-  border:           none;
-  border-radius:    var(--radius-full); /* Completamente redondeado (estilo "pill") */
-  padding:          var(--space-md) var(--space-lg); /* Vertical | Horizontal */
-  font-size:        var(--text-base);
-  font-weight:      700;
-  font-family:      var(--font-main);
-  cursor:           pointer; /* El cursor cambia a manito al pasar por encima */
-  width:            100%;
-  transition:       background-color 0.2s ease, transform 0.1s ease;
-}
-
-button#btn-login:hover {
-  /*
-    :hover = cuando el mouse está encima (en computador).
-    En móvil esto no aplica, pero siempre incluirlo
-    para quienes prueben en navegador de escritorio.
-  */
-  background-color: var(--color-accent-dark); /* Verde un poco más oscuro */
-}
-
-button#btn-login:active {
-  /*
-    :active = mientras el usuario está presionando el botón.
-    scale(0.98) lo hace "hundirse" levemente — simula el
-    feedback físico de presionar un botón real.
-  */
-  transform: scale(0.98);
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 7 — HOME: HEADER SUPERIOR FIJO
-   ════════════════════════════════════════════════════════════════
-
-   El header siempre está visible en la parte de arriba.
-   El contenido (tarjetas) se mueve debajo de él al hacer scroll.
-════════════════════════════════════════════════════════════════ */
-
-.top-bar {
-  position: absolute; /* Se queda en su lugar, no sube al hacer scroll */
-  top:      0;
-  left:     0;
-  width:    100%;
-  height:   var(--top-bar-height); /* 56px de alto */
-
-  background-color: var(--color-bg);
-  border-bottom:    1px solid var(--color-border); /* Línea separadora abajo */
-
-  display:         flex;
-  justify-content: space-between; /* Nombre equipo a la izquierda, íconos a la derecha */
-  align-items:     center;
-  padding:         0 var(--space-md); /* Solo padding horizontal */
-  z-index:         10;
-  /*
-    z-index controla qué elemento aparece "encima" cuando dos se solapan.
-    z-index: 10 asegura que el header siempre se vea por encima del contenido
-    que sube al hacer scroll.
-  */
-}
-
-.team-selector {
-  display:     flex;
-  align-items: center;
-  gap:         var(--space-xs); /* Espacio entre el nombre y la flecha ▾ */
-  font-weight: 600;
-  font-size:   var(--text-base);
-  cursor:      pointer;
-}
-
-.chevron {
-  color:     var(--color-accent); /* La flecha ▾ es verde */
-  font-size: var(--text-sm);
-}
-
-.top-bar-icons {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #060810;
+  min-height: 100vh;
   display: flex;
-  gap:     var(--space-sm); /* Espacio entre el ícono de 🔔 y 👤 */
+  justify-content: center;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
 }
 
-.icon-btn {
-  background:    none;    /* Sin fondo */
-  border:        none;    /* Sin borde */
-  cursor:        pointer;
-  font-size:     20px;
-  padding:       var(--space-xs);
-  border-radius: var(--radius-sm);
-  transition:    background-color 0.2s ease;
+/* ── PHONE CONTAINER ── */
+#phone-container {
+  width: 390px;
+  height: 844px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 44px;
+  box-shadow: 0 0 0 1px #1a1a2e, 0 40px 100px rgba(0,0,0,0.9), 0 0 60px rgba(76,175,80,0.05);
+  background: var(--bg);
 }
 
-.icon-btn:hover {
-  background-color: var(--color-bg-card); /* Fondo suave al pasar el mouse */
+/* ── SCREEN SYSTEM ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  overflow: hidden;
 }
+.screen.active { opacity:1; pointer-events:all; }
 
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 8 — HOME: ÁREA DE CONTENIDO SCROLLEABLE
-   ════════════════════════════════════════════════════════════════
-
-   El espacio entre el header y el menú inferior donde
-   viven las tarjetas de partidos. Si hay muchas tarjetas,
-   el usuario puede hacer scroll aquí.
-════════════════════════════════════════════════════════════════ */
-
+/* ── SCROLLABLE CONTENT ── */
 .screen-content {
   position: absolute;
-  top:      var(--top-bar-height);       /* Empieza JUSTO debajo del header (56px) */
-  bottom:   var(--bottom-nav-height);    /* Termina JUSTO encima del nav (72px) */
-  left:     0;
-  right:    0;
-  /*
-    Al definir top y bottom, el div ocupa el espacio ENTRE
-    el header y el nav, sin necesidad de calcular la altura manualmente.
-    Matemáticamente sería: 812px - 56px - 72px = 684px de alto.
-  */
-
-  overflow-y: auto; /* Si el contenido es más alto que 684px, aparece scroll vertical */
-
-  padding:        var(--space-md);  /* Margen interno en los cuatro lados */
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--space-md);  /* Espacio entre tarjetas */
-
+  top: 64px;
+  bottom: 72px;
+  left: 0; right: 0;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  /*
-    Activa el scroll con inercia en iPhones y iPads.
-    Sin esto, el scroll se siente "seco" en iOS.
-    Con esto, el scroll tiene la fluidez característica de las apps nativas.
-  */
-}
-
-.section-title {
-  font-size:   var(--text-lg);    /* 18px */
-  font-weight: 700;
-  color:       var(--color-text);
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 9 — HOME: TARJETAS DE PARTIDOS
-   ════════════════════════════════════════════════════════════════
-
-   Cada partido se muestra como una "tarjeta" con:
-   · Parte superior: hora + badge de estado (Abierto/Cerrado)
-   · Parte inferior: nombre, ubicación y formato del partido
-════════════════════════════════════════════════════════════════ */
-
-/* ── Contenedor de cada tarjeta ── */
-.match-card {
-  background-color: var(--color-bg-card);      /* Fondo gris oscuro */
-  border:           1px solid var(--color-border); /* Borde gris */
-  border-radius:    var(--radius-lg);           /* Esquinas bien redondeadas */
-  padding:          var(--space-md);
-  cursor:           pointer; /* Manito al pasar el mouse — indica que es clickeable */
-  transition:       border-color 0.2s ease, transform 0.1s ease;
-  display:          flex;
-  flex-direction:   column;
-  gap:              var(--space-sm); /* Espacio entre el header y el body de la card */
-}
-
-.match-card:hover {
-  border-color: var(--color-accent); /* Borde verde al pasar el mouse — feedback visual */
-}
-
-.match-card:active {
-  transform: scale(0.99); /* Se "hunde" un 1% al presionar — feedback táctil visual */
-}
-
-/* ── Parte superior de la tarjeta (hora + badge) ── */
-.match-card-header {
-  display:         flex;
-  justify-content: space-between; /* Hora a la izquierda, badge a la derecha */
-  align-items:     center;
-}
-
-.match-time {
-  font-size:   var(--text-sm);          /* 13px — más pequeño que el nombre */
-  color:       var(--color-text-muted); /* Gris */
-  font-weight: 500;
-}
-
-/* ── Badge de estado (Abierto / Cerrado) ── */
-.match-badge {
-  font-size:      var(--text-xs);   /* 11px — bien pequeño */
-  font-weight:    700;
-  padding:        2px var(--space-sm); /* Poco padding vertical, más horizontal */
-  border-radius:  var(--radius-full);  /* Forma de "píldora" */
-  text-transform: uppercase;           /* ABIERTO en vez de Abierto */
-  letter-spacing: 0.5px;               /* Letras un poco más separadas — legible en mayúsculas */
-}
-
-.match-badge.open {
-  background-color: rgba(29, 185, 84, 0.15);  /* Verde muy transparente como fondo */
-  color:            var(--color-accent);        /* Verde sólido como texto */
-  /*
-    rgba(R, G, B, A) — el 4to valor (0.15) es la transparencia:
-    0 = completamente transparente, 1 = completamente opaco.
-    0.15 = apenas un toque de verde de fondo, muy sutil.
-  */
-}
-
-.match-badge.closed {
-  background-color: rgba(139, 148, 158, 0.15); /* Gris muy transparente como fondo */
-  color:            var(--color-text-muted);    /* Gris sólido como texto */
-}
-
-/* ── Parte inferior de la tarjeta (nombre, ubicación, formato) ── */
-.match-card-body {
-  display:        flex;
+  padding: 12px 16px 20px;
+  display: flex;
   flex-direction: column;
-  gap:            var(--space-xs); /* Poco espacio entre las tres líneas de texto */
+  gap: 0;
 }
+.screen-content.no-top-pad { padding-top: 8px; }
+.screen-content::-webkit-scrollbar { display:none; }
 
-.match-team {
-  font-size:   var(--text-base);  /* 15px — el texto más grande de la card */
-  font-weight: 700;               /* Negrita — es lo más importante */
-  color:       var(--color-text);
+/* ── SPLASH ── */
+#screen-splash {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 24px 48px;
+  background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(76,175,80,0.12) 0%, transparent 70%), var(--bg);
 }
-
-.match-location,
-.match-format {
-  font-size: var(--text-sm);          /* 13px — texto secundario */
-  color:     var(--color-text-muted); /* Gris */
+.splash-glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(76,175,80,0.2) 0%, transparent 70%);
+  pointer-events: none;
 }
-
-
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 10 — HOME: NAVEGACIÓN INFERIOR FIJA
-   ════════════════════════════════════════════════════════════════
-
-   El menú de 5 tabs que siempre está visible en la parte inferior.
-   Similar al navigation bar de apps como Instagram o WhatsApp.
-════════════════════════════════════════════════════════════════ */
-
-.bottom-nav {
-  position: absolute; /* Fijo en la parte inferior, no se mueve con el scroll */
-  bottom:   0;
-  left:     0;
-  width:    100%;
-  height:   var(--bottom-nav-height); /* 72px de alto */
-
-  background-color: var(--color-bg);
-  border-top:       1px solid var(--color-border); /* Línea separadora arriba */
-
-  display:         flex;
-  justify-content: space-around; /* Distribuye los 5 botones con espacio igual entre ellos */
-  align-items:     center;
-  padding:         0 var(--space-sm);
-  z-index:         10; /* Siempre visible por encima del contenido */
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
 }
-
-/* ── Botón de cada tab ── */
-.nav-btn {
-  background: none;
-  border:     none;
-  cursor:     pointer;
-  display:        flex;
-  flex-direction: column; /* Ícono arriba, texto abajo */
-  align-items:    center;
-  gap:            2px;    /* Espacio pequeño entre ícono y texto */
-  padding:        var(--space-xs) var(--space-sm);
-  border-radius:  var(--radius-sm);
-  transition:     opacity 0.2s ease;
-  opacity:        0.5;    /* Por defecto, los tabs inactivos se ven semitransparentes */
-  flex:           1;      /* Cada tab ocupa el mismo espacio horizontal */
-}
-
-.nav-btn.active {
-  opacity: 1; /* El tab activo se ve completamente opaco */
-}
-
-.nav-btn:active {
-  opacity: 0.7; /* Al presionar, se atenúa ligeramente — feedback visual */
-}
-
-.nav-icon {
-  font-size: 20px;
-}
-
-.nav-label {
-  font-size:   var(--text-xs);           /* 11px — muy pequeño, es solo una etiqueta */
-  color:       var(--color-text-muted);
+.splash-icon { font-size: 72px; margin-bottom: 4px; }
+.splash-title { font-size: 32px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+.splash-tagline { font-size: 14px; color: var(--text2); text-align: center; line-height: 1.6; }
+.splash-actions { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 8px; }
+.divider-row { display: flex; align-items: center; gap: 10px; width: 100%; }
+.divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+.divider-text { font-size: 12px; color: var(--text3); white-space: nowrap; }
+.social-row { display: flex; gap: 10px; width: 100%; }
+.btn-social {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: var(--radius-btn);
+  padding: 12px;
+  font-size: 13px;
   font-weight: 500;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.legal-text { font-size: 11px; color: var(--text3); text-align: center; line-height: 1.6; }
+.legal-text a { color: var(--text2); }
+
+/* ── BUTTONS ── */
+.btn-green {
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 15px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(76,175,80,0.35);
+  font-family: 'Inter', sans-serif;
+}
+.btn-green:active { transform: scale(0.98); }
+.btn-green-sm {
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 12px rgba(76,175,80,0.3);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-pill);
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+.btn-outline-sm {
+  background: transparent;
+  color: var(--green);
+  border: 1.5px solid var(--green);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+}
+.btn-yellow-sm {
+  background: rgba(245,158,11,0.15);
+  color: var(--yellow);
+  border: 1px solid var(--yellow);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.btn-red {
+  background: rgba(239,68,68,0.15);
+  color: var(--red);
+  border: 1.5px solid var(--red);
+  border-radius: var(--radius-pill);
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+.btn-red-outline {
+  background: transparent;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+  border-radius: var(--radius-pill);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.btn-ghost-sm { color: var(--green); font-size: 13px; font-weight: 600; cursor: pointer; background: none; border: none; }
+.btn-ghost-center { color: var(--text2); font-size: 13px; cursor: pointer; background: none; border: none; width: 100%; text-align: center; }
+.icon-text-btn { background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 4px 8px; }
+.dashed-add-btn {
+  width: 100%; padding: 12px; margin-top: 8px;
+  border: 1.5px dashed rgba(76,175,80,0.4);
+  border-radius: var(--radius-card);
+  background: none; color: var(--green); font-size: 13px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.w-full { width: 100%; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.ml-auto { margin-left: auto; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 64px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px;
+  z-index: 20;
+}
+.avatar-btn {
+  position: relative; background: none; border: none; cursor: pointer; flex-shrink: 0;
+}
+.avatar-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }
+.online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); border: 2px solid var(--bg);
+}
+.top-bar-greeting { flex: 1; display: flex; flex-direction: column; }
+.greeting-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.greeting-sub { font-size: 12px; color: var(--text2); }
+.notif-btn { position: relative; }
+.icon-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 20px; padding: 8px; border-radius: 50%;
+  color: var(--text2); position: relative;
+}
+.notif-badge {
+  position: absolute; top: 4px; right: 4px;
+  background: var(--red); color: #fff;
+  font-size: 9px; font-weight: 700;
+  min-width: 16px; height: 16px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+.nav-badge {
+  position: absolute; top: 2px; right: 8px;
 }
 
-.nav-btn.active .nav-label {
-  color: var(--color-accent); /* La etiqueta del tab activo se pone verde */
+/* ── PROFILE DROPDOWN ── */
+.profile-dropdown {
+  position: absolute; top: 64px; left: 16px;
+  background: var(--card);
+  border: 1px solid rgba(76,175,80,0.2);
+  border-radius: var(--radius-card);
+  z-index: 100;
+  min-width: 200px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.profile-dropdown.hidden { display: none; }
+.dropdown-header {
+  padding: 12px 16px;
+  font-size: 13px; font-weight: 700; color: var(--green);
+  border-bottom: 1px solid var(--card-border);
+}
+.dropdown-item {
+  display: block; width: 100%; text-align: left;
+  padding: 11px 16px; background: none; border: none;
+  color: var(--text); font-size: 14px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  border-bottom: 1px solid var(--card-border);
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: rgba(255,255,255,0.04); }
+.dropdown-item.danger { color: var(--red); }
+
+/* ── TOP BAR SIMPLE ── */
+.top-bar-simple {
+  position: absolute; top: 0; left: 0; right: 0; height: 64px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 16px; z-index: 20;
+}
+.tbs-title { font-size: 20px; font-weight: 700; color: var(--text); }
+.tbs-sub { font-size: 12px; color: var(--text2); }
+
+/* ── TOP BAR BACK ── */
+.top-bar-back {
+  position: absolute; top: 0; left: 0; right: 0; height: 56px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px; z-index: 20;
+}
+.back-arrow {
+  background: none; border: none; color: var(--text); font-size: 26px;
+  cursor: pointer; padding: 4px 8px 4px 0; line-height: 1;
+}
+.tbb-title { font-size: 16px; font-weight: 600; color: var(--text); }
+.team-pill-selector {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text); border-radius: var(--radius-pill);
+  padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif;
 }
 
-/* ── Botón central (+) — especial, más grande y destacado ── */
-.nav-btn-main {
-  background-color: var(--color-accent); /* Fondo verde sólido */
-  border-radius:    var(--radius-full);  /* Forma circular perfecta */
-  width:            52px;
-  height:           52px;
-  flex:             0 0 52px;
-  /*
-    flex: 0 0 52px → este botón no crece (0) ni se encoge (0),
-    siempre mide exactamente 52px de ancho.
-    Los otros botones tienen flex: 1 (se reparten el espacio restante).
-  */
-  opacity:          1 !important;
-  /*
-    !important fuerza este valor aunque haya otra regla que diga opacity: 0.5
-    El botón + siempre debe verse completo, nunca semitransparente.
-  */
-  display:         flex;
-  justify-content: center; /* Centra el símbolo + horizontalmente */
-  align-items:     center; /* Centra el símbolo + verticalmente */
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 72px;
+  background: var(--bg2);
+  border-top: 1px solid var(--card-border);
+  display: flex; align-items: center;
+  padding: 0 8px 8px; z-index: 20;
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; padding: 8px 4px 0;
+  background: none; border: none; cursor: pointer;
+  color: var(--text2); font-family: 'Inter', sans-serif;
+  position: relative;
+}
+.nav-icon { font-size: 22px; line-height: 1; }
+.nav-label { font-size: 10px; font-weight: 500; }
+.nav-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: transparent; margin-top: 2px;
+}
+.nav-btn.active .nav-icon { filter: drop-shadow(0 0 6px rgba(76,175,80,0.8)); }
+.nav-btn.active .nav-label { color: var(--green); font-weight: 700; }
+.nav-btn.active .nav-dot { background: var(--green); }
+
+/* ── SECTION ── */
+.section { margin-top: 20px; }
+.section:first-child { margin-top: 8px; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.section-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.see-all { background: none; border: none; color: var(--text2); font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+/* ── BADGES ── */
+.badge-red {
+  background: var(--red); color: #fff; font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 50px; margin-left: 6px;
+}
+.pill-green {
+  background: rgba(76,175,80,0.2); color: var(--green);
+  border-radius: 50px; padding: 4px 10px; font-size: 11px; font-weight: 700;
+  display: inline-block;
+}
+.pill-green-xs {
+  background: rgba(76,175,80,0.2); color: var(--green);
+  border-radius: 50px; padding: 3px 8px; font-size: 10px; font-weight: 600;
+  display: inline-block; border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+}
+.pill-yellow-xs {
+  background: rgba(245,158,11,0.2); color: var(--yellow);
+  border-radius: 50px; padding: 3px 8px; font-size: 10px; font-weight: 600;
+  display: inline-block;
+}
+.pill-red-xs {
+  background: rgba(239,68,68,0.2); color: var(--red);
+  border-radius: 50px; padding: 3px 8px; font-size: 10px; font-weight: 600;
+  display: inline-block;
+}
+.badge-top-right {
+  position: absolute; top: 12px; right: 12px;
 }
 
-.nav-btn-main .nav-icon {
-  color:       #000;   /* + negro sobre verde — buen contraste */
-  font-size:   24px;
+/* ── HERO CARD ── */
+.hero-card {
+  width: 100%; height: 180px; border-radius: var(--radius-card);
+  background-size: cover; background-position: center;
+  position: relative; overflow: hidden; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(10,14,26,0.9) 0%, rgba(10,14,26,0.5) 60%, rgba(10,14,26,0.2) 100%);
+}
+.hero-body {
+  position: relative; z-index: 2;
+  padding: 14px 16px 0; display: flex; flex-direction: column; gap: 6px;
+}
+.hero-pill { font-size: 10px; align-self: flex-start; }
+.hero-teams { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.vs-text { font-size: 13px; font-weight: 800; color: var(--text2); }
+.hero-names { font-size: 15px; font-weight: 700; color: var(--text); }
+.hero-meta { font-size: 11px; color: var(--text2); }
+.hero-footer {
+  position: relative; z-index: 2;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hero-players { font-size: 12px; color: var(--text2); }
+
+/* ── RETO CARD ── */
+.reto-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.reto-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.reto-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.reto-meta { font-size: 12px; color: var(--text2); }
+
+/* ── MATCH ROW CARD ── */
+.match-row-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 12px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.match-thumb-wrap { position: relative; flex-shrink: 0; }
+.match-thumb { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; display: block; }
+.thumb-badge {
+  position: absolute; top: 6px; left: 6px;
+  font-size: 9px; font-weight: 700; padding: 2px 6px;
+}
+.match-row-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.match-row-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.match-row-meta { font-size: 12px; color: var(--text2); }
+.arrow-icon { color: var(--text2); font-size: 20px; }
+
+/* ── QUICK GRID ── */
+.quick-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.quick-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 16px 12px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  cursor: pointer; transition: border-color 0.2s; text-align: left;
+}
+.quick-card:hover { border-color: rgba(76,175,80,0.3); box-shadow: 0 0 20px rgba(76,175,80,0.1); }
+.quick-icon { font-size: 24px; }
+.quick-label { font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* ── ACTIVITY CARD ── */
+.activity-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.activity-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--card-border);
+}
+.activity-row:last-child { border-bottom: none; }
+.act-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.act-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.4; }
+.act-time { font-size: 11px; color: var(--text3); white-space: nowrap; }
+.act-arrow { color: var(--text3); font-size: 16px; }
+
+/* ── PLAYERS SCROLL ── */
+.players-scroll {
+  display: flex; gap: 10px; overflow-x: auto;
+  padding-bottom: 4px; -webkit-overflow-scrolling: touch;
+}
+.players-scroll::-webkit-scrollbar { display: none; }
+.player-mini-card {
+  flex-shrink: 0; width: 80px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 12px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer;
+}
+.player-avatar-wrap { position: relative; display: inline-flex; }
+.player-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.player-online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); border: 2px solid var(--card);
+}
+.player-offline-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--text3); border: 2px solid var(--card);
+}
+.player-mini-name { font-size: 11px; font-weight: 600; color: var(--text); text-align: center; }
+.player-mini-pos { font-size: 10px; color: var(--text2); text-align: center; }
+.player-mini-zone { font-size: 10px; color: var(--text3); text-align: center; }
+.more-card { justify-content: center; background: rgba(76,175,80,0.05); border-color: rgba(76,175,80,0.15); }
+.more-count { font-size: 22px; font-weight: 800; color: var(--green); }
+.more-label { font-size: 12px; }
+
+/* ── BANNER CARD ── */
+.banner-card {
+  width: 100%; height: 120px; border-radius: var(--radius-card);
+  background-size: cover; background-position: center;
+  position: relative; overflow: hidden; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.banner-overlay {
+  position: absolute; inset: 0;
+  background: rgba(10,14,26,0.75);
+}
+.banner-body {
+  position: relative; z-index: 2;
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 12px;
+}
+.banner-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.banner-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+/* ── STATS SCROLL ── */
+.stats-scroll {
+  display: flex; gap: 10px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-scroll::-webkit-scrollbar { display: none; }
+.stat-card {
+  flex-shrink: 0; width: 90px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.stat-icon { font-size: 20px; }
+.stat-num { font-size: 20px; font-weight: 800; color: var(--text); }
+.stat-label { font-size: 10px; color: var(--text2); text-align: center; line-height: 1.3; }
+
+/* ── TEAM LOGO SIZES ── */
+.team-logo-sm {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.team-logo-md {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.team-logo-lg {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.logo-green  { background: linear-gradient(135deg,#4CAF50,#2e7d32); }
+.logo-blue   { background: linear-gradient(135deg,#3B82F6,#1d4ed8); }
+.logo-blue2  { background: linear-gradient(135deg,#06b6d4,#0284c7); }
+.logo-brown  { background: linear-gradient(135deg,#92400e,#b45309); }
+.logo-red    { background: linear-gradient(135deg,#EF4444,#991b1b); }
+.logo-purple { background: linear-gradient(135deg,#A855F7,#6d28d9); }
+
+/* ── SEARCH BAR ── */
+.search-bar-wrap {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 11px 14px;
+  margin-bottom: 12px;
+}
+.search-icon { font-size: 16px; }
+.search-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--text); font-size: 14px; font-family: 'Inter', sans-serif;
+}
+.search-input::placeholder { color: var(--text3); }
+
+/* ── TAB PILLS ── */
+.tab-pills {
+  display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.tab-pill {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text2); border-radius: var(--radius-pill);
+  padding: 8px 16px; font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.tab-pill.active {
+  background: var(--green); color: #fff; border-color: var(--green);
   font-weight: 700;
 }
 
-.nav-btn-main:active {
-  transform: scale(0.95); /* Se "hunde" al presionar */
+/* ── TAB CONTENT ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── FILTER PILLS ── */
+.filter-pills-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filter-pill {
+  background: rgba(255,255,255,0.05); color: var(--text2);
+  border-radius: var(--radius-pill); padding: 5px 12px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+}
+.results-count { font-size: 12px; color: var(--text3); margin-bottom: 12px; }
+
+/* ── TEAM CARD ── */
+.team-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  margin-bottom: 10px; cursor: pointer; position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.team-card.featured {
+  border-color: rgba(76,175,80,0.3);
+  box-shadow: 0 0 20px rgba(76,175,80,0.1), 0 4px 24px rgba(0,0,0,0.3);
+}
+.team-card-row { display: flex; align-items: center; gap: 12px; }
+.team-card-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.team-card-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.team-card-sub { font-size: 12px; color: var(--text2); }
+.team-card-meta { font-size: 12px; color: var(--text2); }
+.team-card-actions { display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; }
+
+/* ── CTA DARK CARD ── */
+.cta-dark-card {
+  background: linear-gradient(135deg, rgba(76,175,80,0.08), rgba(26,34,53,0.9));
+  border: 1px solid rgba(76,175,80,0.2);
+  border-radius: var(--radius-card); padding: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 10px;
+}
+.cta-dark-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.cta-dark-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+/* ── MINI MATCH CARDS ── */
+.mini-matches-scroll {
+  display: flex; gap: 10px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch; padding-bottom: 4px;
+}
+.mini-matches-scroll::-webkit-scrollbar { display: none; }
+.mini-match-card {
+  flex-shrink: 0; width: 140px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); overflow: hidden; cursor: pointer;
+}
+.mini-match-photo {
+  height: 80px; background-size: cover; background-position: center;
+  position: relative;
+}
+.mini-badge {
+  position: absolute; top: 8px; left: 8px;
+  background: rgba(0,0,0,0.7); color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 50px;
+}
+.mini-match-info { padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+.mini-match-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.mini-match-loc { font-size: 11px; color: var(--text2); }
+
+/* ── LIVE SECTION ── */
+.live-section-header {
+  font-size: 12px; font-weight: 700; color: var(--red);
+  letter-spacing: 0.5px; margin-bottom: 10px;
+}
+.live-section-header.green-text { color: var(--green); }
+.live-badge {
+  background: rgba(239,68,68,0.2); color: var(--red);
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 50px;
+  display: inline-block;
+}
+.live-match-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius-card); padding: 14px;
+  margin-bottom: 10px; cursor: pointer;
+}
+.live-match-title { font-size: 14px; font-weight: 700; color: var(--text); margin: 8px 0 4px; }
+.live-match-meta { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.progress-bar-wrap {
+  height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px;
+  margin-bottom: 8px; overflow: hidden;
+}
+.progress-bar { height: 100%; border-radius: 4px; }
+.progress-bar.red { background: var(--red); }
+.progress-bar.green { background: var(--green); }
+.live-match-footer { display: flex; justify-content: space-between; align-items: center; }
+.live-match-slots { font-size: 12px; color: var(--text2); }
+.live-alert { color: var(--red); font-size: 12px; font-weight: 600; }
+
+/* ── UPCOMING MATCH ── */
+.upcoming-match-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  margin-bottom: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.upcoming-match-left { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.green-border-left { border-left: 3px solid var(--green); padding-left: 12px; }
+.upcoming-match-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.upcoming-match-meta { font-size: 12px; color: var(--text2); }
+
+/* ── MAP PLACEHOLDER ── */
+.map-placeholder {
+  height: 200px; background: linear-gradient(135deg,#0d1829,#111827);
+  border-radius: var(--radius-card); position: relative;
+  border: 1px solid var(--card-border); margin-bottom: 12px; overflow: hidden;
+}
+.map-placeholder::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40L40 0M-10 10L10-10M30 50L50 30' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+}
+.map-pin {
+  position: absolute; font-size: 20px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+}
+.map-label {
+  background: rgba(76,175,80,0.9); color: #fff;
+  font-size: 9px; font-weight: 700; padding: 2px 6px;
+  border-radius: 4px; white-space: nowrap; margin-top: 2px;
+}
+.map-text {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: var(--text3);
 }
 
+/* ── CANCHA ROW ── */
+.cancha-row {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 10px; cursor: pointer;
+}
+.cancha-row-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.cancha-row-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
 
-/* ════════════════════════════════════════════════════════════════
-   BLOQUE 11 — PANTALLAS PLACEHOLDER (EN CONSTRUCCIÓN)
-   ════════════════════════════════════════════════════════════════
+/* ── POST CARDS ── */
+.post-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  margin-bottom: 12px;
+}
+.post-header {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; margin-bottom: 10px;
+}
+.post-header-simple {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.post-type-badge {
+  border-radius: 50px; padding: 3px 10px;
+  font-size: 11px; font-weight: 700;
+}
+.post-author-info { display: flex; align-items: center; gap: 8px; }
+.post-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.post-author-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.post-author-sub { font-size: 11px; color: var(--text2); }
+.post-time { font-size: 11px; color: var(--text3); margin-left: auto; }
+.post-video-thumb {
+  height: 160px; background: #0d1829; border-radius: 12px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px; overflow: hidden;
+}
+.video-play-btn {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); color: #000;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; padding-left: 3px;
+}
+.video-meta-bottom {
+  position: absolute; bottom: 8px; left: 10px; right: 10px;
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: rgba(255,255,255,0.8);
+}
+.post-caption { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.post-subcap { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.post-actions { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--card-border); padding-top: 10px; }
+.post-action-btn { background: none; border: none; color: var(--text2); font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+.post-likes-right { margin-left: auto; font-size: 12px; color: var(--text3); }
+.conv-body { padding: 10px 0; }
+.conv-pos-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.conv-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.conv-meta { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.conv-pills { display: flex; gap: 6px; flex-wrap: wrap; }
 
-   Estilos para las pantallas que aún no tienen contenido real.
-   Son pantallas vacías con un mensaje y un botón de volver.
-   Las iremos completando sesión por sesión.
-════════════════════════════════════════════════════════════════ */
+/* ── TRENDING ── */
+.trend-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--card-border);
+}
+.trend-row:last-child { border-bottom: none; }
+.trend-rank {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; flex-shrink: 0;
+}
+.trend-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.trend-info { flex: 1; }
+.trend-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.trend-sub { font-size: 11px; color: var(--text2); }
+.trend-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.trend-pct { font-size: 13px; font-weight: 700; color: var(--green); }
+.trend-form { display: flex; gap: 2px; }
+.form-w { width: 16px; height: 16px; border-radius: 3px; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
+.form-e { width: 16px; height: 16px; border-radius: 3px; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #000; }
+.form-l { width: 16px; height: 16px; border-radius: 3px; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; }
 
-.placeholder-screen {
-  display:         flex;
-  flex-direction:  column;
-  justify-content: center; /* Contenido centrado verticalmente */
-  align-items:     center; /* Contenido centrado horizontalmente */
-  height:          100%;
-  gap:             var(--space-md);
-  text-align:      center;
+/* ── MIS PARTIDOS ── */
+.result-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 16px;
+  margin-bottom: 10px; cursor: pointer; position: relative;
+}
+.result-card.live-glow { border-color: rgba(239,68,68,0.4); box-shadow: 0 0 20px rgba(239,68,68,0.1); }
+.rc-live-badge { color: var(--red); font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.rc-score-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 10px 0; }
+.rc-score-team { font-size: 16px; font-weight: 800; color: var(--text); }
+.rc-score { font-size: 28px; font-weight: 900; color: var(--text); letter-spacing: 2px; }
+.rc-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 4px; }
+.rc-meta { font-size: 12px; color: var(--text3); text-align: center; }
+.rc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.result-badge {
+  position: absolute; top: 12px; right: 12px;
+  border-radius: 50px; padding: 3px 10px; font-size: 11px; font-weight: 700;
+}
+.rc-score-team-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.rc-score-name { font-size: 11px; color: var(--text2); }
+.rc-big-score { font-size: 24px; font-weight: 900; color: var(--text); }
+
+/* ── STATS ── */
+.stats-hero-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.stats-hero-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.stats-hero-sub { font-size: 12px; color: var(--text2); }
+.stats-top-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.stat-big-card {
+  flex: 1; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.stat-big-num { font-size: 22px; font-weight: 800; color: var(--green); }
+.stat-big-label { font-size: 10px; color: var(--text2); text-align: center; }
+.form-section { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-card); padding: 16px; }
+.form-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 12px; }
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 60px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; }
+.green-bar { background: var(--green); }
+.red-bar { background: var(--red); }
+.yellow-bar { background: var(--yellow); }
+.bar-label { font-size: 10px; font-weight: 700; color: var(--text2); }
+.top-player-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--card-border); }
+.top-player-row:last-child { border-bottom: none; }
+.top-rank { width: 20px; font-size: 13px; font-weight: 800; color: var(--text2); }
+.top-player-info { flex: 1; }
+.top-player-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.top-player-pos { font-size: 12px; color: var(--text2); }
+.top-player-stats { font-size: 13px; font-weight: 700; color: var(--green); }
+
+/* ── CHAT ── */
+.convo-list { display: flex; flex-direction: column; }
+.convo-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 0; border-bottom: 1px solid var(--card-border); cursor: pointer;
+}
+.convo-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.convo-body { flex: 1; min-width: 0; }
+.convo-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.convo-last { font-size: 12px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.convo-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.convo-time { font-size: 11px; color: var(--text3); }
+.convo-badge {
+  background: var(--green); color: #fff;
+  font-size: 10px; font-weight: 700;
+  min-width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
 }
 
-.placeholder-screen p {
-  font-size:   var(--text-xl); /* 24px — texto grande y visible */
-  font-weight: 600;
+/* ── CHAT DETAIL ── */
+.chat-messages {
+  position: absolute; top: 56px; bottom: 60px; left: 0; right: 0;
+  overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.bubble-them {
+  background: var(--card); color: var(--text);
+  border-radius: 16px 16px 16px 4px; padding: 10px 14px;
+  font-size: 14px; max-width: 75%; align-self: flex-start;
+}
+.bubble-me {
+  background: var(--green); color: #fff;
+  border-radius: 16px 16px 4px 16px; padding: 10px 14px;
+  font-size: 14px; max-width: 75%; align-self: flex-end;
+}
+.chat-header-info { display: flex; align-items: center; gap: 6px; flex: 1; }
+.chat-header-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.online-dot-inline { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; }
+.chat-online-text { font-size: 12px; color: var(--green); }
+.chat-input-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px; background: var(--bg2);
+  border-top: 1px solid var(--card-border);
+  display: flex; align-items: center; gap: 10px; padding: 0 16px;
+}
+.chat-input {
+  flex: 1; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 50px; padding: 10px 16px;
+  color: var(--text); font-size: 14px; outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.send-btn {
+  background: var(--green); color: #fff; border: none;
+  border-radius: 50%; width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer;
 }
 
-.placeholder-note {
-  font-size:   var(--text-base) !important; /* 15px — más pequeño que el título */
-  color:       var(--color-text-muted) !important; /* Gris — menos énfasis */
-  font-weight: 400 !important; /* Normal, sin negrita */
-  /*
-    Los !important son necesarios porque la regla de arriba
-    (.placeholder-screen p) aplica a todos los <p> incluyendo este.
-    !important le dice al CSS: "esta regla gana sin importar el orden".
-  */
+/* ── PROFILE ── */
+.profile-hero {
+  background: linear-gradient(135deg, rgba(76,175,80,0.12), rgba(26,34,53,1));
+  border: 1px solid rgba(76,175,80,0.15);
+  border-radius: var(--radius-card); padding: 24px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.profile-avatar-lg {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg,#4CAF50,#2e7d32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 800; color: #fff;
+  margin-bottom: 4px; box-shadow: 0 0 30px rgba(76,175,80,0.3);
+}
+.profile-name { font-size: 22px; font-weight: 700; color: var(--text); }
+.profile-handle { font-size: 13px; color: var(--text2); }
+.profile-sub { font-size: 13px; color: var(--text2); }
+.profile-stats-row {
+  display: flex; align-items: center; gap: 16px; margin-top: 8px;
+}
+.profile-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ps-num { font-size: 16px; font-weight: 700; color: var(--text); }
+.ps-label { font-size: 11px; color: var(--text2); }
+.ps-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.1); }
+.team-row-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); margin-bottom: 8px;
+}
+.team-row-info { flex: 1; }
+.team-row-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.team-row-sub { font-size: 12px; color: var(--text2); }
+.info-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); overflow: hidden;
+}
+.info-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; border-bottom: 1px solid var(--card-border);
+}
+.info-row.no-border { border-bottom: none; }
+.info-label { font-size: 13px; color: var(--text2); }
+.info-val { font-size: 13px; font-weight: 600; color: var(--text); }
+.sobre-mi-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  font-size: 14px; color: var(--text2); line-height: 1.6;
 }
 
-/* ── Botones de las pantallas placeholder ── */
-.placeholder-screen button,
-.back-btn {
-  /*
-    Esta regla aplica a DOS selectores a la vez (separados por coma).
-    Cualquier <button> dentro de .placeholder-screen
-    Y también cualquier elemento con clase .back-btn.
-  */
-  background:    none;
-  border:        1px solid var(--color-border); /* Borde gris */
-  color:         var(--color-text-muted);
-  padding:       var(--space-sm) var(--space-md);
-  border-radius: var(--radius-full); /* Forma de píldora */
-  cursor:        pointer;
-  font-family:   var(--font-main);
-  font-size:     var(--text-sm);
-  transition:    border-color 0.2s ease, color 0.2s ease;
+/* ── MATCH DETAIL ── */
+.match-detail-hero {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 20px 16px;
+}
+.mdh-teams { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mdh-team { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.mdh-team-name { font-size: 13px; font-weight: 600; color: var(--text); text-align: center; }
+.mdh-vs { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.mdh-vs-text { font-size: 20px; font-weight: 900; color: var(--text2); }
+.mdh-status { display: inline-block; }
+.players-grid {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+}
+.player-slot { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.slot-name { font-size: 10px; color: var(--text2); }
+.player-slot.empty .slot-plus {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px dashed var(--text3); display: flex;
+  align-items: center; justify-content: center;
+  color: var(--text3); font-size: 18px;
+}
+.organizer-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.org-info { flex: 1; }
+.org-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.org-role { font-size: 12px; color: var(--text2); }
+.notes-card {
+  background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius-card); padding: 12px 14px;
+  font-size: 13px; color: var(--text2); line-height: 1.5;
 }
 
-.placeholder-screen button:hover,
-.back-btn:hover {
-  border-color: var(--color-accent); /* Borde verde al pasar el mouse */
-  color:        var(--color-accent); /* Texto verde al pasar el mouse */
+/* ── SUCCESS SCREEN ── */
+.success-screen {
+  height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px 24px; gap: 12px; text-align: center;
+}
+.success-icon { font-size: 64px; margin-bottom: 8px; }
+.success-title { font-size: 24px; font-weight: 800; color: var(--text); }
+.success-sub { font-size: 14px; color: var(--text2); line-height: 1.6; max-width: 280px; }
+
+/* ── FORMS ── */
+.form-label { font-size: 12px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px; margin-bottom: 8px; }
+.form-input {
+  width: 100%; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 12px 14px;
+  color: var(--text); font-size: 14px; outline: none;
+  font-family: 'Inter', sans-serif;
+}
+.form-input:focus { border-color: rgba(76,175,80,0.4); }
+.format-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.format-pill {
+  padding: 8px 14px; border-radius: var(--radius-pill);
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text2); font-size: 13px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.format-pill.active { background: rgba(76,175,80,0.2); border-color: var(--green); color: var(--green); font-weight: 700; }
+.format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.day-pills { display: flex; gap: 6px; }
+.day-pill {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text2); font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+}
+.day-pill.active { background: rgba(76,175,80,0.2); border-color: var(--green); color: var(--green); }
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-option {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 12px 14px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+}
+.radio-option.active-radio { border-color: var(--green); }
+.radio-sub { font-size: 12px; color: var(--text2); font-weight: 400; }
+.color-picker-row { display: flex; gap: 12px; }
+.color-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid transparent; cursor: pointer;
+}
+.color-dot.active { border-color: #fff; box-shadow: 0 0 12px rgba(255,255,255,0.3); }
+.create-team-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg,#4CAF50,#2e7d32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800; color: #fff;
+  margin: 0 auto 4px;
+}
+.create-team-avatar-sm {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg,#4CAF50,#2e7d32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; color: #fff;
+}
+.summary-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); overflow: hidden;
+}
+.share-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.share-btn {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--text); border-radius: var(--radius-btn);
+  padding: 10px 14px; font-size: 13px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
 }
 
-.back-btn {
-  align-self: flex-start; /* Alineado a la izquierda (no centrado como el resto) */
-  margin:     var(--space-md); /* Margen en los cuatro lados */
+/* ── FICHAJES ── */
+.player-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-card); padding: 14px;
+  display: flex; gap: 12px; margin-bottom: 10px; cursor: pointer;
 }
+.player-card-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.player-card-name { font-size: 14px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.player-card-pos { font-size: 12px; color: var(--text2); }
+.player-card-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.player-card-stats { font-size: 12px; color: var(--text2); }
+.no-team-badge { background: rgba(76,175,80,0.15); color: var(--green); font-size: 10px; padding: 2px 7px; border-radius: 50px; font-weight: 600; }
+.in-team-badge { background: rgba(59,130,246,0.15); color: var(--blue); font-size: 10px; padding: 2px 7px; border-radius: 50px; font-weight: 600; }
+
+/* ── RETO DETAIL ── */
+.reto-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── CANCHA DETAIL ── */
+.field-illustration {
+  height: 140px; background: #1a4d1a;
+  border-radius: var(--radius-card); position: relative;
+  border: 2px solid rgba(76,175,80,0.3); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.field-illustration::before {
+  content: '';
+  position: absolute; inset: 10px;
+  border: 2px solid rgba(255,255,255,0.3); border-radius: 8px;
+}
+.field-illustration::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 50px; height: 50px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.field-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 600; z-index: 1; }
+.time-slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.time-slot {
+  padding: 8px 4px; border-radius: 8px; font-size: 11px; font-weight: 600;
+  cursor: pointer; text-align: center; font-family: 'Inter', sans-serif; border: none;
+}
+.time-slot.free { background: var(--card); color: var(--text); border: 1px solid var(--card-border); }
+.time-slot.occupied { background: rgba(255,255,255,0.04); color: var(--text3); cursor: not-allowed; }
+.time-slot.selected { background: rgba(76,175,80,0.2); color: var(--green); border: 1px solid var(--green); }
