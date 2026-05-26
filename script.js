@@ -161,12 +161,6 @@ function closeDrawer() {
   if (fondo) fondo.classList.add('hidden');
 }
 
-// Estas dos funciones existen por compatibilidad con código HTML antiguo
-// que todavía las llama. Simplemente redirigen a las nuevas.
-function toggleDropdown() { openDrawer(); }
-function closeDropdown()  { closeDrawer(); }
-
-
 /* ══════════════════════════════════════════════════════════════════
    SECCIÓN 3 — MODAL DE CREACIÓN (BOTÓN "+" CENTRAL)
    ══════════════════════════════════════════════════════════════════
@@ -199,33 +193,7 @@ function closeCreateModal() {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 4 — NAVEGACIÓN DENTRO DE LA PANTALLA BUSCAR
-   ══════════════════════════════════════════════════════════════════
-   La pantalla de búsqueda tiene sub-secciones: rivales, partidos
-   y canchas. Esta función dirige al usuario a la correcta.
-*/
-
-
-/*
- * setSearchTab(tab)
- * ─────────────────
- * Navega a la sub-pantalla de búsqueda correcta.
- * tab puede ser: 'rivales', 'partidos' o 'canchas'
- */
-function setSearchTab(tab) {
-  const destinos = {
-    rivales:  'screen-search-rivales',
-    partidos: 'screen-search-partidos',
-    canchas:  'screen-search-canchas',
-  };
-  const destino = destinos[tab];
-  if (destino) goTo(destino);
-  else goTo('screen-search'); // si no reconoce el tab, va al hub general
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 5 — TABS DE "MIS PARTIDOS"
+   SECCIÓN 4 — TABS DE "MIS PARTIDOS"
    ══════════════════════════════════════════════════════════════════
    La pantalla "Mis Partidos" tiene tres pestañas: Próximos,
    Pasados y Estadísticas. Esta función muestra la pestaña
@@ -241,19 +209,16 @@ function setSearchTab(tab) {
  */
 function setPartidosTab(tab) {
 
-  // Quitar la clase 'active' de los tres contenidos de pestaña
-  ['proximos', 'pasados', 'estadisticas'].forEach(nombre => {
+  ['proximos', 'pasados', 'creados'].forEach(nombre => {
     const contenido = document.getElementById('tab-' + nombre);
     if (contenido) contenido.classList.remove('active');
   });
 
-  // Activar el contenido de la pestaña que se tocó
   const contenidoActivo = document.getElementById('tab-' + tab);
   if (contenidoActivo) contenidoActivo.classList.add('active');
 
-  // También resaltar visualmente el botón de pestaña correcto
   const botonesPestana = document.querySelectorAll('#partidos-tabs .tab-pill');
-  const indicePorNombre = { proximos: 0, pasados: 1, estadisticas: 2 };
+  const indicePorNombre = { proximos: 0, pasados: 1, creados: 2 };
   botonesPestana.forEach((boton, i) => {
     boton.classList.toggle('active', i === indicePorNombre[tab]);
   });
@@ -261,7 +226,79 @@ function setPartidosTab(tab) {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 6 — TABS DE "FICHAJES"
+   SECCIÓN 5 — FILTROS DE COMUNIDAD
+   ══════════════════════════════════════════════════════════════════
+   La pantalla de Comunidad tiene cuatro filtros: Para ti,
+   Resultados, Videos y Convocatorias. Cada post tiene data-tipo
+   ('parati' | 'resultado' | 'video' | 'convocatoria').
+*/
+
+
+/*
+ * setCommunityFilter(filtro, btnEl)
+ * ──────────────────────────────────
+ * Activa el filtro y muestra solo los posts correspondientes.
+ * filtro puede ser: 'parati', 'resultados', 'videos', 'convocatorias'.
+ */
+function setCommunityFilter(filtro, btnEl) {
+
+  // Resaltar el botón activo
+  document.querySelectorAll('#community-filter-pills .tab-pill').forEach(b => {
+    b.classList.remove('active');
+  });
+  if (btnEl) btnEl.classList.add('active');
+
+  // Mostrar/ocultar posts según el filtro
+  document.querySelectorAll('#community-feed .post-card').forEach(card => {
+    const tipo = card.dataset.tipo || '';
+    const visible = filtro === 'parati' || tipo === filtro;
+    card.style.display = visible ? '' : 'none';
+  });
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   SECCIÓN 6 — FILTROS DE CHAT
+   ══════════════════════════════════════════════════════════════════
+   La pantalla de Chat tiene cuatro filtros: Todos, Equipos,
+   Partidos y No leídos. Cada conversación tiene data-tipo
+   ('equipo' | 'partido' | 'persona') y data-unread ('true'|'false').
+*/
+
+
+/*
+ * setChatFilter(filtro, btnEl)
+ * ────────────────────────────
+ * Activa el filtro indicado y muestra solo las conversaciones
+ * que corresponden. filtro puede ser: 'todos', 'equipos',
+ * 'partidos' o 'noleidos'.
+ */
+function setChatFilter(filtro, btnEl) {
+
+  // Resaltar el botón activo
+  document.querySelectorAll('#chat-filter-pills .tab-pill').forEach(b => {
+    b.classList.remove('active');
+  });
+  if (btnEl) btnEl.classList.add('active');
+
+  // Mostrar/ocultar conversaciones según el filtro
+  document.querySelectorAll('#chat-convo-list .convo-row').forEach(fila => {
+    const tipo   = fila.dataset.tipo   || '';
+    const unread = fila.dataset.unread === 'true';
+
+    let visible = false;
+    if      (filtro === 'todos')    visible = true;
+    else if (filtro === 'equipos')  visible = tipo === 'equipo';
+    else if (filtro === 'partidos') visible = tipo === 'partido';
+    else if (filtro === 'noleidos') visible = unread;
+
+    fila.style.display = visible ? '' : 'none';
+  });
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   SECCIÓN 7 — TABS DE "FICHAJES"
    ══════════════════════════════════════════════════════════════════
    La pantalla de Fichajes tiene dos pestañas: Jugadores y Equipos.
 */
@@ -295,7 +332,7 @@ function setFichajesTab(tab) {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 7 — FORMULARIO: CREAR EQUIPO
+   SECCIÓN 8 — FORMULARIO: CREAR EQUIPO
    ══════════════════════════════════════════════════════════════════
    Funciones para el formulario de creación de equipo:
    elegir color, seleccionar horario y actualizar las iniciales.
@@ -371,7 +408,7 @@ function updateTeamInitials(name) {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 8 — PILLS DE FORMATO Y DÍAS (GENÉRICAS)
+   SECCIÓN 9 — PILLS DE FORMATO Y DÍAS (GENÉRICAS)
    ══════════════════════════════════════════════════════════════════
    Algunos formularios tienen opciones de selección tipo "pastillas"
    (pills). Estas escuchan clics en cualquier parte de la pantalla
@@ -407,7 +444,7 @@ document.addEventListener('click', e => {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 9 — FILTROS DE "BUSCAR RIVAL"
+   SECCIÓN 10 — FILTROS DE "BUSCAR RIVAL"
    ══════════════════════════════════════════════════════════════════
    La pantalla "Buscar Rival" tiene filtros que permiten filtrar
    equipos por:
@@ -430,6 +467,10 @@ const rivalesFilters = {
   barrios:  new Set(), // Ej: {'Chapinero', 'Suba'}
   fechas:   new Set(), // Ej: {'2026-05-22', '2026-05-24'}
 };
+
+// Fecha "hoy" del prototipo — fija para que el demo sea consistente.
+// Centralizada aquí para que ambos calendarios (rivales y partidos) la compartan.
+const HOY = new Date(2026, 4, 22);
 
 // Fecha que muestra el calendario (el mes visible). Empieza en mayo 2026.
 // Los meses en JavaScript van de 0 (enero) a 11 (diciembre), por eso mayo = 4.
@@ -483,26 +524,31 @@ function toggleRivalFilter(el, type) {
 
 
 /*
- * renderRivalCalendar()
- * ─────────────────────
- * Dibuja el mini-calendario dentro del panel de filtros.
- * Se reconstruye cada vez que el usuario:
- *   • Navega al mes siguiente/anterior
- *   • Selecciona o deselecciona un día
- *   • Limpia los filtros
+ * renderCalendar(config)
+ * ──────────────────────
+ * Función unificada que dibuja el mini-calendario de cualquier
+ * panel de filtros. Recibe un objeto de configuración con los
+ * parámetros que difieren entre el calendario de rivales y el de partidos.
  *
- * El calendario muestra puntos verdes en los días que tienen
- * equipos disponibles, y resalta en verde los días seleccionados.
+ * config = {
+ *   containerId   — ID del div donde se inserta el calendario
+ *   calDate       — objeto Date con el mes visible
+ *   fechasSet     — Set con las fechas seleccionadas por el usuario
+ *   dataSelector  — selector CSS para leer qué días tienen datos
+ *   navFn         — nombre de la función de navegación (string)
+ *   selectFn      — nombre de la función de selección de día (string)
+ *   clearFn       — nombre de la función de limpiar fechas (string)
+ * }
+ *
+ * El calendario muestra puntos verdes en los días que tienen datos
+ * y resalta en verde los días seleccionados por el usuario.
  */
-function renderRivalCalendar() {
-  const contenedor = document.getElementById('rival-calendar');
+function renderCalendar(config) {
+  const contenedor = document.getElementById(config.containerId);
   if (!contenedor) return;
 
-  const year  = calendarDate.getFullYear();
-  const month = calendarDate.getMonth();
-
-  // "Hoy" está fijo en el 22 de mayo 2026 (fecha ficticia del prototipo)
-  const hoy = new Date(2026, 4, 22);
+  const year  = config.calDate.getFullYear();
+  const month = config.calDate.getMonth();
 
   const nombresMes = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
@@ -512,19 +558,18 @@ function renderRivalCalendar() {
   // Cantidad de días que tiene el mes
   const diasDelMes = new Date(year, month + 1, 0).getDate();
 
-  // Recopilar todas las fechas que tienen equipos disponibles
-  // (leyendo el atributo data-fecha de cada tarjeta de equipo)
-  const fechasConEquipos = new Set(
-    Array.from(document.querySelectorAll('#rivales-list .team-card[data-fecha]'))
-      .map(tarjeta => tarjeta.dataset.fecha)
+  // Recopilar todas las fechas que tienen datos disponibles
+  const fechasConDatos = new Set(
+    Array.from(document.querySelectorAll(config.dataSelector))
+      .map(el => el.dataset.fecha)
   );
 
   // Construir el HTML del calendario pieza por pieza
   let html = `
     <div class="cal-header">
-      <button class="cal-nav" onclick="calNav(-1)">‹</button>
+      <button class="cal-nav" onclick="${config.navFn}(-1)">‹</button>
       <span class="cal-month-label">${nombresMes[month]} ${year}</span>
-      <button class="cal-nav" onclick="calNav(1)">›</button>
+      <button class="cal-nav" onclick="${config.navFn}(1)">›</button>
     </div>
     <div class="cal-grid">
       <span class="cal-dow">D</span>
@@ -548,28 +593,28 @@ function renderRivalCalendar() {
     const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
 
     // ¿Este día ya pasó?
-    const esPasado = new Date(year, month, dia) < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    const esPasado = new Date(year, month, dia) < new Date(HOY.getFullYear(), HOY.getMonth(), HOY.getDate());
 
-    // ¿Hay equipos disponibles en este día?
-    const tieneEquipos = fechasConEquipos.has(iso);
+    // ¿Hay datos disponibles en este día?
+    const tieneDatos = fechasConDatos.has(iso);
 
     // ¿El usuario ya seleccionó este día?
-    const estaSeleccionado = rivalesFilters.fechas.has(iso);
+    const estaSeleccionado = config.fechasSet.has(iso);
 
     // Construir la lista de clases CSS para este día
     const clases = [
       'cal-day',
-      esPasado          ? 'cal-past'      : '',
-      tieneEquipos      ? 'cal-has-match' : '',
-      estaSeleccionado  ? 'cal-selected'  : '',
+      esPasado         ? 'cal-past'      : '',
+      tieneDatos       ? 'cal-has-match' : '',
+      estaSeleccionado ? 'cal-selected'  : '',
     ].filter(Boolean).join(' ');
 
     // Los días pasados no son clicables
-    const alTocar = esPasado ? '' : `onclick="selectCalDate('${iso}')"`;
+    const alTocar = esPasado ? '' : `onclick="${config.selectFn}('${iso}')"`;
 
-    // El punto verde aparece solo si hay equipos Y el día no está seleccionado
+    // El punto verde aparece solo si hay datos Y el día no está seleccionado
     // (cuando está seleccionado el fondo verde ya lo indica)
-    const punto = tieneEquipos && !estaSeleccionado
+    const punto = tieneDatos && !estaSeleccionado
       ? `<span class="cal-dot"></span>`
       : '';
 
@@ -579,14 +624,40 @@ function renderRivalCalendar() {
   html += `</div>`;
 
   // Si hay fechas seleccionadas, mostrar botón para limpiarlas
-  if (rivalesFilters.fechas.size > 0) {
-    const n = rivalesFilters.fechas.size;
-    html += `<button class="cal-clear" onclick="clearCalDates()">✕ Quitar ${n} fecha${n > 1 ? 's' : ''}</button>`;
+  if (config.fechasSet.size > 0) {
+    const n = config.fechasSet.size;
+    html += `<button class="cal-clear" onclick="${config.clearFn}()">✕ Quitar ${n} fecha${n > 1 ? 's' : ''}</button>`;
   }
 
   // Insertar el HTML construido en el contenedor del calendario
   contenedor.innerHTML = html;
 }
+
+
+// Configuración del calendario de Buscar Rival
+const rivalesCalConfig = {
+  containerId:  'rival-calendar',
+  get calDate() { return calendarDate; },
+  get fechasSet() { return rivalesFilters.fechas; },
+  dataSelector: '#rivales-list .team-card[data-fecha]',
+  navFn:        'calNav',
+  selectFn:     'selectCalDate',
+  clearFn:      'clearCalDates',
+};
+
+// Configuración del calendario de Buscar Partido
+const partidosCalConfig = {
+  containerId:  'partidos-calendar',
+  get calDate() { return partidosCalDate; },
+  get fechasSet() { return partidosFilters.fechas; },
+  dataSelector: '#partidos-list [data-fecha]',
+  navFn:        'partidosCalNav',
+  selectFn:     'selectPartidosDate',
+  clearFn:      'clearPartidosDates',
+};
+
+function renderRivalCalendar()    { renderCalendar(rivalesCalConfig); }
+function renderPartidosCalendar() { renderCalendar(partidosCalConfig); }
 
 
 /*
@@ -728,7 +799,7 @@ function applyRivalesFilters() {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 10 — FILTROS DE "BUSCAR PARTIDO"
+   SECCIÓN 11 — FILTROS DE "BUSCAR PARTIDO"
    ══════════════════════════════════════════════════════════════════
    Igual que Buscar Rival, pero para partidos abiertos donde
    cualquier persona puede unirse a un equipo.
@@ -789,71 +860,6 @@ function togglePartidoFilter(el, type) {
 }
 
 
-/*
- * renderPartidosCalendar()
- * ────────────────────────
- * Dibuja el mini-calendario del filtro de Buscar Partido.
- * Funciona igual al de Buscar Rival, pero lee los partidos
- * del contenedor #partidos-list en vez de #rivales-list.
- */
-function renderPartidosCalendar() {
-  const contenedor = document.getElementById('partidos-calendar');
-  if (!contenedor) return;
-
-  const year  = partidosCalDate.getFullYear();
-  const month = partidosCalDate.getMonth();
-  const hoy   = new Date(2026, 4, 22);
-
-  const nombresMes = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const primerDia  = new Date(year, month, 1).getDay();
-  const diasDelMes = new Date(year, month + 1, 0).getDate();
-
-  // Fechas que tienen partidos disponibles
-  const fechasConPartidos = new Set(
-    Array.from(document.querySelectorAll('#partidos-list [data-fecha]'))
-      .map(el => el.dataset.fecha)
-  );
-
-  let html = `
-    <div class="cal-header">
-      <button class="cal-nav" onclick="partidosCalNav(-1)">‹</button>
-      <span class="cal-month-label">${nombresMes[month]} ${year}</span>
-      <button class="cal-nav" onclick="partidosCalNav(1)">›</button>
-    </div>
-    <div class="cal-grid">
-      <span class="cal-dow">D</span><span class="cal-dow">L</span><span class="cal-dow">M</span>
-      <span class="cal-dow">M</span><span class="cal-dow">J</span><span class="cal-dow">V</span>
-      <span class="cal-dow">S</span>
-  `;
-
-  for (let i = 0; i < primerDia; i++) {
-    html += `<span class="cal-day cal-empty"></span>`;
-  }
-
-  for (let dia = 1; dia <= diasDelMes; dia++) {
-    const iso             = `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-    const esPasado        = new Date(year, month, dia) < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    const tienePartidos   = fechasConPartidos.has(iso);
-    const estaSeleccionado = partidosFilters.fechas.has(iso);
-
-    const clases = ['cal-day', esPasado ? 'cal-past' : '', tienePartidos ? 'cal-has-match' : '', estaSeleccionado ? 'cal-selected' : ''].filter(Boolean).join(' ');
-    const punto  = tienePartidos && !estaSeleccionado ? `<span class="cal-dot"></span>` : '';
-    const alTocar = esPasado ? '' : `onclick="selectPartidosDate('${iso}')"`;
-
-    html += `<span class="${clases}" ${alTocar}>${dia}${punto}</span>`;
-  }
-
-  html += `</div>`;
-
-  if (partidosFilters.fechas.size > 0) {
-    const n = partidosFilters.fechas.size;
-    html += `<button class="cal-clear" onclick="clearPartidosDates()">✕ Quitar ${n} fecha${n > 1 ? 's' : ''}</button>`;
-  }
-
-  contenedor.innerHTML = html;
-}
-
-
 // Navegar mes anterior/siguiente en el calendario de partidos
 function partidosCalNav(dir) {
   partidosCalDate.setMonth(partidosCalDate.getMonth() + dir);
@@ -873,6 +879,82 @@ function clearPartidosDates() {
   partidosFilters.fechas.clear();
   renderPartidosCalendar();
   applyPartidosFilters();
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   SECCIÓN — GESTIÓN DE EQUIPO (Team Management)
+   ══════════════════════════════════════════════════════════════════
+   Funciones para la pantalla de administración del equipo.
+   Se llega a ella desde el drawer lateral al tocar un equipo.
+*/
+
+/*
+ * openTeamManagement(teamName)
+ * ────────────────────────────
+ * Cierra el drawer lateral, rellena los textos de la pantalla
+ * con el nombre del equipo elegido, y navega a ella.
+ */
+function openTeamManagement(teamName) {
+  closeDrawer();
+  document.getElementById('team-management-title').textContent = teamName;
+  document.querySelector('#screen-team-management .tm-team-name').textContent = teamName;
+  document.getElementById('edit-team-name').value = teamName;
+  goTo('screen-team-management');
+}
+
+/* openEditTeamSheet / closeEditTeamSheet
+   Muestra u oculta el panel "Editar equipo" que sube desde abajo. */
+function openEditTeamSheet() {
+  document.getElementById('edit-team-sheet').classList.remove('hidden');
+  document.getElementById('edit-team-overlay').classList.remove('hidden');
+}
+
+function closeEditTeamSheet() {
+  document.getElementById('edit-team-sheet').classList.add('hidden');
+  document.getElementById('edit-team-overlay').classList.add('hidden');
+}
+
+/* toggleModality(btn)
+   Activa/desactiva un chip de modalidad (5v5, 7v7…) en el panel de edición. */
+function toggleModality(btn) {
+  btn.classList.toggle('active');
+}
+
+/*
+ * saveEditTeam()
+ * ──────────────
+ * Lee los campos del panel "Editar equipo", actualiza los textos
+ * visibles en la pantalla de gestión y cierra el panel.
+ */
+function saveEditTeam() {
+  const name = document.getElementById('edit-team-name').value.trim();
+  const zone = document.getElementById('edit-team-zone').value.trim();
+  const meta = document.querySelector('#screen-team-management .tm-team-meta');
+  if (name) {
+    document.getElementById('team-management-title').textContent = name;
+    document.querySelector('#screen-team-management .tm-team-name').textContent = name;
+  }
+  if (zone && meta) {
+    const parts = meta.textContent.split('·').map(s => s.trim());
+    parts[0] = zone;
+    meta.textContent = parts.join(' · ');
+  }
+  closeEditTeamSheet();
+}
+
+/* showPlayerMenu(playerName) / closePlayerMenu()
+   Abre/cierra el menú contextual de un jugador (Cambiar posición,
+   Marcar capitán, Quitar). El nombre se inyecta en el título. */
+function showPlayerMenu(playerName) {
+  document.getElementById('player-menu-name').textContent = playerName;
+  document.getElementById('player-menu').classList.remove('hidden');
+  document.getElementById('player-menu-overlay').classList.remove('hidden');
+}
+
+function closePlayerMenu() {
+  document.getElementById('player-menu').classList.add('hidden');
+  document.getElementById('player-menu-overlay').classList.add('hidden');
 }
 
 
@@ -957,7 +1039,7 @@ function applyPartidosFilters() {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 11 — FILTROS DE "BUSCAR CANCHAS"
+   SECCIÓN 12 — FILTROS DE "BUSCAR CANCHAS"
    ══════════════════════════════════════════════════════════════════
    Filtra la lista de canchas por:
      • Tipo de superficie (Sintética, Césped, Madera)
@@ -1071,7 +1153,7 @@ function applyCanchasFilters() {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   SECCIÓN 12 — ARRANQUE DE LA APLICACIÓN
+   SECCIÓN 13 — ARRANQUE DE LA APLICACIÓN
    ══════════════════════════════════════════════════════════════════
    Este bloque se ejecuta una sola vez, cuando el navegador termina
    de cargar toda la página (DOMContentLoaded = "el HTML ya está listo").
@@ -1086,3 +1168,114 @@ document.addEventListener('DOMContentLoaded', () => {
   // para que esté listo cuando el usuario abra los filtros
   renderRivalCalendar();
 });
+
+
+/* ══════════════════════════════════════════════════════════════════
+   FUNCIONES SUELTAS — Controles de formulario y utilidades
+   ══════════════════════════════════════════════════════════════════
+   Las siguientes funciones son pequeñas y muy específicas.
+   No pertenecen a ninguna sección grande porque cada una
+   controla un solo elemento interactivo de la interfaz.
+*/
+
+/* ── TEAM DROPDOWN — Crear partido como equipo ──
+   toggleTeamDropdown() muestra/oculta la lista de equipos.
+   selectTeam() actualiza el botón visible con el equipo elegido. */
+function toggleTeamDropdown() {
+  const list     = document.getElementById('team-dropdown-list');
+  const chevron  = document.getElementById('team-dropdown-chevron');
+  if (!list) return;
+  list.classList.toggle('hidden');
+  chevron.classList.toggle('open');
+}
+
+function selectTeam(btn, name, logoClass, initials) {
+  // Actualizar selección visual en la lista
+  btn.closest('.team-dropdown-list').querySelectorAll('.team-dropdown-item').forEach(el => {
+    el.classList.remove('active');
+    const check = el.querySelector('.team-dropdown-check');
+    if (check) check.remove();
+  });
+  btn.classList.add('active');
+  if (!btn.querySelector('.team-dropdown-check')) {
+    const check = document.createElement('span');
+    check.className = 'team-dropdown-check';
+    check.textContent = '✓';
+    btn.appendChild(check);
+  }
+
+  // Actualizar el botón principal
+  const selected = btn.closest('.team-dropdown-wrap').querySelector('.team-dropdown-selected');
+  selected.querySelector('.team-logo-sm').className = 'team-logo-sm ' + logoClass;
+  selected.querySelector('.team-logo-sm').textContent = initials;
+  selected.querySelector('.team-dropdown-name').textContent = name;
+
+  // Cerrar dropdown
+  document.getElementById('team-dropdown-list').classList.add('hidden');
+  document.getElementById('team-dropdown-chevron').classList.remove('open');
+}
+
+
+/* ── LÍMITE DE JUGADORES ──
+   Los botones −/+ del formulario de crear partido.
+   delta = -1 (restar) o +1 (sumar). Mínimo 2, máximo 22. */
+function changeLimit(btn, delta) {
+  const val = btn.closest('.player-limit-wrap').querySelector('.player-limit-val');
+  const current = parseInt(val.textContent);
+  const next = Math.min(22, Math.max(2, current + delta));
+  val.textContent = next;
+}
+
+
+/* ── TABS DE GESTIÓN DE EQUIPO ──
+   Cambia entre las pestañas de la pantalla de gestión:
+   "equipo", "partidos", "gestion" o "estadisticas". */
+function setTmTab(tab, btn) {
+  ['equipo', 'partidos', 'gestion', 'estadisticas'].forEach(t => {
+    const el = document.getElementById('tm-tab-' + t);
+    if (el) el.classList.remove('active');
+  });
+  const active = document.getElementById('tm-tab-' + tab);
+  if (active) active.classList.add('active');
+
+  if (btn) {
+    document.querySelectorAll('#tm-tabs .tab-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+
+/* ── CAMPO POSICIONAL — VER / OCULTAR LISTA ──
+   Muestra u oculta la lista de jugadores debajo del campo SVG.
+   El botón cambia su texto entre "Ver lista ›" y "Ocultar ‹". */
+function toggleTmPlayerList() {
+  const lista = document.getElementById('tm-player-list');
+  const btn   = document.getElementById('tm-toggle-list-btn');
+  const visible = lista.style.display !== 'none';
+  lista.style.display = visible ? 'none' : 'block';
+  btn.textContent = visible ? 'Ver lista ›' : 'Ocultar ‹';
+}
+
+/* ── COPIAR CÓDIGO DE INVITACIÓN ──
+   Lee el código del elemento cercano, lo copia al portapapeles
+   y cambia el texto del botón a "¡Copiado!" por 2 segundos. */
+function copyInviteCode(btn) {
+  const code = btn.closest('.invite-code-card').querySelector('.invite-code-value').textContent;
+  navigator.clipboard?.writeText(code);
+  btn.textContent = '¡Copiado!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+}
+
+
+/* ── MODAL DE CANCELAR PARTIDO ──
+   El botón "Cancelar partido" en el lobby abre este modal
+   de confirmación. Si confirma, vuelve al home y cierra el modal. */
+function openCancelModal() {
+  document.getElementById('cancel-modal-overlay').classList.remove('hidden');
+  document.getElementById('cancel-modal').classList.remove('hidden');
+}
+function closeCancelModal() {
+  document.getElementById('cancel-modal-overlay').classList.add('hidden');
+  document.getElementById('cancel-modal').classList.add('hidden');
+}

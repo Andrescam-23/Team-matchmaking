@@ -1,23 +1,98 @@
 <!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║                  MATCHMAKERS — PROTOTIPO DE APP                  ║
+  ║                                                                  ║
+  ║  Este es el único archivo HTML de toda la aplicación.           ║
+  ║  Contiene TODAS las pantallas apiladas una encima de la otra.   ║
+  ║  Solo se ve la pantalla que tenga la clase "active".            ║
+  ║                                                                  ║
+  ║  ¿Cómo leerlo?                                                   ║
+  ║  Cada sección marcada con "<!-– NOMBRE –->" es una pantalla      ║
+  ║  completa de la app. Puedes ir a cualquiera buscando su ID,     ║
+  ║  por ejemplo: id="screen-home" o id="screen-chat".              ║
+  ║                                                                  ║
+  ║  PANTALLAS QUE EXISTEN (en orden de aparición):                 ║
+  ║  1.  screen-splash              → Bienvenida / Login            ║
+  ║  2.  screen-home                → Inicio (con menú lateral)     ║
+  ║  3.  screen-search              → Hub de búsqueda               ║
+  ║  4.  screen-search-rivales      → Buscar rival para mi equipo   ║
+  ║  5.  screen-search-partidos     → Buscar partido abierto        ║
+  ║  6.  screen-search-canchas      → Buscar cancha cerca           ║
+  ║  7.  screen-community           → Feed de la comunidad          ║
+  ║  8.  screen-mis-partidos        → Mis partidos (próximos/past.) ║
+  ║  9.  screen-chat                → Lista de conversaciones       ║
+  ║  10. screen-chat-detail         → Ventana de chat individual    ║
+  ║  11. screen-profile             → Mi perfil de jugador          ║
+  ║  12. screen-match-detail        → Detalle de un partido         ║
+  ║  13. screen-join-success        → Confirmación "ya estás dentro"║
+  ║  14. screen-crear-partido       → Elegir: equipo o jugador      ║
+  ║  15. screen-crear-partido-equipo→ Crear partido como equipo     ║
+  ║  16. screen-crear-partido-jugador→ Crear partido como jugador   ║
+  ║  17. screen-lobby-jugador       → Sala de espera del partido    ║
+  ║  18. screen-retar-step2         → Elegir rival al retar         ║
+  ║  19. screen-retar-step3         → Confirmar reto enviado        ║
+  ║  20. screen-reto-success        → Confirmación "reto enviado"   ║
+  ║  21. screen-reto-detail         → Reto recibido (aceptar/rechaz)║
+  ║  22. screen-cancha-detail       → Detalle y reserva de cancha  ║
+  ║  23. screen-cancha-success      → Confirmación de reserva       ║
+  ║  24. screen-create-team         → Crear equipo paso 1           ║
+  ║  25. screen-create-team-2       → Crear equipo paso 2           ║
+  ║  26. screen-create-team-3       → Crear equipo paso 3 / revisar ║
+  ║  27. screen-create-team-success → Confirmación equipo creado    ║
+  ║  28. screen-fichajes            → Buscar jugador o equipo       ║
+  ║  29. screen-player-profile      → Perfil de un jugador          ║
+  ║  30. screen-team-management     → Gestión de mi equipo          ║
+  ║  31. screen-team-profile        → Perfil de otro equipo         ║
+  ║                                                                  ║
+  ║  ELEMENTOS GLOBALES (flotantes sobre todas las pantallas):      ║
+  ║  - #create-modal        → Bottom sheet del botón "+"            ║
+  ║  - #cancel-modal        → Confirmar cancelación de partido      ║
+  ║  Estos modales viven fuera de cualquier pantalla para que       ║
+  ║  funcionen sin importar en cuál pantalla esté el usuario.       ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <!-- Hace que el sitio se vea bien en celulares (sin zoom automático) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Matchmakers</title>
+  <!-- Pre-conecta con Google Fonts para cargar la tipografía más rápido -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Tipografía Inter: la misma que usa Figma, Linear y muchas apps modernas -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Todos los estilos visuales de la app -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!--
+    #phone-container
+    ────────────────
+    Rectángulo que simula la pantalla de un iPhone 14 (390×844px).
+    Todo lo que está adentro queda recortado a ese tamaño.
+    Las pantallas se apilan aquí y el CSS controla cuál se ve.
+  -->
   <div id="phone-container">
 
-    <!-- SPLASH -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 1 — SPLASH (Bienvenida / Inicio de sesión)
+         Primera pantalla que ve el usuario al abrir la app.
+         Tiene el logo, el eslogan y los botones de ingreso.
+         Todos los botones llevan a "screen-home" porque en
+         este prototipo el login no está implementado.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-splash" class="screen active">
       <div class="splash-glow"></div>
       <div class="splash-content">
-        <div class="splash-icon">⚽</div>
-        <h1 class="splash-title">Matchmakers</h1>
+        <div class="splash-brand">
+          <img src="assets/matchmakers-icon.svg" class="splash-logo" alt="Matchmakers">
+          <div class="splash-brand-text">
+            <span class="splash-brand-name"><span style="color:var(--green)">Match</span>makers</span>
+          </div>
+        </div>
         <p class="splash-tagline">Encuentra equipos, organiza partidos y<br>conecta con jugadores cerca de ti</p>
         <div class="splash-actions">
           <button class="btn-green" onclick="goTo('screen-home')">Crear Cuenta</button>
@@ -29,14 +104,39 @@
           <span class="divider-line"></span>
         </div>
         <div class="social-row">
-          <button class="btn-social" onclick="goTo('screen-home')"><span>🍎</span> Apple</button>
-          <button class="btn-social" onclick="goTo('screen-home')"><span>🌐</span> Google</button>
+          <!-- Botón Apple: fondo negro, logo blanco oficial -->
+          <button class="btn-social btn-social-apple" onclick="goTo('screen-home')">
+            <svg width="16" height="16" viewBox="0 0 814 1000" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-38.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.1 0 128.4 46.4 172.5 46.4 42.8 0 109.6-49 192.5-49 30.9 0 108.2 2.6 168.1 81.2zm-198.5-160.1c31.5-38.2 53.9-91.2 53.9-144.2 0-7.4-.6-14.9-1.9-21.1-50.9 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 85.4-55.1 139.1 0 8.1 1.3 16.2 1.9 18.8 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 134.7-69.7z"/>
+            </svg>
+            Apple
+          </button>
+          <!-- Botón Google: fondo blanco, logo G multicolor oficial, texto oscuro -->
+          <button class="btn-social btn-social-google" onclick="goTo('screen-home')">
+            <svg width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google
+          </button>
         </div>
         <p class="legal-text">Al registrarte aceptas los <a href="#">términos de uso</a> y la <a href="#">política de privacidad</a></p>
       </div>
     </div>
 
-    <!-- HOME -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 2 — HOME (Pantalla principal)
+         La pantalla de inicio. Contiene:
+         - El menú lateral deslizante (profile-drawer) con
+           los equipos del usuario y opciones de cuenta.
+           Se abre al tocar el avatar en la barra superior.
+         - La barra superior con avatar, saludo y notifs.
+         - El contenido: próximo partido, retos, canchas y
+           jugadores disponibles.
+         - La barra de navegación inferior (bottom-nav).
+         ══════════════════════════════════════════════════ -->
     <div id="screen-home" class="screen">
 
       <!-- Side Drawer Overlay -->
@@ -47,7 +147,7 @@
         <!-- User header -->
         <div class="drawer-user-header">
           <div class="drawer-avatar-wrap">
-            <img src="https://i.pravatar.cc/80?img=11" class="drawer-avatar-img" alt="avatar">
+            <div class="drawer-avatar-img drawer-avatar-initials">AV</div>
             <span class="drawer-online-dot"></span>
           </div>
           <div class="drawer-user-info">
@@ -59,7 +159,7 @@
 
         <!-- Mis equipos -->
         <div class="drawer-section-label">MIS EQUIPOS</div>
-        <div class="drawer-team-item">
+        <div class="drawer-team-item" onclick="openTeamManagement('Real Chapinero')">
           <div class="team-logo-sm logo-green">RC</div>
           <div class="drawer-team-info">
             <div class="drawer-team-name">Real Chapinero</div>
@@ -67,14 +167,14 @@
           </div>
           <span class="drawer-crown">👑</span>
         </div>
-        <div class="drawer-team-item">
+        <div class="drawer-team-item" onclick="openTeamManagement('Los Sabaderos')">
           <div class="team-logo-sm logo-purple">LS</div>
           <div class="drawer-team-info">
             <div class="drawer-team-name">Los Sabaderos</div>
             <div class="drawer-team-sub">Jugador · 11 miembros</div>
           </div>
         </div>
-        <div class="drawer-team-item">
+        <div class="drawer-team-item" onclick="openTeamManagement('FC Salitre')">
           <div class="team-logo-sm logo-blue2">FS</div>
           <div class="drawer-team-info">
             <div class="drawer-team-name">FC Salitre</div>
@@ -82,7 +182,7 @@
           </div>
           <span class="drawer-crown">👑</span>
         </div>
-        <div class="drawer-team-item">
+        <div class="drawer-team-item" onclick="openTeamManagement('Águilas Usaquén')">
           <div class="team-logo-sm logo-brown">AU</div>
           <div class="drawer-team-info">
             <div class="drawer-team-name">Águilas Usaquén</div>
@@ -122,7 +222,7 @@
 
       <div class="top-bar">
         <button class="avatar-btn" onclick="openDrawer()">
-          <img src="https://i.pravatar.cc/40?img=11" class="avatar-img" alt="avatar">
+          <div class="avatar-img avatar-initials">AV</div>
           <span class="online-dot"></span>
         </button>
         <div class="top-bar-greeting">
@@ -138,7 +238,11 @@
 
         <!-- PRÓXIMO PARTIDO hero -->
         <section class="section">
-          <div class="hero-card" onclick="goTo('screen-match-detail')" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800')">
+          <div class="section-header">
+            <span class="section-title">Mis próximos partidos</span>
+            <button class="see-all" onclick="goTo('screen-mis-partidos')">Ver todos ›</button>
+          </div>
+          <div class="hero-card" onclick="goTo('screen-mis-partidos')" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800')">
             <div class="hero-overlay"></div>
             <div class="hero-body">
               <span class="pill-green hero-pill">PRÓXIMO PARTIDO</span>
@@ -174,7 +278,7 @@
           <div class="reto-card" onclick="goTo('screen-reto-detail')">
             <div class="team-logo-sm logo-blue2">VF</div>
             <div class="reto-info">
-              <div class="reto-title">Villa FC te envió una solicitud</div>
+              <div class="reto-title">Villa FC te retó</div>
               <div class="reto-meta">📍 Teusaquillo &nbsp; 📅 Domingo · 9:00 AM</div>
             </div>
             <button class="btn-outline-sm" onclick="event.stopPropagation(); goTo('screen-reto-detail')">Ver reto</button>
@@ -197,7 +301,7 @@
               <div class="cancha-photo-price">$$$</div>
             </div>
             <div class="cancha-photo-card" onclick="goTo('screen-cancha-detail')">
-              <div class="cancha-photo-img" style="background-image:url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300')">
+              <div class="cancha-photo-img" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300')">
                 <span class="cancha-fav cancha-fav-off">☆</span>
               </div>
               <div class="cancha-photo-name">El Lago</div>
@@ -270,7 +374,15 @@
       </nav>
     </div>
 
-    <!-- BUSCAR — Hub de selección -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 3 — BUSCAR (Hub de búsqueda)
+         Pantalla intermedia que muestra 4 opciones:
+         ⚔️ Buscar rival → screen-search-rivales
+         ⚡ Buscar partido → screen-search-partidos
+         📍 Ver canchas → screen-search-canchas
+         👤 Fichajes → screen-fichajes
+         Cada banner es una imagen con capa oscura y texto.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-search" class="screen">
       <div class="top-bar-simple">
         <div class="tbs-title">¿Qué buscas?</div>
@@ -338,7 +450,16 @@
       </nav>
     </div>
 
-    <!-- BUSCAR RIVALES (sub-pantalla) -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 4 — BUSCAR RIVAL
+         Lista de equipos disponibles para jugar contra mí.
+         Tiene buscador por texto + filtros colapsables por:
+         formato (5v5, 7v7…), fecha (mini-calendario) y barrio.
+         Cada tarjeta de equipo tiene data-formato, data-barrio
+         y data-fecha — estos son los atributos que lee el
+         filtro en script.js para mostrar u ocultar tarjetas.
+         El botón "Retar" lleva a screen-crear-partido-equipo.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-search-rivales" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -392,7 +513,7 @@
 
         <!-- Team cards — each has data-formato, data-barrio, data-fecha (ISO) -->
         <div id="rivales-list">
-          <div class="team-card featured" data-formato="11v11" data-barrio="Chapinero" data-fecha="2026-05-22" onclick="goTo('screen-retar-step1')">
+          <div class="team-card featured" data-formato="11v11" data-barrio="Chapinero" data-fecha="2026-05-22" onclick="goTo('screen-crear-partido-equipo')">
             <span class="badge-top-right pill-green">Mejor coincidencia</span>
             <div class="team-card-row">
               <div class="team-logo-md logo-brown">MF</div>
@@ -402,10 +523,10 @@
                 <div class="team-card-meta">📍 Chapinero &nbsp; 📅 Hoy 8:00 PM</div>
                 <div class="team-card-meta">⭐ 4.4 (23 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="11v11" data-barrio="Teusaquillo" data-fecha="2026-05-23" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="11v11" data-barrio="Teusaquillo" data-fecha="2026-05-23" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-blue2">LF</div>
               <div class="team-card-info">
@@ -414,10 +535,10 @@
                 <div class="team-card-meta">📍 Teusaquillo &nbsp; 📅 Sáb 23 may 6:00 PM</div>
                 <div class="team-card-meta">⭐ 4.1 (18 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="11v11" data-barrio="Usaquén" data-fecha="2026-05-24" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="11v11" data-barrio="Usaquén" data-fecha="2026-05-24" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-red">GF</div>
               <div class="team-card-info">
@@ -426,10 +547,10 @@
                 <div class="team-card-meta">📍 Usaquén &nbsp; 📅 Dom 24 may 4:00 PM</div>
                 <div class="team-card-meta">⭐ 3.9 (15 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="11v11" data-barrio="La Candelaria" data-fecha="2026-05-25" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="11v11" data-barrio="La Candelaria" data-fecha="2026-05-25" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-green">AC</div>
               <div class="team-card-info">
@@ -438,10 +559,10 @@
                 <div class="team-card-meta">📍 La Candelaria &nbsp; 📅 Lun 25 may 7:00 PM</div>
                 <div class="team-card-meta">⭐ 4.6 (31 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="7v7" data-barrio="Suba" data-fecha="2026-05-22" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="7v7" data-barrio="Suba" data-fecha="2026-05-22" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-purple">NS</div>
               <div class="team-card-info">
@@ -450,10 +571,10 @@
                 <div class="team-card-meta">📍 Suba &nbsp; 📅 Hoy 5:00 PM</div>
                 <div class="team-card-meta">⭐ 3.7 (9 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="5v5" data-barrio="Kennedy" data-fecha="2026-05-23" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="5v5" data-barrio="Kennedy" data-fecha="2026-05-23" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-yellow">RP</div>
               <div class="team-card-info">
@@ -462,10 +583,10 @@
                 <div class="team-card-meta">📍 Kennedy &nbsp; 📅 Sáb 23 may 9:00 AM</div>
                 <div class="team-card-meta">⭐ 4.2 (11 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="8v8" data-barrio="Chapinero" data-fecha="2026-05-24" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="8v8" data-barrio="Chapinero" data-fecha="2026-05-24" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-blue2">BF</div>
               <div class="team-card-info">
@@ -474,10 +595,10 @@
                 <div class="team-card-meta">📍 Chapinero &nbsp; 📅 Dom 24 may 3:00 PM</div>
                 <div class="team-card-meta">⭐ 4.0 (20 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="7v7" data-barrio="Teusaquillo" data-fecha="2026-05-26" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="7v7" data-barrio="Teusaquillo" data-fecha="2026-05-26" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-brown">SA</div>
               <div class="team-card-info">
@@ -486,10 +607,10 @@
                 <div class="team-card-meta">📍 Teusaquillo &nbsp; 📅 Mar 26 may 7:30 PM</div>
                 <div class="team-card-meta">⭐ 4.8 (42 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="5v5" data-barrio="Bosa" data-fecha="2026-05-27" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="5v5" data-barrio="Bosa" data-fecha="2026-05-27" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-red">LB</div>
               <div class="team-card-info">
@@ -498,10 +619,10 @@
                 <div class="team-card-meta">📍 Bosa &nbsp; 📅 Mié 27 may 6:00 PM</div>
                 <div class="team-card-meta">⭐ 3.5 (7 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="8v8" data-barrio="Usaquén" data-fecha="2026-05-28" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="8v8" data-barrio="Usaquén" data-fecha="2026-05-28" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-green">ES</div>
               <div class="team-card-info">
@@ -510,10 +631,10 @@
                 <div class="team-card-meta">📍 Usaquén &nbsp; 📅 Jue 28 may 8:00 PM</div>
                 <div class="team-card-meta">⭐ 4.3 (27 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
-          <div class="team-card" data-formato="11v11" data-barrio="Suba" data-fecha="2026-05-29" onclick="goTo('screen-retar-step1')">
+          <div class="team-card" data-formato="11v11" data-barrio="Suba" data-fecha="2026-05-29" onclick="goTo('screen-crear-partido-equipo')">
             <div class="team-card-row">
               <div class="team-logo-md logo-purple">GS</div>
               <div class="team-card-info">
@@ -522,7 +643,7 @@
                 <div class="team-card-meta">📍 Suba &nbsp; 📅 Vier 29 may 5:00 PM</div>
                 <div class="team-card-meta">⭐ 4.5 (36 partidos)</div>
               </div>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-retar-step1')">Retar</button>
+              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-crear-partido-equipo')">Retar</button>
             </div>
           </div>
 
@@ -536,7 +657,18 @@
       </div>
     </div>
 
-    <!-- BUSCAR PARTIDOS (sub-pantalla) -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 5 — BUSCAR PARTIDO
+         Partidos abiertos donde cualquier jugador puede
+         inscribirse sin necesitar un equipo.
+         Muestra dos secciones:
+         ● EN VIVO AHORA → partidos ya en curso con barra
+           de progreso y contador de cupos restantes.
+         PRÓXIMOS PARTIDOS → partidos futuros con cupos.
+         Los encabezados de sección se ocultan automáticamente
+         si los filtros no dejan resultados debajo de ellos
+         (eso lo hace applyPartidosFilters en script.js).
+         ══════════════════════════════════════════════════ -->
     <div id="screen-search-partidos" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -671,7 +803,14 @@
       </div>
     </div>
 
-    <!-- BUSCAR CANCHAS (sub-pantalla) -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 6 — BUSCAR CANCHAS
+         Mapa simulado (placeholder visual) + lista de canchas.
+         Filtros por superficie (Sintética, Césped, Madera),
+         formato (5v5 → 11v11) y barrio.
+         A diferencia de rivales y partidos, NO tiene calendario
+         porque las canchas no cambian por fecha.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-search-canchas" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -784,22 +923,33 @@
       </div>
     </div>
 
-    <!-- COMUNIDAD -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 7 — COMUNIDAD (Feed social)
+         Feed tipo red social con publicaciones de la comunidad.
+         Filtros por tipo de post (pestañas):
+         "Para ti" → muestra todos los posts.
+         "Resultados" → solo posts con data-tipo="resultados".
+         "Videos" → solo posts con data-tipo="videos".
+         "Convocatorias" → solo posts con data-tipo="convocatorias".
+         La función setCommunityFilter() en script.js maneja esto.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-community" class="screen">
       <div class="top-bar-simple">
         <div class="tbs-title">Comunidad</div>
         <div class="tbs-sub">Bogotá · tu red de fútbol</div>
       </div>
       <div class="screen-content no-top-pad">
-        <div class="tab-pills">
-          <button class="tab-pill active">Para ti</button>
-          <button class="tab-pill">Resultados</button>
-          <button class="tab-pill">Videos</button>
-          <button class="tab-pill">Convocatorias</button>
+        <div class="tab-pills" id="community-filter-pills">
+          <button class="tab-pill active" onclick="setCommunityFilter('parati',this)">Para ti</button>
+          <button class="tab-pill" onclick="setCommunityFilter('resultados',this)">Resultados</button>
+          <button class="tab-pill" onclick="setCommunityFilter('videos',this)">Videos</button>
+          <button class="tab-pill" onclick="setCommunityFilter('convocatorias',this)">Convocatorias</button>
         </div>
 
+        <div id="community-feed">
+
         <!-- POST: Video -->
-        <div class="post-card">
+        <div class="post-card" data-tipo="videos">
           <div class="post-header">
             <span class="post-type-badge" style="background:#A855F722;color:#A855F7">▶ Video</span>
             <div class="post-author-info">
@@ -829,7 +979,7 @@
         </div>
 
         <!-- POST: Convocatoria -->
-        <div class="post-card">
+        <div class="post-card" data-tipo="convocatorias">
           <div class="post-header">
             <span class="post-type-badge" style="background:#3B82F622;color:#3B82F6">👤 Convocatoria</span>
             <div class="post-author-info">
@@ -858,7 +1008,7 @@
         </div>
 
         <!-- POST: Trending -->
-        <div class="post-card">
+        <div class="post-card" data-tipo="resultados">
           <div class="post-header-simple">
             <span class="post-type-badge" style="background:#F59E0B22;color:#F59E0B">📈 Equipos en tendencia · Bogotá</span>
             <button class="see-all">Ver más</button>
@@ -900,6 +1050,8 @@
             </div>
           </div>
         </div>
+
+        </div><!-- /community-feed -->
       </div>
       <nav class="bottom-nav">
         <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
@@ -910,62 +1062,64 @@
       </nav>
     </div>
 
-    <!-- MIS PARTIDOS -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 8 — MIS PARTIDOS
+         Historial y agenda de partidos del usuario.
+         Tiene 3 pestañas manejadas por setPartidosTab():
+         "Próximos"      → tab-proximos (con hero del próximo)
+         "Pasados"       → tab-pasados  (resultados con marcador)
+         "Creados por mí"→ tab-creados  (partidos que yo organicé)
+         ══════════════════════════════════════════════════ -->
     <div id="screen-mis-partidos" class="screen">
-      <div class="top-bar-simple">
-        <div class="tbs-title">Mis partidos</div>
-        <button class="team-pill-selector">Águilas Calvas FC ▾</button>
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Mis partidos</span>
       </div>
-      <div class="screen-content no-top-pad">
+      <div class="screen-content" style="top:56px">
         <div class="tab-pills" id="partidos-tabs">
           <button class="tab-pill active" onclick="setPartidosTab('proximos',this)">Próximos</button>
           <button class="tab-pill" onclick="setPartidosTab('pasados',this)">Pasados</button>
-          <button class="tab-pill" onclick="setPartidosTab('estadisticas',this)">Estadísticas</button>
+          <button class="tab-pill" onclick="setPartidosTab('creados',this)">Creados por mí</button>
         </div>
 
         <!-- TAB: PRÓXIMOS -->
         <div id="tab-proximos" class="tab-content active">
-          <div class="live-section-header">● EN CURSO</div>
-          <div class="result-card live-glow" onclick="goTo('screen-match-detail')">
-            <div class="rc-live-badge">● Live · Hoy 10:00 PM</div>
-            <div class="rc-score-row">
-              <span class="rc-score-team">AC</span>
-              <span class="rc-score">2 · 1</span>
-              <span class="rc-score-team">JA</span>
+
+          <!-- Partido más próximo: hero card -->
+          <div class="hero-card" onclick="goTo('screen-match-detail')" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800')">
+            <div class="hero-overlay"></div>
+            <div class="hero-body">
+              <span class="pill-green hero-pill">PRÓXIMO PARTIDO</span>
+              <div class="hero-teams">
+                <div class="team-logo-sm logo-green">AC</div>
+                <span class="vs-text">VS</span>
+                <div class="team-logo-sm logo-blue">MF</div>
+              </div>
+              <div class="hero-names">Águilas Calvas vs Macondo FC</div>
+              <div class="hero-meta">Hoy · 8:00 PM &nbsp;📍 SportCenter Chapinero · Fútbol 11</div>
             </div>
-            <div class="rc-sub">Águilas Calvas vs Jaguares · FT5 · 11v11</div>
-            <div class="rc-meta">📍 Cancha Norte</div>
-            <div class="rc-footer">
-              <span class="live-badge">En vivo</span>
-              <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-match-detail')">Ver partido</button>
+            <div class="hero-footer">
+              <span class="hero-players">👥 11/11 jugadores confirmados</span>
+              <span class="btn-ghost-sm">Ver partido ›</span>
             </div>
           </div>
 
           <div class="live-section-header green-text mt-16">ESTA SEMANA</div>
           <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
-            <div class="upcoming-match-left green-border-left">
-              <span class="pill-green-xs">Confirmado</span>
-              <div class="upcoming-match-title">📅 Sáb 10 May · 8:00 AM</div>
-              <div class="upcoming-match-meta">AC vs Macondo FC · Mazurén · 11v11</div>
-              <div class="upcoming-match-meta">📍 Cancha Los Pinos</div>
-            </div>
-            <span class="arrow-icon">›</span>
-          </div>
-          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
             <div class="upcoming-match-left" style="border-left:3px solid #F59E0B;padding-left:12px">
               <span class="pill-yellow-xs">Reto enviado</span>
-              <div class="upcoming-match-title">📅 Dom 11 May · 3:00 PM</div>
+              <div class="upcoming-match-title">📅 Dom 27 May · 3:00 PM</div>
               <div class="upcoming-match-meta">AC vs Por definir · Chapinero · 7v7</div>
               <div class="upcoming-match-meta" style="color:#EF4444">⏱ Expira en 4h</div>
             </div>
             <button class="btn-yellow-sm" onclick="event.stopPropagation()">Ver reto ›</button>
           </div>
 
-          <div class="live-section-header green-text mt-16">PRÓXIMO MES</div>
+          <div class="live-section-header green-text mt-16">MÁS ADELANTE</div>
           <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
             <div class="upcoming-match-left green-border-left">
               <span class="pill-green-xs">Confirmado</span>
-              <div class="upcoming-match-title">📅 Vie 16 May · 7:00 PM</div>
+              <div class="upcoming-match-title">📅 Vie 5 Jun · 7:00 PM</div>
               <div class="upcoming-match-meta">AC vs Los Bravos · Usaquén · 5v5</div>
               <div class="upcoming-match-meta">📍 Por confirmar</div>
             </div>
@@ -1008,51 +1162,40 @@
           </div>
         </div>
 
-        <!-- TAB: ESTADÍSTICAS -->
-        <div id="tab-estadisticas" class="tab-content">
-          <div class="stats-hero-row">
-            <div class="team-logo-md logo-green">AC</div>
-            <div>
-              <div class="stats-hero-name">Águilas Calvas FC</div>
-              <div class="stats-hero-sub">Mayo 2026</div>
+        <!-- TAB: CREADOS POR MÍ -->
+        <div id="tab-creados" class="tab-content">
+          <div class="live-section-header green-text">ACTIVOS</div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <span class="pill-green-xs">Abierto · 4 cupos</span>
+              <div class="upcoming-match-title">📅 Mar 27 May · 8:00 PM</div>
+              <div class="upcoming-match-meta">Partido abierto · Chapinero · 7v7</div>
+              <div class="upcoming-match-meta">📍 Cancha Norte</div>
             </div>
+            <span class="arrow-icon">›</span>
           </div>
-          <div class="stats-top-row">
-            <div class="stat-big-card"><span class="stat-big-num">24</span><span class="stat-big-label">Partidos jugados</span></div>
-            <div class="stat-big-card"><span class="stat-big-num">87%</span><span class="stat-big-label">Efectividad</span></div>
-            <div class="stat-big-card"><span class="stat-big-num">14</span><span class="stat-big-label">Goles este mes</span></div>
-          </div>
-          <div class="form-section">
-            <div class="form-title">G-E-P este mes: <strong>5-0-1</strong></div>
-            <div class="bar-chart">
-              <div class="bar-col"><div class="bar green-bar" style="height:80%"></div><span class="bar-label">G</span></div>
-              <div class="bar-col"><div class="bar green-bar" style="height:90%"></div><span class="bar-label">G</span></div>
-              <div class="bar-col"><div class="bar red-bar" style="height:40%"></div><span class="bar-label">P</span></div>
-              <div class="bar-col"><div class="bar green-bar" style="height:75%"></div><span class="bar-label">G</span></div>
-              <div class="bar-col"><div class="bar green-bar" style="height:85%"></div><span class="bar-label">G</span></div>
-              <div class="bar-col"><div class="bar yellow-bar" style="height:55%"></div><span class="bar-label">E</span></div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left" style="border-left:3px solid #F59E0B;padding-left:12px">
+              <span class="pill-yellow-xs">Reto enviado · Esperando</span>
+              <div class="upcoming-match-title">📅 Sáb 30 May · 6:00 PM</div>
+              <div class="upcoming-match-meta">Águilas Calvas vs Por definir · 11v11</div>
+              <div class="upcoming-match-meta">📍 Por confirmar</div>
             </div>
+            <span class="arrow-icon">›</span>
           </div>
-          <div class="section-header mt-16"><span class="section-title" style="font-size:14px">Top jugadores</span></div>
-          <div class="top-player-row">
-            <span class="top-rank">1</span>
-            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:36px;height:36px;font-size:12px">AV</div>
-            <div class="top-player-info"><div class="top-player-name">Andrés Vega</div><div class="top-player-pos">Mediocampista</div></div>
-            <div class="top-player-stats">5G · 3A</div>
-          </div>
-          <div class="top-player-row">
-            <span class="top-rank">2</span>
-            <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:36px;height:36px;font-size:12px">JR</div>
-            <div class="top-player-info"><div class="top-player-name">Juan Roa</div><div class="top-player-pos">Delantero</div></div>
-            <div class="top-player-stats">4G · 1A</div>
-          </div>
-          <div class="top-player-row">
-            <span class="top-rank">3</span>
-            <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:36px;height:36px;font-size:12px">CM</div>
-            <div class="top-player-info"><div class="top-player-name">Carlos M.</div><div class="top-player-pos">Portero</div></div>
-            <div class="top-player-stats">0G · 2A</div>
+
+          <div class="live-section-header green-text mt-16">PASADOS</div>
+          <div class="upcoming-match-card" onclick="goTo('screen-match-detail')">
+            <div class="upcoming-match-left green-border-left">
+              <span class="pill-green-xs" style="background:rgba(255,255,255,0.08);color:var(--text2)">Finalizado</span>
+              <div class="upcoming-match-title">📅 Sáb 17 May · 9:00 AM</div>
+              <div class="upcoming-match-meta">Partido abierto · Usaquén · 5v5</div>
+              <div class="upcoming-match-meta">📍 Club Los Lagartos · 10 jugadores</div>
+            </div>
+            <span class="arrow-icon">›</span>
           </div>
         </div>
+
       </div>
       <nav class="bottom-nav">
         <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
@@ -1063,7 +1206,14 @@
       </nav>
     </div>
 
-    <!-- CHAT LIST -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 9 — CHAT (Lista de conversaciones)
+         Muestra todas las conversaciones del usuario.
+         Cada fila tiene data-tipo ("equipo", "partido",
+         "persona") y data-unread ("true"/"false") para
+         que el filtro setChatFilter() pueda mostrar/ocultar.
+         Al tocar cualquier fila va a screen-chat-detail.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-chat" class="screen">
       <div class="top-bar-simple">
         <div class="tbs-title">Mensajes</div>
@@ -1073,14 +1223,14 @@
           <span class="search-icon">🔍</span>
           <input class="search-input" placeholder="Buscar conversación...">
         </div>
-        <div class="tab-pills">
-          <button class="tab-pill active">Todos</button>
-          <button class="tab-pill">Equipos</button>
-          <button class="tab-pill">Partidos</button>
-          <button class="tab-pill">No leídos</button>
+        <div class="tab-pills" id="chat-filter-pills">
+          <button class="tab-pill active" onclick="setChatFilter('todos',this)">Todos</button>
+          <button class="tab-pill" onclick="setChatFilter('equipos',this)">Equipos</button>
+          <button class="tab-pill" onclick="setChatFilter('partidos',this)">Partidos</button>
+          <button class="tab-pill" onclick="setChatFilter('noleidos',this)">No leídos</button>
         </div>
-        <div class="convo-list">
-          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+        <div class="convo-list" id="chat-convo-list">
+          <div class="convo-row" data-tipo="equipo" data-unread="true" onclick="goTo('screen-chat-detail')">
             <div class="convo-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">RC</div>
             <div class="convo-body">
               <div class="convo-name">Real Chapinero</div>
@@ -1091,7 +1241,7 @@
               <span class="convo-badge">3</span>
             </div>
           </div>
-          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+          <div class="convo-row" data-tipo="persona" data-unread="false" onclick="goTo('screen-chat-detail')">
             <div class="convo-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed)">CR</div>
             <div class="convo-body">
               <div class="convo-name">Camilo Restrepo</div>
@@ -1101,7 +1251,7 @@
               <div class="convo-time">7:42 PM</div>
             </div>
           </div>
-          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+          <div class="convo-row" data-tipo="partido" data-unread="true" onclick="goTo('screen-chat-detail')">
             <div class="convo-avatar" style="background:#2a2a2a">⚽</div>
             <div class="convo-body">
               <div class="convo-name">Live Match · Hoy 8:30</div>
@@ -1112,7 +1262,7 @@
               <span class="convo-badge">1</span>
             </div>
           </div>
-          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+          <div class="convo-row" data-tipo="equipo" data-unread="false" onclick="goTo('screen-chat-detail')">
             <div class="convo-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af)">FS</div>
             <div class="convo-body">
               <div class="convo-name">FC Salitre</div>
@@ -1122,7 +1272,7 @@
               <div class="convo-time">Ayer</div>
             </div>
           </div>
-          <div class="convo-row" onclick="goTo('screen-chat-detail')">
+          <div class="convo-row" data-tipo="partido" data-unread="false" onclick="goTo('screen-chat-detail')">
             <div class="convo-avatar" style="background:linear-gradient(135deg,#F59E0B,#b45309)">C9</div>
             <div class="convo-body">
               <div class="convo-name">Cancha 93</div>
@@ -1143,7 +1293,14 @@
       </nav>
     </div>
 
-    <!-- CHAT DETAIL -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 10 — CHAT DETAIL (Ventana de mensajes)
+         Pantalla de conversación individual.
+         .bubble-them → burbujas del otro usuario (izquierda)
+         .bubble-me   → mis burbujas (derecha, fondo verde)
+         El input y el botón enviar son visuales; en el
+         prototipo no envían mensajes reales.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-chat-detail" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1165,7 +1322,13 @@
       </div>
     </div>
 
-    <!-- PERFIL -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 11 — MI PERFIL
+         Perfil del usuario: avatar, estadísticas, equipos,
+         información personal y equipos anteriores.
+         Es una pantalla de solo lectura en el prototipo
+         (el botón "Editar ›" está pero no hace nada aún).
+         ══════════════════════════════════════════════════ -->
     <div id="screen-profile" class="screen">
       <div class="top-bar-simple">
         <div class="tbs-title">Mi perfil</div>
@@ -1186,7 +1349,7 @@
           </div>
         </div>
 
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">MIS EQUIPOS</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">MIS EQUIPOS</span></div>
         <div class="team-row-item">
           <div class="team-logo-sm logo-green">AC</div>
           <div class="team-row-info">
@@ -1204,7 +1367,7 @@
         </div>
         <button class="btn-outline w-full mt-8" onclick="goTo('screen-create-team')">Crear equipo +</button>
 
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">INFORMACIÓN</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">INFORMACIÓN</span></div>
         <div class="info-card">
           <div class="info-row"><span class="info-label">Posición principal</span><span class="info-val">Delantero</span></div>
           <div class="info-row"><span class="info-label">Posición secundaria</span><span class="info-val">Mediocampista</span></div>
@@ -1213,10 +1376,10 @@
           <div class="info-row no-border"><span class="info-label">Barrio</span><span class="info-val">Chapinero</span></div>
         </div>
 
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">SOBRE MÍ</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">SOBRE MÍ</span></div>
         <div class="sobre-mi-card">Mediocampista con experiencia en fútbol 7. Busco equipo serio con buen ambiente.</div>
 
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">EQUIPOS ANTERIORES</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">EQUIPOS ANTERIORES</span></div>
         <div class="team-row-item">
           <div class="team-logo-sm logo-red">BT</div>
           <div class="team-row-info">
@@ -1234,7 +1397,16 @@
       </nav>
     </div>
 
-    <!-- MATCH DETAIL -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 12 — DETALLE DEL PARTIDO
+         Muestra toda la info de un partido:
+         - Escudos de ambos equipos con el estado (Confirmado)
+         - Info: fecha, hora, cancha, modalidad, costo
+         - Grilla de jugadores inscritos (llenos y vacíos)
+         - Organizador con botón de contacto
+         - Notas del partido
+         - Código de invitación copiable
+         ══════════════════════════════════════════════════ -->
     <div id="screen-match-detail" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1265,7 +1437,7 @@
           <div class="info-row"><span class="info-label">Nivel</span><span class="info-val">Amateur B</span></div>
           <div class="info-row no-border"><span class="info-label">Costo</span><span class="info-val">$15.000 c/u</span></div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">JUGADORES (11/11)</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">JUGADORES (11/11)</span></div>
         <div class="players-grid">
           <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:40px;height:40px;font-size:13px">AV</div><span class="slot-name">Andrés</span></div>
           <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:40px;height:40px;font-size:13px">CM</div><span class="slot-name">Carlos</span></div>
@@ -1274,7 +1446,7 @@
           <div class="player-slot filled"><div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:40px;height:40px;font-size:13px">MP</div><span class="slot-name">Mario</span></div>
           <div class="player-slot empty"><span class="slot-plus">+</span></div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">ORGANIZADOR</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">ORGANIZADOR</span></div>
         <div class="organizer-card">
           <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:44px;height:44px">AV</div>
           <div class="org-info">
@@ -1284,11 +1456,26 @@
           <button class="btn-outline-sm">💬</button>
         </div>
         <div class="notes-card">ℹ️ Partido amistoso, buen ambiente. Llevar peto claro y oscuro.</div>
-        <button class="btn-green w-full mt-16" onclick="goTo('screen-join-success')">▶ Unirme al partido</button>
+
+        <div class="section-header mt-16"><span class="section-title-sm">CÓDIGO DE INVITACIÓN</span></div>
+        <div class="invite-code-card">
+          <div class="invite-code-left">
+            <div class="invite-code-value">MM-4X9K</div>
+            <div class="invite-code-hint">Comparte este código para invitar jugadores</div>
+          </div>
+          <button class="invite-code-copy" onclick="copyInviteCode(this)">Copiar</button>
+        </div>
+
+        <div style="height:24px"></div>
       </div>
     </div>
 
-    <!-- JOIN SUCCESS -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 13 — JOIN SUCCESS
+         Pantalla de confirmación que aparece cuando el usuario
+         acepta un reto o se une a un partido. Solo tiene
+         texto de éxito y dos botones de navegación.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-join-success" class="screen">
       <div class="success-screen">
         <div class="success-icon">✅</div>
@@ -1299,40 +1486,308 @@
       </div>
     </div>
 
-    <!-- RETAR STEP 1 -->
-    <div id="screen-retar-step1" class="screen">
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 14 — CREAR PARTIDO (selector de modo)
+         Primera pantalla del flujo de creación de partido.
+         El usuario elige cómo quiere jugar:
+         🛡️ "Como equipo" → screen-crear-partido-equipo
+            (reta a otro equipo, define formato/fecha/lugar)
+         ⚡ "Como jugador" → screen-crear-partido-jugador
+            (crea una sala abierta para que otros se unan)
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-crear-partido" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
-        <span class="tbb-title">Retar equipo · Paso 1 de 3</span>
+        <span class="tbb-title">Crear partido</span>
+      </div>
+      <div class="screen-content crear-partido-content">
+        <div class="crear-tipo-cards">
+          <div class="hub-banner hub-crear"
+               style="background-image:url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800')"
+               onclick="goTo('screen-crear-partido-equipo')">
+            <div class="hub-overlay hub-overlay-green"></div>
+            <div class="hub-icon-badge" style="background:rgba(76,175,80,0.25);border-color:rgba(76,175,80,0.5)">🛡️</div>
+            <div class="hub-text">
+              <div class="hub-title">Como equipo</div>
+              <div class="hub-sub">Reta a otro equipo o busca rival para tu equipo</div>
+            </div>
+            <button class="hub-arrow">→</button>
+          </div>
+          <div class="hub-banner hub-crear"
+               style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800')"
+               onclick="goTo('screen-crear-partido-jugador')">
+            <div class="hub-overlay hub-overlay-blue"></div>
+            <div class="hub-icon-badge" style="background:rgba(245,158,11,0.25);border-color:rgba(245,158,11,0.5)">⚡</div>
+            <div class="hub-text">
+              <div class="hub-title">Como jugador</div>
+              <div class="hub-sub">Únete a un partido abierto o crea uno para que otros se sumen</div>
+            </div>
+            <button class="hub-arrow">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 15 — CREAR PARTIDO COMO EQUIPO
+         Formulario para configurar un partido de equipo.
+         Incluye:
+         - Dropdown para elegir con cuál de mis equipos juego
+           (toggleTeamDropdown / selectTeam en script.js)
+         - Selector de formato (4 pills: 5v5, 7v7, 8v8, 11v11)
+         - Campos de fecha y hora
+         - Campo de cancha y control de límite de jugadores
+           (+ / − manejado por changeLimit() en script.js)
+         Al continuar va a screen-retar-step2 (elegir rival).
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-crear-partido-equipo" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Crear partido · Equipo</span>
       </div>
       <div class="screen-content" style="top:56px">
+
         <div class="form-label">Tu equipo</div>
-        <button class="team-pill-selector w-full">Águilas Calvas FC ▾</button>
+        <div class="team-dropdown-wrap">
+          <button class="team-dropdown-btn" onclick="toggleTeamDropdown()">
+            <div class="team-dropdown-selected">
+              <div class="team-logo-sm logo-green">AC</div>
+              <span class="team-dropdown-name">Águilas Calvas FC</span>
+              <span class="team-dropdown-role">Capitán</span>
+            </div>
+            <span class="team-dropdown-chevron" id="team-dropdown-chevron">▾</span>
+          </button>
+          <div class="team-dropdown-list hidden" id="team-dropdown-list">
+            <button class="team-dropdown-item active" onclick="selectTeam(this, 'Águilas Calvas FC', 'logo-green', 'AC')">
+              <div class="team-logo-sm logo-green">AC</div>
+              <div class="team-dropdown-item-info">
+                <div class="team-dropdown-item-name">Águilas Calvas FC</div>
+                <div class="team-dropdown-item-sub">Capitán · 12 miembros</div>
+              </div>
+              <span class="team-dropdown-check">✓</span>
+            </button>
+            <button class="team-dropdown-item" onclick="selectTeam(this, 'FC Salitre', 'logo-blue2', 'FS')">
+              <div class="team-logo-sm logo-blue2">FS</div>
+              <div class="team-dropdown-item-info">
+                <div class="team-dropdown-item-name">FC Salitre</div>
+                <div class="team-dropdown-item-sub">Capitán · 9 miembros</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
         <div class="form-label mt-16">Formato</div>
-        <div class="format-pills">
-          <button class="format-pill active">Fútbol 5</button>
-          <button class="format-pill">Fútbol 7</button>
+        <div class="format-grid">
+          <button class="format-pill active">5 vs 5</button>
+          <button class="format-pill">7 vs 7</button>
+          <button class="format-pill">8 vs 8</button>
           <button class="format-pill">11 vs 11</button>
         </div>
-        <div class="form-label mt-16">Fecha</div>
-        <input class="form-input" type="date" placeholder="Elige una fecha 📅">
-        <div class="form-label mt-16">Zona</div>
-        <input class="form-input" placeholder="Cualquier zona 📍">
-        <div class="form-label mt-16">Nivel</div>
-        <div class="format-pills">
-          <button class="format-pill active">Casual</button>
-          <button class="format-pill">Amateur B</button>
-          <button class="format-pill">Amateur A</button>
+
+        <div class="form-row mt-16">
+          <div class="form-col">
+            <div class="form-label">Fecha</div>
+            <input class="form-input" type="date">
+          </div>
+          <div class="form-col">
+            <div class="form-label">Hora</div>
+            <input class="form-input" type="time" value="20:00">
+          </div>
         </div>
+
+        <div class="form-row mt-16">
+          <div class="form-col">
+            <div class="form-label">Cancha</div>
+            <input class="form-input" placeholder="Por definir 📍">
+          </div>
+          <div class="form-col">
+            <div class="form-label">Límite de jugadores</div>
+            <div class="player-limit-wrap">
+              <button class="player-limit-btn" onclick="changeLimit(this,-1)">−</button>
+              <span class="player-limit-val" id="player-limit">11</span>
+              <button class="player-limit-btn" onclick="changeLimit(this,1)">+</button>
+            </div>
+          </div>
+        </div>
+
         <button class="btn-green w-full mt-24" onclick="goTo('screen-retar-step2')">Siguiente → buscar rival</button>
       </div>
     </div>
 
-    <!-- RETAR STEP 2 -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 16 — CREAR PARTIDO COMO JUGADOR
+         Formulario para crear una "sala abierta" donde
+         cualquier persona puede unirse.
+         Igual al de equipo pero sin el dropdown de equipo
+         y con un campo de descripción opcional.
+         Al confirmar crea la sala → screen-lobby-jugador.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-crear-partido-jugador" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Crear partido · Jugador</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="form-label">Formato</div>
+        <div class="format-grid">
+          <button class="format-pill active">5 vs 5</button>
+          <button class="format-pill">7 vs 7</button>
+          <button class="format-pill">8 vs 8</button>
+          <button class="format-pill">11 vs 11</button>
+        </div>
+        <div class="form-row mt-16">
+          <div class="form-col">
+            <div class="form-label">Fecha</div>
+            <input class="form-input" type="date">
+          </div>
+          <div class="form-col">
+            <div class="form-label">Hora</div>
+            <input class="form-input" type="time" value="20:00">
+          </div>
+        </div>
+        <div class="form-row mt-16">
+          <div class="form-col">
+            <div class="form-label">Zona</div>
+            <input class="form-input" placeholder="Chapinero 📍">
+          </div>
+          <div class="form-col">
+            <div class="form-label">Límite de jugadores</div>
+            <div class="player-limit-wrap">
+              <button class="player-limit-btn" onclick="changeLimit(this,-1)">−</button>
+              <span class="player-limit-val">10</span>
+              <button class="player-limit-btn" onclick="changeLimit(this,1)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-label mt-16">Descripción (opcional)</div>
+        <input class="form-input" placeholder="Ej: partido mixto, todos bienvenidos...">
+        <button class="btn-green w-full mt-24" onclick="goTo('screen-lobby-jugador')">Crear sala ›</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 17 — LOBBY (Sala de espera)
+         Muestra el estado en tiempo real de la sala creada:
+         - Tarjeta de estado con punto rojo parpadeante
+         - Cuadrícula de cupos (llenos en color, vacíos con "+")
+         - Lista de jugadores que ya se unieron
+         - Código de sala para compartir (copiable)
+         - Botón para cancelar el partido (abre cancel-modal)
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-lobby-jugador" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <div style="flex:1">
+          <div class="tbb-title">Partido en vivo</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px">Fútbol 5 · Chapinero · Hoy 8:00 PM</div>
+        </div>
+      </div>
+      <div class="screen-content" style="top:56px">
+
+        <!-- Estado de la sala -->
+        <div class="lobby-status-card">
+          <div class="lobby-status-left">
+            <span class="lobby-live-dot"></span>
+            <div>
+              <div class="lobby-status-title">Sala activa</div>
+              <div class="lobby-status-sub">Chapinero · Hoy 8:00 PM</div>
+            </div>
+          </div>
+          <div class="lobby-slots-badge">3<span style="color:rgba(255,255,255,0.5)">/10</span></div>
+        </div>
+
+        <!-- Cupos visuales -->
+        <div class="form-label mt-16">CUPOS</div>
+        <div class="lobby-slots-grid">
+          <div class="lobby-slot filled" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>
+          <div class="lobby-slot filled" style="background:linear-gradient(135deg,#EF4444,#b91c1c)">JR</div>
+          <div class="lobby-slot filled" style="background:linear-gradient(135deg,#A855F7,#7c3aed)">CM</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+          <div class="lobby-slot empty">+</div>
+        </div>
+
+        <!-- Lista de jugadores -->
+        <div class="form-label mt-16">JUGADORES</div>
+        <div class="lobby-players-list">
+          <div class="lobby-player-row">
+            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:38px;height:38px;font-size:12px;flex-shrink:0">AV</div>
+            <div class="lobby-player-info">
+              <div class="lobby-player-name">Andrés Vega <span style="font-size:10px;color:var(--green)">(Tú)</span></div>
+              <div class="lobby-player-sub">Chapinero · Mediocampista</div>
+            </div>
+            <span class="lobby-player-badge host">Host</span>
+          </div>
+          <div class="lobby-player-row">
+            <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:38px;height:38px;font-size:12px;flex-shrink:0">JR</div>
+            <div class="lobby-player-info">
+              <div class="lobby-player-name">Juan Roa</div>
+              <div class="lobby-player-sub">Usaquén · Delantero</div>
+            </div>
+            <span class="lobby-player-badge joined">Unido</span>
+          </div>
+          <div class="lobby-player-row">
+            <div class="player-avatar" style="background:linear-gradient(135deg,#A855F7,#7c3aed);width:38px;height:38px;font-size:12px;flex-shrink:0">CM</div>
+            <div class="lobby-player-info">
+              <div class="lobby-player-name">Carlos M.</div>
+              <div class="lobby-player-sub">Suba · Portero</div>
+            </div>
+            <span class="lobby-player-badge joined">Unido</span>
+          </div>
+        </div>
+
+        <!-- Código de sala -->
+        <div class="invite-code-card mt-16">
+          <div class="invite-code-left">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Código de sala</div>
+            <div class="invite-code-value">FUT-4829</div>
+          </div>
+          <button class="invite-code-copy" onclick="copyInviteCode(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+
+        <button class="btn-green w-full mt-16" onclick="goTo('screen-mis-partidos')">Ver mis partidos</button>
+        <button class="btn-cancel w-full mt-8" onclick="openCancelModal()">Cancelar partido</button>
+
+        <div style="height:24px"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         MODAL GLOBAL — Confirmar cancelación de partido
+         Aparece sobre screen-lobby-jugador cuando el usuario
+         toca "Cancelar partido". Es un modal pequeño centrado
+         con un fondo oscuro detrás.
+         openCancelModal() / closeCancelModal() en script.js.
+         ══════════════════════════════════════════════════ -->
+    <div id="cancel-modal-overlay" class="create-modal-overlay hidden" onclick="closeCancelModal()"></div>
+    <div id="cancel-modal" class="create-modal hidden" style="padding-bottom:32px">
+      <div class="create-modal-handle"></div>
+      <div style="text-align:center;padding:8px 0 16px">
+        <div style="font-size:32px;margin-bottom:12px">⚠️</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">¿Cancelar el partido?</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:6px;line-height:1.5">Se notificará a los <strong style="color:var(--text)">3 jugadores</strong> que ya se unieron y la sala quedará cerrada.</div>
+      </div>
+      <button class="btn-cancel w-full" onclick="goTo('screen-home'); closeCancelModal()" style="margin-bottom:10px">Sí, cancelar partido</button>
+      <button class="create-modal-cta" onclick="closeCancelModal()">No, mantener sala</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 18 — ELEGIR RIVAL (Paso 2 del reto)
+         Lista de equipos disponibles para retar esta semana.
+         El usuario puede elegir uno o varios rivales.
+         Al tocar un equipo o su botón "Retar" avanza al paso 3.
+         El botón "Publicar sin rival" crea un reto abierto.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-retar-step2" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
-        <span class="tbb-title">Elegir rival · Paso 2 de 3</span>
+        <span class="tbb-title">Elegir rival</span>
       </div>
       <div class="screen-content" style="top:56px">
         <div class="search-bar-wrap">
@@ -1374,11 +1829,20 @@
       </div>
     </div>
 
-    <!-- RETAR STEP 3 -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 19 — CONFIRMAR RETO (Paso 3 del reto)
+         Resumen del reto antes de enviarlo:
+         - Mi equipo
+         - Los equipos retados (con estado "Esperando")
+         - Botón para agregar más equipos al mismo reto
+         - Resumen de formato/fecha/hora/zona
+         - Nota: "El primero que acepte confirma el partido"
+         Al confirmar → screen-reto-success.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-retar-step3" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
-        <span class="tbb-title">Confirmar reto · Paso 3 de 3</span>
+        <span class="tbb-title">Confirmar partido</span>
       </div>
       <div class="screen-content" style="top:56px">
         <div class="form-label">TU EQUIPO</div>
@@ -1417,7 +1881,11 @@
       </div>
     </div>
 
-    <!-- RETO SUCCESS -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 20 — RETO ENVIADO (confirmación)
+         Pantalla de éxito simple. Igual en estructura a
+         screen-join-success y screen-cancha-success.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-reto-success" class="screen">
       <div class="success-screen">
         <div class="success-icon">⚡</div>
@@ -1428,7 +1896,14 @@
       </div>
     </div>
 
-    <!-- RETO DETAIL -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 21 — RETO RECIBIDO
+         Pantalla que ve el capitán del equipo retado.
+         Muestra los escudos de ambos equipos, la info del
+         partido y dos botones: Aceptar o Rechazar.
+         Aceptar → screen-join-success
+         Rechazar → goBack() (volver)
+         ══════════════════════════════════════════════════ -->
     <div id="screen-reto-detail" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1463,7 +1938,16 @@
       </div>
     </div>
 
-    <!-- CANCHA DETAIL -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 22 — DETALLE DE CANCHA
+         Muestra info de una cancha específica:
+         - Ilustración del campo (dibujada con CSS puro)
+         - Dirección, precio y superficie
+         - Grilla de horarios: libre (clickable), ocupado,
+           seleccionado. selectSlot() en script.js maneja esto.
+         - Selector de duración (1h, 1.5h, 2h)
+         - Botón de reserva → screen-cancha-success
+         ══════════════════════════════════════════════════ -->
     <div id="screen-cancha-detail" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1479,7 +1963,7 @@
           <div class="info-row"><span class="info-label">Precio</span><span class="info-val">$120.000/hora</span></div>
           <div class="info-row no-border"><span class="info-label">Superficie</span><span class="info-val">Sintética</span></div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">HORARIOS DISPONIBLES</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">HORARIOS DISPONIBLES</span></div>
         <div class="time-slots-grid">
           <button class="time-slot occupied">6:00 AM</button>
           <button class="time-slot occupied">7:00 AM</button>
@@ -1494,7 +1978,7 @@
           <button class="time-slot selected" onclick="selectSlot(this)">7:00 PM</button>
           <button class="time-slot free" onclick="selectSlot(this)">8:00 PM</button>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">DURACIÓN</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">DURACIÓN</span></div>
         <div class="format-pills">
           <button class="format-pill active">1h</button>
           <button class="format-pill">1.5h</button>
@@ -1504,7 +1988,10 @@
       </div>
     </div>
 
-    <!-- CANCHA SUCCESS -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 23 — CANCHA RESERVADA (confirmación)
+         Pantalla de éxito con código de reserva generado.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-cancha-success" class="screen">
       <div class="success-screen">
         <div class="success-icon">🏟️</div>
@@ -1515,7 +2002,15 @@
       </div>
     </div>
 
-    <!-- CREAR EQUIPO STEP 1 -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 24 — CREAR EQUIPO — PASO 1 de 3
+         El usuario define los datos básicos del equipo:
+         - Nombre (las iniciales del avatar se actualizan
+           en tiempo real via updateTeamInitials() en script.js)
+         - Color del escudo (paleta de puntos de colores,
+           selectColor() en script.js actualiza el avatar)
+         - Formato principal (5v5, 7v7, 8v8, 11v11)
+         ══════════════════════════════════════════════════ -->
     <div id="screen-create-team" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1545,7 +2040,15 @@
       </div>
     </div>
 
-    <!-- CREAR EQUIPO STEP 2 -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 25 — CREAR EQUIPO — PASO 2 de 3
+         Logística y visibilidad del equipo:
+         - Barrio y cancha favorita
+         - Disponibilidad: días (pills redondas) y franja
+           horaria (Mañana/Tarde/Noche) con toggle individual
+         - Tipo: Abierto, Solo miembros o Cerrado (radio)
+         - Campo para buscar e invitar miembros
+         ══════════════════════════════════════════════════ -->
     <div id="screen-create-team-2" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1583,7 +2086,13 @@
       </div>
     </div>
 
-    <!-- CREAR EQUIPO STEP 3 -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 26 — CREAR EQUIPO — PASO 3 de 3
+         Pantalla de revisión/confirmación antes de crear.
+         Muestra un resumen de todo lo configurado en los
+         pasos 1 y 2. El usuario puede volver a editar o
+         confirmar → screen-create-team-success.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-create-team-3" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1622,7 +2131,11 @@
       </div>
     </div>
 
-    <!-- CREATE TEAM SUCCESS -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 27 — EQUIPO CREADO (confirmación)
+         Muestra el código de invitación del nuevo equipo
+         y botones para compartirlo por WhatsApp, link, etc.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-create-team-success" class="screen">
       <div class="success-screen">
         <div class="success-icon">🏆</div>
@@ -1637,7 +2150,18 @@
       </div>
     </div>
 
-    <!-- FICHAJES -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 28 — FICHAJES
+         Mercado de jugadores y equipos.
+         Tiene 2 pestañas manejadas por setFichajesTab():
+         "Buscar jugador" → tab-jugadores
+           Lista de jugadores libres o disponibles para fichar.
+           Cada tarjeta muestra posición, barrio, disponibilidad
+           y estado ("Sin equipo" en verde / "Equipo X" en azul).
+         "Buscar equipo" → tab-equipos
+           Lista de equipos que buscan jugadores.
+           Tienen botones "Fichar" y/o "Miembro".
+         ══════════════════════════════════════════════════ -->
     <div id="screen-fichajes" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1792,7 +2316,13 @@
       </div>
     </div>
 
-    <!-- PLAYER PROFILE -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 29 — PERFIL DEL JUGADOR
+         Perfil público de otro jugador (no el propio).
+         Muestra: avatar con punto verde (en línea), nombre,
+         posición, estadísticas y descripción personal.
+         Botones de acción: invitar a equipo o enviar mensaje.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-player-profile" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1828,7 +2358,442 @@
       </div>
     </div>
 
-    <!-- TEAM PROFILE -->
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 30 — GESTIÓN DE EQUIPO
+         Panel de administración del equipo (vista del capitán).
+         Se abre desde el drawer lateral al tocar un equipo.
+         Tiene 4 pestañas manejadas por setTmTab():
+         "Equipo"       → tm-tab-equipo
+           Canchas favoritas, código invitación, solicitudes.
+         "Partidos"     → tm-tab-partidos
+           Botón crear partido, próximo y historial.
+         "Gestión"      → tm-tab-gestion
+           Campo posicional SVG con los jugadores ubicados,
+           lista colapsable (toggleTmPlayerList) y necesidades.
+         "Estadísticas" → tm-tab-estadisticas
+           Gráfico de barras, efectividad y top jugadores.
+
+         También tiene dos bottom sheets (paneles que suben):
+         - #player-menu    → opciones al tocar un jugador
+         - #edit-team-sheet → editar nombre/zona/modalidades
+         Ambos tienen su overlay oscuro detrás.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-team-management" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title" id="team-management-title">Águilas Calvas FC</span>
+        <button class="tbb-action-btn" onclick="openEditTeamSheet()">✎</button>
+      </div>
+      <div class="screen-content" style="top:56px">
+
+        <div class="tab-pills" id="tm-tabs">
+          <button class="tab-pill active" onclick="setTmTab('equipo',this)">Equipo</button>
+          <button class="tab-pill" onclick="setTmTab('partidos',this)">Partidos</button>
+          <button class="tab-pill" onclick="setTmTab('gestion',this)">Gestión</button>
+          <button class="tab-pill" onclick="setTmTab('estadisticas',this)">Estadísticas</button>
+        </div>
+
+        <!-- TAB: EQUIPO -->
+        <div id="tm-tab-equipo" class="tab-content active">
+
+        <!-- 1. HEADER DEL EQUIPO -->
+        <div class="tm-header-card">
+          <div class="tm-logo logo-green">AC</div>
+          <div class="tm-header-info">
+            <div class="tm-team-name">Águilas Calvas FC</div>
+            <div class="tm-team-meta">Chapinero · Fútbol 7 · 12 miembros</div>
+            <div class="tm-role-badge"><span class="crown-icon">👑</span> Capitán</div>
+          </div>
+        </div>
+
+        <!-- 2. ESTADO OPERATIVO -->
+        <div class="info-card mt-12">
+          <div class="tm-ops-grid tm-ops-grid-noborder">
+            <div class="tm-ops-item">
+              <span class="tm-ops-num">9</span>
+              <span class="tm-ops-label">Plantilla</span>
+            </div>
+            <div class="tm-ops-item">
+              <span class="tm-ops-num">2</span>
+              <span class="tm-ops-label">Necesidades</span>
+            </div>
+            <div class="tm-ops-item">
+              <span class="tm-ops-num">3</span>
+              <span class="tm-ops-label">Canchas fav.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CANCHAS FAVORITAS -->
+        <div class="section-header mt-16">
+          <span class="section-title">Canchas favoritas</span>
+          <button class="see-all" onclick="goTo('screen-search-canchas')">Ver mapa ›</button>
+        </div>
+        <div class="tm-field-card">
+          <div class="tm-field-info">
+            <div class="tm-field-name">⭐ Cancha Norte</div>
+            <div class="tm-field-meta">Mazurén · 7v7 · 11v11 · Sintética</div>
+          </div>
+          <span class="pill-green-xs">Disponible</span>
+        </div>
+        <div class="tm-field-card">
+          <div class="tm-field-info">
+            <div class="tm-field-name">Cancha 93</div>
+            <div class="tm-field-meta">Chapinero · 5v5 · 7v7 · Sintética</div>
+          </div>
+          <span class="pill-yellow-xs">Consultar</span>
+        </div>
+
+        <!-- CÓDIGO DE INVITACIÓN -->
+        <div class="section-header mt-16"><span class="section-title">Código de invitación</span></div>
+        <div class="invite-code-card">
+          <div>
+            <div class="invite-code-value">AGL-847</div>
+            <div class="invite-code-hint">Comparte este código para invitar jugadores</div>
+          </div>
+          <button class="invite-code-copy" onclick="copyInviteCode(this)">Copiar</button>
+        </div>
+
+        <!-- SOLICITUDES PENDIENTES -->
+        <div class="section-header mt-16"><span class="section-title">Solicitudes pendientes</span></div>
+        <div class="tm-requests-card">
+          <div class="tm-request-row">
+            <span class="tm-request-icon">👥</span>
+            <span class="tm-request-text">2 jugadores quieren unirse</span>
+            <span class="badge-red">2</span>
+          </div>
+          <div class="tm-request-row no-border">
+            <span class="tm-request-icon">⚡</span>
+            <span class="tm-request-text">1 reto enviado</span>
+            <span class="badge-neutral">1</span>
+          </div>
+          <button class="btn-outline w-full mt-12" onclick="goTo('screen-fichajes')">Revisar solicitudes</button>
+        </div>
+
+        <div style="height:24px"></div>
+        </div><!-- /tm-tab-equipo -->
+
+        <!-- TAB: GESTIÓN -->
+        <div id="tm-tab-gestion" class="tab-content">
+
+          <!-- CAMPO POSICIONAL -->
+          <div class="section-header mt-16">
+            <span class="section-title">Plantilla</span>
+            <button class="see-all" id="tm-toggle-list-btn" onclick="toggleTmPlayerList()">Ver lista ›</button>
+          </div>
+
+          <div class="tm-pitch-wrap">
+            <svg class="tm-pitch-svg" viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg">
+              <!-- Fondo -->
+              <rect width="260" height="380" fill="#0d1f0f" rx="10"/>
+              <!-- Bandas de césped -->
+              <rect x="0"   y="0"   width="260" height="38"  fill="#0f2410" rx="0"/>
+              <rect x="0"   y="38"  width="260" height="38"  fill="#0d1f0f"/>
+              <rect x="0"   y="76"  width="260" height="38"  fill="#0f2410"/>
+              <rect x="0"   y="114" width="260" height="38"  fill="#0d1f0f"/>
+              <rect x="0"   y="152" width="260" height="38"  fill="#0f2410"/>
+              <rect x="0"   y="190" width="260" height="38"  fill="#0d1f0f"/>
+              <rect x="0"   y="228" width="260" height="38"  fill="#0f2410"/>
+              <rect x="0"   y="266" width="260" height="38"  fill="#0d1f0f"/>
+              <rect x="0"   y="304" width="260" height="38"  fill="#0f2410"/>
+              <rect x="0"   y="342" width="260" height="38"  fill="#0d1f0f" rx="0"/>
+              <!-- Borde exterior -->
+              <rect x="8" y="8" width="244" height="364" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" rx="4"/>
+              <!-- Línea de medio campo -->
+              <line x1="8" y1="190" x2="252" y2="190" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+              <!-- Círculo central -->
+              <circle cx="130" cy="190" r="32" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <circle cx="130" cy="190" r="2.5" fill="rgba(255,255,255,0.4)"/>
+              <!-- Área grande arriba (portería rival) -->
+              <rect x="60" y="8" width="140" height="58" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <!-- Área chica arriba -->
+              <rect x="95" y="8" width="70" height="24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              <!-- Portería arriba -->
+              <rect x="108" y="4" width="44" height="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="1"/>
+              <!-- Área grande abajo (nuestra portería) -->
+              <rect x="60" y="314" width="140" height="58" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <!-- Área chica abajo -->
+              <rect x="95" y="348" width="70" height="24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              <!-- Portería abajo -->
+              <rect x="108" y="368" width="44" height="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="1"/>
+              <!-- Punto penal arriba -->
+              <circle cx="130" cy="52" r="2" fill="rgba(255,255,255,0.3)"/>
+              <!-- Punto penal abajo -->
+              <circle cx="130" cy="328" r="2" fill="rgba(255,255,255,0.3)"/>
+
+              <!-- ── JUGADORES ── -->
+
+              <!-- DELANTERO: Juan Torres (JT) — arriba -->
+              <g class="tm-pitch-node">
+                <circle cx="130" cy="80" r="18" fill="rgba(230,126,34,0.25)" stroke="rgba(230,126,34,0.8)" stroke-width="1.5"/>
+                <text x="130" y="84" text-anchor="middle" font-size="11" font-weight="700" fill="#e67e22" font-family="Inter,sans-serif">JT</text>
+                <text x="130" y="108" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">Delantero</text>
+              </g>
+
+              <!-- MEDIOCAMPO: Andrés Vega (AV) — con borde verde "Tú" -->
+              <g class="tm-pitch-node">
+                <circle cx="130" cy="168" r="18" fill="rgba(61,214,140,0.15)" stroke="#3DD68C" stroke-width="2"/>
+                <text x="130" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#3DD68C" font-family="Inter,sans-serif">AV</text>
+                <text x="130" y="196" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">Mediocampo</text>
+                <!-- Etiqueta "Tú" -->
+                <rect x="114" y="149" width="32" height="12" fill="rgba(61,214,140,0.2)" rx="6"/>
+                <text x="130" y="158" text-anchor="middle" font-size="7.5" font-weight="700" fill="#3DD68C" font-family="Inter,sans-serif">Tú</text>
+              </g>
+
+              <!-- DEFENSA: Pedro Gómez (PG) -->
+              <g class="tm-pitch-node">
+                <circle cx="130" cy="258" r="18" fill="rgba(155,89,182,0.25)" stroke="rgba(155,89,182,0.8)" stroke-width="1.5"/>
+                <text x="130" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#9b59b6" font-family="Inter,sans-serif">PG</text>
+                <text x="130" y="286" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">Defensa</text>
+              </g>
+
+              <!-- PORTERO: Carlos Mendoza (CM) — con corona -->
+              <g class="tm-pitch-node">
+                <circle cx="130" cy="340" r="18" fill="rgba(46,204,113,0.2)" stroke="rgba(46,204,113,0.85)" stroke-width="1.5"/>
+                <text x="130" y="344" text-anchor="middle" font-size="11" font-weight="700" fill="#2ecc71" font-family="Inter,sans-serif">CM</text>
+                <text x="130" y="368" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">Portero</text>
+                <!-- Corona capitán -->
+                <text x="130" y="322" text-anchor="middle" font-size="10" font-family="Inter,sans-serif">👑</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Contador debajo del campo -->
+          <div class="tm-pitch-footer">
+            <span class="tm-pitch-count">4 jugadores · <span style="color:var(--yellow)">1 posición libre</span></span>
+          </div>
+
+          <!-- Lista colapsable -->
+          <div id="tm-player-list" class="info-card mt-12" style="display:none">
+            <div class="tm-player-row" onclick="showPlayerMenu('Carlos Mendoza')">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#2ecc71,#1a8a4a);width:38px;height:38px;font-size:12px;flex-shrink:0">CM</div>
+              <div class="tm-player-info">
+                <div class="tm-player-name">👑 Carlos Mendoza</div>
+                <div class="tm-player-pos">Portero</div>
+              </div>
+              <span class="tm-player-menu">⋯</span>
+            </div>
+            <div class="tm-player-row" onclick="showPlayerMenu('Andrés Vega')">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#3DD68C,#2BAF6E);width:38px;height:38px;font-size:12px;flex-shrink:0">AV</div>
+              <div class="tm-player-info">
+                <div class="tm-player-name">Andrés Vega <span style="font-size:10px;color:var(--green)">(Tú)</span></div>
+                <div class="tm-player-pos">Mediocampista</div>
+              </div>
+              <span class="tm-player-menu">⋯</span>
+            </div>
+            <div class="tm-player-row" onclick="showPlayerMenu('Juan Torres')">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#e67e22,#a04a0a);width:38px;height:38px;font-size:12px;flex-shrink:0">JT</div>
+              <div class="tm-player-info">
+                <div class="tm-player-name">Juan Torres</div>
+                <div class="tm-player-pos">Delantero</div>
+              </div>
+              <span class="tm-player-menu">⋯</span>
+            </div>
+            <div class="tm-player-row no-border" onclick="showPlayerMenu('Pedro Gómez')">
+              <div class="player-avatar" style="background:linear-gradient(135deg,#9b59b6,#6c3483);width:38px;height:38px;font-size:12px;flex-shrink:0">PG</div>
+              <div class="tm-player-info">
+                <div class="tm-player-name">Pedro Gómez</div>
+                <div class="tm-player-pos">Defensa</div>
+              </div>
+              <span class="tm-player-menu">⋯</span>
+            </div>
+          </div>
+
+          <!-- NECESIDADES -->
+          <div class="tm-divider mt-16"></div>
+          <div class="section-header mt-16">
+            <span class="section-title">Necesidades del equipo</span>
+            <button class="see-all" onclick="goTo('screen-fichajes')">+ Agregar ›</button>
+          </div>
+          <div class="tm-needs-list">
+            <div class="tm-need-card">
+              <div class="tm-need-left">
+                <span class="tm-need-pos">Delantero</span>
+                <div class="tm-need-tags"><span class="tm-need-tag">7v7</span></div>
+              </div>
+              <button class="btn-green-xs" onclick="goTo('screen-fichajes')">Buscar</button>
+            </div>
+            <div class="tm-need-card">
+              <div class="tm-need-left">
+                <span class="tm-need-pos">Defensa</span>
+                <div class="tm-need-tags"><span class="tm-need-tag">11v11</span></div>
+              </div>
+              <button class="btn-green-xs" onclick="goTo('screen-fichajes')">Buscar</button>
+            </div>
+          </div>
+
+          <div style="height:24px"></div>
+        </div><!-- /tm-tab-gestion -->
+
+        <!-- TAB: PARTIDOS -->
+        <div id="tm-tab-partidos" class="tab-content">
+
+          <!-- Botón crear partido -->
+          <button class="btn-green w-full" style="margin-top:16px" onclick="goTo('screen-crear-partido-equipo')">＋ Crear partido</button>
+
+          <!-- Próximo partido -->
+          <div class="section-header mt-16"><span class="section-title">Próximo</span></div>
+          <div class="tm-match-card">
+            <div class="tm-match-left">
+              <span class="pill-yellow-xs">Cancha pendiente</span>
+              <div class="tm-match-rival">vs Macondo FC</div>
+              <div class="tm-match-meta">📅 Sáb 17 May · 8:00 AM · 7v7</div>
+              <div class="tm-match-meta" style="color:var(--text2)">📍 Por confirmar</div>
+            </div>
+            <button class="btn-outline-sm" onclick="goTo('screen-match-detail')">Ver detalle</button>
+          </div>
+
+          <!-- Historial -->
+          <div class="section-header mt-16"><span class="section-title">Historial</span></div>
+          <div class="tm-match-card">
+            <div class="tm-match-left">
+              <span class="pill-green-xs">Victoria</span>
+              <div class="tm-match-rival">vs Los Bravos</div>
+              <div class="tm-match-meta">📅 Sáb 10 May · 7v7 · <strong>3–1</strong></div>
+            </div>
+          </div>
+          <div class="tm-match-card">
+            <div class="tm-match-left">
+              <span class="pill-yellow-xs">Empate</span>
+              <div class="tm-match-rival">vs Macondo FC</div>
+              <div class="tm-match-meta">📅 Sáb 3 May · 7v7 · <strong>2–2</strong></div>
+            </div>
+          </div>
+          <div class="tm-match-card">
+            <div class="tm-match-left">
+              <span class="result-badge" style="background:#EF444422;color:#EF4444">Derrota</span>
+              <div class="tm-match-rival">vs Chapinero FC</div>
+              <div class="tm-match-meta">📅 Sáb 26 Abr · 7v7 · <strong>0–2</strong></div>
+            </div>
+          </div>
+
+          <div style="height:24px"></div>
+        </div><!-- /tm-tab-partidos -->
+
+        <!-- TAB: ESTADÍSTICAS -->
+        <div id="tm-tab-estadisticas" class="tab-content">
+          <div class="stats-hero-row">
+            <div class="team-logo-md logo-green">AC</div>
+            <div>
+              <div class="stats-hero-name">Águilas Calvas FC</div>
+              <div class="stats-hero-sub">Mayo 2026</div>
+            </div>
+          </div>
+          <div class="stats-top-row">
+            <div class="stat-big-card"><span class="stat-big-num">24</span><span class="stat-big-label">Partidos</span></div>
+            <div class="stat-big-card"><span class="stat-big-num">87%</span><span class="stat-big-label">Efectividad</span></div>
+            <div class="stat-big-card"><span class="stat-big-num">14</span><span class="stat-big-label">Goles</span></div>
+          </div>
+          <div class="form-section">
+            <div class="form-title">G-E-P este mes: <strong>5-0-1</strong></div>
+            <div class="bar-chart">
+              <div class="bar-col"><div class="bar green-bar" style="height:80%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:90%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar red-bar" style="height:40%"></div><span class="bar-label">P</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:75%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar green-bar" style="height:85%"></div><span class="bar-label">G</span></div>
+              <div class="bar-col"><div class="bar yellow-bar" style="height:55%"></div><span class="bar-label">E</span></div>
+            </div>
+          </div>
+          <div class="section-header mt-16"><span class="section-title-sm">Top jugadores</span></div>
+          <div class="top-player-row">
+            <span class="top-rank">1</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32);width:36px;height:36px;font-size:12px">AV</div>
+            <div class="top-player-info"><div class="top-player-name">Andrés Vega</div><div class="top-player-pos">Mediocampista</div></div>
+            <div class="top-player-stats">5G · 3A</div>
+          </div>
+          <div class="top-player-row">
+            <span class="top-rank">2</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:36px;height:36px;font-size:12px">JR</div>
+            <div class="top-player-info"><div class="top-player-name">Juan Roa</div><div class="top-player-pos">Delantero</div></div>
+            <div class="top-player-stats">4G · 1A</div>
+          </div>
+          <div class="top-player-row">
+            <span class="top-rank">3</span>
+            <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:36px;height:36px;font-size:12px">CM</div>
+            <div class="top-player-info"><div class="top-player-name">Carlos M.</div><div class="top-player-pos">Portero</div></div>
+            <div class="top-player-stats">0G · 2A</div>
+          </div>
+          <div style="height:24px"></div>
+        </div><!-- /tm-tab-estadisticas -->
+
+      </div>
+
+      <!-- Menú contextual jugador — fuera del scroll -->
+      <div id="player-menu-overlay" class="tm-overlay hidden" onclick="closePlayerMenu()"></div>
+      <div id="player-menu" class="tm-bottom-sheet hidden">
+        <div class="tm-sheet-handle"></div>
+        <div class="tm-sheet-title" id="player-menu-name">Opciones</div>
+        <button class="tm-sheet-item" onclick="closePlayerMenu()">🔄 Cambiar posición</button>
+        <button class="tm-sheet-item" onclick="closePlayerMenu()">👑 Marcar como capitán</button>
+        <button class="tm-sheet-item danger" onclick="closePlayerMenu()">✕ Quitar del equipo</button>
+      </div>
+
+      <!-- EDIT TEAM SHEET -->
+      <div id="edit-team-overlay" class="tm-overlay hidden" onclick="closeEditTeamSheet()"></div>
+      <div id="edit-team-sheet" class="tm-bottom-sheet hidden">
+        <div class="tm-sheet-handle"></div>
+        <div class="tm-sheet-title">Editar equipo</div>
+
+        <div class="edit-field-label">Nombre del equipo</div>
+        <input id="edit-team-name" class="edit-field-input" type="text" value="Águilas Calvas FC">
+
+        <div class="edit-field-label mt-12">Sector / Zona</div>
+        <input id="edit-team-zone" class="edit-field-input" type="text" value="Chapinero">
+
+        <div class="edit-field-label mt-12">Modalidades</div>
+        <div class="edit-modalities-row">
+          <button class="edit-mod-chip active" onclick="toggleModality(this)">5v5</button>
+          <button class="edit-mod-chip active" onclick="toggleModality(this)">7v7</button>
+          <button class="edit-mod-chip" onclick="toggleModality(this)">8v8</button>
+          <button class="edit-mod-chip active" onclick="toggleModality(this)">11v11</button>
+        </div>
+
+        <div class="edit-field-label mt-12">Visibilidad del equipo</div>
+        <div class="visibility-options">
+          <label class="visibility-option">
+            <input type="radio" name="team-visibility" value="nadie">
+            <div class="vis-opt-body">
+              <span class="vis-opt-icon">🔒</span>
+              <div>
+                <div class="vis-opt-title">Nadie</div>
+                <div class="vis-opt-sub">El equipo no aparece en búsquedas</div>
+              </div>
+            </div>
+          </label>
+          <label class="visibility-option">
+            <input type="radio" name="team-visibility" value="invitacion" checked>
+            <div class="vis-opt-body">
+              <span class="vis-opt-icon">🔗</span>
+              <div>
+                <div class="vis-opt-title">Solo invitaciones</div>
+                <div class="vis-opt-sub">Solo quien tenga el código puede unirse</div>
+              </div>
+            </div>
+          </label>
+          <label class="visibility-option">
+            <input type="radio" name="team-visibility" value="publico">
+            <div class="vis-opt-body">
+              <span class="vis-opt-icon">🌐</span>
+              <div>
+                <div class="vis-opt-title">Público</div>
+                <div class="vis-opt-sub">Cualquier jugador puede encontrarte</div>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <button class="btn-green w-full mt-16" onclick="saveEditTeam()">Guardar cambios</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 31 — PERFIL DEL EQUIPO (vista pública)
+         Perfil de otro equipo que no es el mío.
+         Muestra: nombre, formato, zona, rating, miembros,
+         posiciones que buscan, info general y avatares.
+         Botones: "Solicitar ficha" → screen-join-success.
+         ══════════════════════════════════════════════════ -->
     <div id="screen-team-profile" class="screen">
       <div class="top-bar-back">
         <button class="back-arrow" onclick="goBack()">‹</button>
@@ -1849,19 +2814,19 @@
             <button class="btn-green-sm">Miembro</button>
           </div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">BUSCAN JUGADORES</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">BUSCAN JUGADORES</span></div>
         <div class="info-card">
           <div class="info-row"><span class="info-label">Delantero</span><span class="in-team-badge">Ficha</span></div>
           <div class="info-row no-border"><span class="info-label">Portero</span><span class="in-team-badge">Miembro</span></div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">INFO DEL EQUIPO</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">INFO DEL EQUIPO</span></div>
         <div class="info-card">
           <div class="info-row"><span class="info-label">Barrio</span><span class="info-val">Teusaquillo</span></div>
           <div class="info-row"><span class="info-label">Disponibilidad</span><span class="info-val">Noches · Fines de sem.</span></div>
           <div class="info-row"><span class="info-label">Nivel</span><span class="info-val">Amateur B</span></div>
           <div class="info-row no-border"><span class="info-label">Cancha favorita</span><span class="info-val">Cancha Norte</span></div>
         </div>
-        <div class="section-header mt-16"><span class="section-title" style="font-size:14px">MIEMBROS (16)</span></div>
+        <div class="section-header mt-16"><span class="section-title-sm">MIEMBROS (16)</span></div>
         <div class="players-grid" style="gap:8px">
           <div class="player-avatar" style="background:linear-gradient(135deg,#EF4444,#b91c1c);width:40px;height:40px;font-size:13px">JR</div>
           <div class="player-avatar" style="background:linear-gradient(135deg,#3B82F6,#1e40af);width:40px;height:40px;font-size:13px">CM</div>
@@ -1872,29 +2837,27 @@
       </div>
     </div>
 
-    <!-- CREATE MODAL (global, sobre todas las pantallas) -->
+    <!-- ══════════════════════════════════════════════════
+         MODAL GLOBAL — Botón "+" (crear algo)
+         Este modal está FUERA de todas las pantallas para
+         que funcione sin importar dónde esté el usuario.
+         Se abre con openCreateModal() y cierra con closeCreateModal().
+         Opciones:
+         ⚔️ Crear partido → screen-crear-partido
+         ✏️  Publicar en feed → screen-community
+         ══════════════════════════════════════════════════ -->
     <div id="create-modal-overlay" class="create-modal-overlay hidden" onclick="closeCreateModal()"></div>
     <div id="create-modal" class="create-modal hidden">
       <div class="create-modal-handle"></div>
       <div class="create-modal-title">¿Qué vas a crear?</div>
       <div class="create-options">
-        <button class="create-option active-option" onclick="closeCreateModal(); goTo('screen-retar-step1')">
+        <button class="create-option active-option" onclick="closeCreateModal(); goTo('screen-crear-partido')">
           <div class="create-opt-icon" style="background:linear-gradient(135deg,#1a3a1a,#2d5a2d)">
             <span style="font-size:20px">⚔️</span>
           </div>
           <div class="create-opt-text">
             <div class="create-opt-title">Crear partido</div>
             <div class="create-opt-sub">Reta a otro equipo o busca rival</div>
-          </div>
-          <span class="create-opt-arrow">›</span>
-        </button>
-        <button class="create-option" onclick="closeCreateModal(); goTo('screen-search-canchas')">
-          <div class="create-opt-icon" style="background:linear-gradient(135deg,#0f1f33,#1a3550)">
-            <span style="font-size:20px">📍</span>
-          </div>
-          <div class="create-opt-text">
-            <div class="create-opt-title">Reservar cancha</div>
-            <div class="create-opt-sub">Canchas disponibles cerca de ti</div>
           </div>
           <span class="create-opt-arrow">›</span>
         </button>
@@ -1912,7 +2875,10 @@
       <button class="create-modal-cta" onclick="closeCreateModal()">Continuar</button>
     </div>
 
-  </div><!-- /phone-container -->
+  </div><!-- /phone-container — fin de la simulación del celular -->
+
+  <!-- script.js se carga AL FINAL del body para que cuando se ejecute,
+       todo el HTML ya esté en memoria y document.getElementById() funcione -->
   <script src="script.js"></script>
 </body>
 </html>

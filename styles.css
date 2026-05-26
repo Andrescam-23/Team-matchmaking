@@ -79,6 +79,7 @@
   --radius-card: 18px;
   --radius-btn:  14px;
   --radius-pill: 100px;
+  --border:      rgba(255,255,255,0.07);
 }
 
 
@@ -216,8 +217,11 @@ body {
 
 /* Columna central con logo, nombre y botones */
 .splash-content { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; }
-.splash-icon    { font-size: 68px; margin-bottom: 4px; }
-.splash-title   { font-size: 34px; font-weight: 800; color: var(--text); letter-spacing: -1.5px; }
+.splash-brand   { display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:4px; }
+.splash-logo    { width: 100px; height: 100px; object-fit: contain; }
+.splash-brand-text   { display:flex; flex-direction:column; gap:2px; }
+.splash-brand-name   { font-size:32px; font-weight:800; color:var(--text); letter-spacing:-1px; }
+.splash-brand-sub    { font-size:13px; color:var(--green); letter-spacing:1.5px; text-transform:uppercase; }
 .splash-tagline { font-size: 14px; color: var(--text2); text-align: center; line-height: 1.65; }
 .splash-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 6px; }
 
@@ -234,6 +238,21 @@ body {
   padding: 12px; font-size: 13px; font-weight: 500; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 6px;
   font-family: 'Inter', sans-serif;
+}
+
+/* Variante Apple: fondo negro total, texto y logo blancos */
+.btn-social-apple {
+  background: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
+}
+
+/* Variante Google: fondo blanco, borde gris suave, texto oscuro */
+.btn-social-google {
+  background: #fff !important;
+  border-color: #dadce0 !important;
+  color: #3c4043 !important;
+  font-weight: 500 !important;
 }
 
 /* Texto legal pequeño al pie (términos y condiciones) */
@@ -367,6 +386,16 @@ body {
   width: 42px; height: 42px; border-radius: 50%; object-fit:cover;
   border: 2px solid rgba(61,214,140,0.5);   /* borde verde sutil */
 }
+.avatar-initials {
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg,#4CAF50,#2e7d32);
+  color:#fff; font-size:14px; font-weight:700; letter-spacing:0.5px;
+}
+.drawer-avatar-initials {
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg,#4CAF50,#2e7d32);
+  color:#fff; font-size:18px; font-weight:700; letter-spacing:0.5px;
+}
 
 /* Punto verde que indica que el usuario está en línea */
 .online-dot {
@@ -376,6 +405,7 @@ body {
 }
 
 /* Área de texto del saludo: "Buenos días, Carlos" */
+.topbar-logo      { height: 28px; object-fit: contain; }
 .top-bar-greeting { flex:1; display:flex; flex-direction:column; gap:1px; }
 .greeting-name    { font-size: 17px; font-weight: 700; color: var(--text); }
 .greeting-sub     { font-size: 12px; color: var(--text2); }
@@ -438,7 +468,7 @@ body {
   border-bottom:1px solid var(--card-border);
 }
 .drawer-avatar-wrap { position:relative; flex-shrink:0; }
-.drawer-avatar-img  { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--green); display:block; }
+.drawer-avatar-img  { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--green); display:flex; align-items:center; justify-content:center; }
 .drawer-online-dot  { position:absolute; bottom:2px; right:2px; width:12px; height:12px; border-radius:50%; background:var(--green); border:2px solid #0a0f18; }
 .drawer-user-info   { flex:1; }
 .drawer-user-name   { font-size:16px; font-weight:700; color:var(--text); }
@@ -563,7 +593,8 @@ body {
 
 /* Fila de encabezado: título a la izquierda + "Ver más" a la derecha */
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-.section-title  { font-size:17px; font-weight:700; color:var(--text); letter-spacing:-0.2px; }
+.section-title     { font-size:17px; font-weight:700; color:var(--text); letter-spacing:-0.2px; }
+.section-title-sm  { font-size:14px; font-weight:700; color:var(--text); letter-spacing:-0.1px; }
 .see-all        { background:none; border:none; color:var(--green); font-size:13px; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; display:flex; align-items:center; gap:3px; }
 
 /* Badges y píldoras de colores para categorías y estados */
@@ -1319,7 +1350,147 @@ body {
 
 /* =====================================================
    CHAT — Lista de conversaciones y ventana de chat
+   =====================================================
+   Hay dos pantallas de chat:
+   1. screen-chat → lista de conversaciones (.convo-row)
+      Cada fila tiene avatar, nombre, último mensaje y hora.
+      Si hay mensajes nuevos, aparece una bolita verde (.convo-badge).
+   2. screen-chat-detail → ventana de mensajes
+      Burbujas de conversación: el otro a la izquierda
+      (.bubble-them) y yo a la derecha (.bubble-me, verde).
+      La barra de escritura (.chat-input-bar) está fija abajo.
+   Los estilos de .convo-* están más abajo, junto a .bubble-* y
+   .chat-input-bar, porque comparten contexto visual.
    ===================================================== */
+
+/* =====================================================
+   TEAM MANAGEMENT — Gestión de equipo
+   ===================================================== */
+
+/* Header del equipo */
+.tm-header-card      { display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-card); padding:16px; margin-bottom:0; }
+.tm-logo             { width:56px; height:56px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#fff; flex-shrink:0; }
+.tm-header-info      { flex:1; }
+.tm-team-name        { font-size:18px; font-weight:800; color:var(--text); }
+.tm-team-meta        { font-size:12px; color:var(--text2); margin-top:2px; }
+.tm-role-badge       { display:inline-flex; align-items:center; gap:4px; margin-top:6px; background:rgba(245,166,35,0.15); color:var(--yellow); border-radius:50px; padding:3px 10px; font-size:12px; font-weight:700; }
+
+/* Estado operativo */
+.tm-ops-grid         { display:flex; gap:0; border-bottom:1px solid var(--card-border); padding-bottom:14px; margin-bottom:12px; }
+.tm-ops-grid-noborder { border-bottom:none; padding-bottom:0; margin-bottom:0; }
+.tm-ops-item         { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; border-right:1px solid var(--card-border); }
+.tm-ops-item:last-child { border-right:none; }
+.tm-ops-num          { font-size:20px; font-weight:800; color:var(--text); }
+.tm-ops-denom        { font-size:13px; font-weight:600; color:var(--text2); }
+.tm-ops-label        { font-size:11px; color:var(--text2); }
+.tm-readiness-row    { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.tm-readiness-label  { font-size:12px; color:var(--text2); }
+.tm-readiness-pct    { font-size:13px; font-weight:700; color:var(--green); }
+.tm-progress-track   { height:6px; background:var(--card2); border-radius:99px; overflow:hidden; }
+.tm-progress-fill    { height:100%; background:var(--green); border-radius:99px; }
+
+/* Acciones rápidas */
+.tm-actions-grid     { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.tm-action-btn       { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-card); padding:14px 10px; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; transition:border-color 0.2s; }
+.tm-action-btn:active { border-color:var(--green); }
+.tm-action-icon      { font-size:22px; }
+.tm-action-label     { font-size:12px; font-weight:600; color:var(--text); text-align:center; }
+
+/* Próximo partido */
+.tm-match-card       { background:var(--card); border:1px solid var(--card-border); border-left:3px solid var(--yellow); border-radius:var(--radius-card); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.tm-match-left       { flex:1; display:flex; flex-direction:column; gap:4px; }
+.tm-match-rival      { font-size:15px; font-weight:700; color:var(--text); }
+.tm-match-meta       { font-size:12px; color:var(--text2); }
+
+/* Plantilla */
+.tm-player-row       { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--card-border); cursor:pointer; }
+.tm-player-row.no-border { border-bottom:none; }
+.tm-player-info      { flex:1; }
+.tm-player-name      { font-size:14px; font-weight:600; color:var(--text); }
+.tm-player-pos       { font-size:12px; color:var(--text2); }
+.tm-player-menu      { font-size:20px; color:var(--text3); padding:0 4px; cursor:pointer; }
+.tm-status-pill      { font-size:11px; font-weight:600; border-radius:50px; padding:3px 8px; white-space:nowrap; }
+.tm-status-pill.available   { background:rgba(61,214,140,0.15); color:var(--green); }
+.tm-status-pill.doubtful    { background:rgba(245,166,35,0.15); color:var(--yellow); }
+.tm-status-pill.unavailable { background:rgba(240,80,80,0.15); color:var(--red); }
+
+/* Bottom sheet menú jugador */
+.tm-overlay          { position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:30; }
+.tm-overlay.hidden   { display:none; }
+.tm-bottom-sheet     { position:absolute; bottom:0; left:0; right:0; background:var(--card2); border-radius:20px 20px 0 0; padding:12px 16px 32px; z-index:31; }
+.tm-bottom-sheet.hidden { display:none; }
+.tm-sheet-handle     { width:36px; height:4px; background:var(--text3); border-radius:99px; margin:0 auto 16px; }
+.tm-sheet-title      { font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px; }
+.tm-sheet-item       { display:block; width:100%; text-align:left; background:none; border:none; color:var(--text); font-size:15px; padding:14px 0; border-bottom:1px solid var(--card-border); cursor:pointer; }
+.tm-sheet-item:last-child { border-bottom:none; }
+.tm-sheet-item.danger { color:var(--red); }
+
+/* Edit team sheet — scrollable para que la visibilidad no quede cortada */
+#edit-team-sheet   { max-height:88%; overflow-y:auto; padding:16px 20px 48px; }
+#edit-team-sheet .edit-field-label    { margin-top:20px; margin-bottom:8px; }
+#edit-team-sheet .edit-field-label:first-of-type { margin-top:4px; }
+#edit-team-sheet .edit-modalities-row { margin-top:4px; gap:10px; }
+#edit-team-sheet .visibility-options  { margin-top:4px; gap:10px; }
+#edit-team-sheet .vis-opt-body        { padding:14px 16px; gap:14px; }
+
+/* Necesidades */
+.tm-needs-list       { display:flex; flex-direction:column; gap:8px; }
+.tm-need-card        { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-card); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.tm-need-left        { flex:1; display:flex; flex-direction:column; gap:6px; }
+.tm-need-pos         { font-size:14px; font-weight:700; color:var(--text); }
+.tm-need-tags        { display:flex; gap:6px; }
+.tm-need-tag         { font-size:11px; font-weight:600; border-radius:50px; padding:2px 8px; background:var(--card2); color:var(--text2); }
+.tm-need-tag.priority-high { background:rgba(240,80,80,0.15); color:var(--red); }
+.tm-need-tag.priority-mid  { background:rgba(245,166,35,0.15); color:var(--yellow); }
+.btn-green-xs        { background:var(--green); color:#000; font-size:12px; font-weight:700; border:none; border-radius:50px; padding:6px 14px; cursor:pointer; white-space:nowrap; }
+
+/* Canchas favoritas */
+.tm-field-card       { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-card); padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+.tm-field-info       { flex:1; }
+.tm-field-name       { font-size:14px; font-weight:700; color:var(--text); }
+.tm-field-meta       { font-size:12px; color:var(--text2); margin-top:2px; }
+
+/* Modalidades */
+.tm-modalities-row   { display:flex; gap:8px; flex-wrap:wrap; }
+.tm-modality-chip    { background:var(--card); border:1px solid var(--card-border); border-radius:50px; padding:6px 14px; font-size:13px; font-weight:600; color:var(--text2); }
+.tm-modality-chip.active { background:var(--green-glow); border-color:var(--green); color:var(--green); }
+
+/* Solicitudes pendientes */
+.tm-requests-card    { background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-card); padding:4px 14px 14px; }
+.tm-request-row      { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--card-border); }
+.tm-request-row.no-border { border-bottom:none; }
+.tm-request-icon     { font-size:18px; width:24px; text-align:center; }
+.tm-request-text     { flex:1; font-size:14px; color:var(--text); }
+.badge-neutral       { background:var(--card2); color:var(--text2); font-size:11px; font-weight:700; border-radius:50px; padding:2px 7px; }
+
+/* Botón de editar en top bar */
+.tbb-action-btn      { background:none; border:none; color:var(--text2); font-size:18px; cursor:pointer; padding:4px 8px; margin-left:auto; }
+
+/* Edit team sheet */
+.edit-field-label    { font-size:11px; font-weight:700; color:var(--text2); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:6px; }
+.edit-field-input    { width:100%; background:var(--card); border:1px solid var(--card-border); border-radius:10px; padding:10px 12px; font-size:15px; color:var(--text); outline:none; }
+.edit-field-input:focus { border-color:var(--green); }
+.edit-modalities-row { display:flex; gap:8px; flex-wrap:wrap; }
+.edit-mod-chip       { background:var(--card); border:1px solid var(--card-border); border-radius:50px; padding:7px 16px; font-size:13px; font-weight:600; color:var(--text2); cursor:pointer; }
+.edit-mod-chip.active { background:var(--green-glow); border-color:var(--green); color:var(--green); }
+
+/* Opciones de visibilidad del equipo */
+.visibility-options      { display:flex; flex-direction:column; gap:8px; }
+.visibility-option       { cursor:pointer; }
+.visibility-option input { display:none; }
+.vis-opt-body {
+  display:flex; align-items:center; gap:12px;
+  background:var(--card); border:1.5px solid var(--card-border);
+  border-radius:12px; padding:12px 14px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.visibility-option input:checked + .vis-opt-body {
+  border-color: var(--green);
+  background: var(--green-glow);
+}
+.vis-opt-icon  { font-size:20px; flex-shrink:0; }
+.vis-opt-title { font-size:14px; font-weight:700; color:var(--text); }
+.vis-opt-sub   { font-size:11px; color:var(--text2); margin-top:2px; }
 
 /* Lista de conversaciones (pantalla principal de mensajes) */
 .convo-list   { display:flex; flex-direction:column; }
@@ -1542,3 +1713,247 @@ body {
 
 /* Botón de confirmación al pie del modal */
 .create-modal-cta { width:100%; padding:16px; background:var(--green); color:#000; border:none; border-radius:var(--radius-pill); font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
+
+
+/* =====================================================
+   CREAR PARTIDO — Flujo de creación de un partido
+   =====================================================
+   Tres pantallas comparten estos estilos:
+   1. screen-crear-partido     → dos banners gigantes para
+      elegir "como equipo" o "como jugador"
+   2. screen-crear-partido-equipo → formulario con:
+      - Dropdown para elegir equipo (.team-dropdown-*)
+      - Selector de formato en grilla 2×2 (.format-grid)
+      - Campos de fecha, hora, cancha y límite de jugadores
+   3. screen-crear-partido-jugador → igual pero sin dropdown
+   ===================================================== */
+
+/* ── CREAR PARTIDO — Selección de tipo (jugador / equipo) ── */
+.crear-partido-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: 56px !important;
+  bottom: 0 !important;
+}
+
+.crear-tipo-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hub-crear { height: 220px !important; min-height: 220px !important; }
+
+/* Grilla 2x2 para pills de formato */
+.format-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* ──────────────────────────────────────────────────────
+   DROPDOWN DE EQUIPO
+   ──────────────────────────────────────────────────────
+   El selector desplegable para elegir con cuál equipo
+   se quiere crear el partido. Tiene:
+   - Un botón visible con el equipo seleccionado y una
+     flechita (chevron) que rota 180° al abrir
+   - Una lista oculta que aparece debajo con los equipos
+   - El equipo activo tiene fondo verde sutil + checkmark
+   toggleTeamDropdown() abre/cierra, selectTeam() elige.
+   ────────────────────────────────────────────────────── */
+/* ── TEAM DROPDOWN (crear partido como equipo) ── */
+.team-dropdown-wrap { position: relative; }
+
+.team-dropdown-btn {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 10px 14px;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+}
+
+.team-dropdown-selected { display: flex; align-items: center; gap: 10px; }
+.team-dropdown-name     { font-size: 14px; font-weight: 600; color: var(--text); }
+.team-dropdown-role     { font-size: 11px; color: var(--green); background: rgba(76,175,80,0.12); padding: 2px 8px; border-radius: 20px; margin-left: 4px; }
+.team-dropdown-chevron  { font-size: 14px; color: var(--text3); transition: transform 0.2s; }
+.team-dropdown-chevron.open { transform: rotate(180deg); }
+
+.team-dropdown-list {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 10;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.team-dropdown-list.hidden { display: none; }
+
+.team-dropdown-item {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; background: transparent; border: none;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.team-dropdown-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+.team-dropdown-item:hover            { background: rgba(255,255,255,0.04); }
+.team-dropdown-item.active           { background: rgba(76,175,80,0.08); }
+
+.team-dropdown-item-info    { flex: 1; text-align: left; }
+.team-dropdown-item-name    { font-size: 14px; font-weight: 600; color: var(--text); }
+.team-dropdown-item-sub     { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.team-dropdown-check        { color: var(--green); font-size: 14px; font-weight: 700; }
+
+/* Form row: dos campos en una fila */
+.form-row { display: flex; gap: 12px; }
+.form-col  { flex: 1; display: flex; flex-direction: column; }
+
+/* ──────────────────────────────────────────────────────
+   CONTROL DE LÍMITE DE JUGADORES
+   ──────────────────────────────────────────────────────
+   El "−  11  +" para ajustar cuántos jugadores puede
+   tener el partido. changeLimit() en script.js maneja
+   los clics en los botones +/−.
+   ────────────────────────────────────────────────────── */
+/* ── LÍMITE DE JUGADORES ── */
+.player-limit-wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 6px 10px; height: 46px;
+}
+.player-limit-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: none;
+  color: var(--text); font-size: 18px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; line-height: 1;
+}
+.player-limit-btn:active { background: rgba(76,175,80,0.2); color: var(--green); }
+.player-limit-val { font-size: 18px; font-weight: 700; color: var(--text); min-width: 28px; text-align: center; }
+
+/* ──────────────────────────────────────────────────────
+   CÓDIGO DE INVITACIÓN
+   ──────────────────────────────────────────────────────
+   Tarjeta con el código en grande (ej: "MM-4X9K") y
+   un botón "Copiar" que usa navigator.clipboard y
+   cambia su texto a "¡Copiado!" por 2 segundos.
+   copyInviteCode() en script.js lo maneja.
+   ────────────────────────────────────────────────────── */
+/* ── CÓDIGO DE INVITACIÓN ── */
+.invite-code-card {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: var(--radius-btn); padding: 14px 16px;
+}
+.invite-code-value {
+  font-size: 22px; font-weight: 800; letter-spacing: 3px;
+  color: var(--green); font-family: 'Inter', sans-serif;
+}
+.invite-code-hint { font-size: 11px; color: var(--text3); margin-top: 3px; }
+.invite-code-copy {
+  padding: 8px 18px; background: rgba(76,175,80,0.15);
+  border: 1px solid rgba(76,175,80,0.4); border-radius: var(--radius-pill);
+  color: var(--green); font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.invite-code-copy:active { background: rgba(76,175,80,0.3); }
+.invite-code-copy.copied { background: rgba(76,175,80,0.3); color: #fff; }
+
+/* ──────────────────────────────────────────────────────
+   LOBBY — SALA DE ESPERA
+   ──────────────────────────────────────────────────────
+   Pantalla en vivo mientras se llena el partido.
+   - Tarjeta de estado con punto rojo parpadeante
+     (@keyframes lobby-pulse = animación CSS pura)
+   - Grilla de cupos: los ocupados tienen color de fondo,
+     los vacíos tienen borde punteado y "+"
+   - Lista de jugadores con sus roles (Host/Unido)
+   ────────────────────────────────────────────────────── */
+/* ── LOBBY / SALA DE ESPERA ── */
+.lobby-status-card {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3);
+  border-radius: var(--radius-btn); padding: 14px 16px;
+}
+.lobby-status-left   { display: flex; align-items: center; gap: 12px; }
+.lobby-live-dot      { width: 10px; height: 10px; border-radius: 50%; background: #EF4444; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(239,68,68,0.25); animation: lobby-pulse 1.5s infinite; }
+@keyframes lobby-pulse { 0%,100%{box-shadow:0 0 0 3px rgba(239,68,68,0.25)} 50%{box-shadow:0 0 0 6px rgba(239,68,68,0.1)} }
+.lobby-status-title  { font-size: 14px; font-weight: 700; color: var(--text); }
+.lobby-status-sub    { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.lobby-slots-badge   { font-size: 22px; font-weight: 800; color: #fff; }
+
+.lobby-slots-grid {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+}
+.lobby-slot {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.lobby-slot.empty  { background: rgba(255,255,255,0.07); border: 1.5px dashed rgba(255,255,255,0.15); color: var(--text3); font-size: 18px; font-weight: 400; }
+
+.lobby-players-list { display: flex; flex-direction: column; gap: 0; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-btn); overflow: hidden; }
+.lobby-player-row   { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+.lobby-player-row:last-child { border-bottom: none; }
+.lobby-player-info  { flex: 1; }
+.lobby-player-name  { font-size: 14px; font-weight: 600; color: var(--text); }
+.lobby-player-sub   { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.lobby-player-badge        { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.lobby-player-badge.host   { background: rgba(76,175,80,0.15); color: var(--green); border: 1px solid rgba(76,175,80,0.3); }
+.lobby-player-badge.joined { background: rgba(255,255,255,0.07); color: var(--text3); border: 1px solid var(--border); }
+
+.invite-code-card.mt-16 { margin-top: 16px; }
+.btn-cancel {
+  width: 100%; padding: 14px; background: transparent;
+  border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-pill);
+  color: #EF4444; font-size: 15px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+}
+
+/* ──────────────────────────────────────────────────────
+   CAMPO POSICIONAL (tab "Gestión" en Team Management)
+   ──────────────────────────────────────────────────────
+   Diagrama SVG de un campo de fútbol con los jugadores
+   ubicados en sus posiciones reales (portero, defensa…).
+   El SVG está incrustado directamente en el HTML.
+   Cada jugador es un <g class="tm-pitch-node"> que se
+   escala levemente al pasar el ratón (:hover scale 1.06).
+   La lista colapsable debajo del campo (tm-player-list)
+   se muestra/oculta con toggleTmPlayerList() en script.js.
+   ────────────────────────────────────────────────────── */
+/* ── CAMPO POSICIONAL (tab Gestión) ── */
+.tm-pitch-wrap {
+  width: 100%;
+  max-width: 280px;
+  margin: 12px auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.tm-pitch-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.tm-pitch-node {
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.tm-pitch-node:hover {
+  transform: scale(1.06);
+}
+.tm-pitch-footer {
+  text-align: center;
+  margin-top: 10px;
+  padding: 6px 0;
+}
+.tm-pitch-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+}
+.tm-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 0 0 4px;
+}
