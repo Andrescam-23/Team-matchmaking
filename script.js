@@ -68,6 +68,10 @@ function goTo(screenId) {
   const pantallaDestino = document.getElementById(screenId);
   if (pantallaDestino) pantallaDestino.classList.add('active');
 
+  // Mostrar u ocultar el nav global (no aparece en splash)
+  const nav = document.getElementById('global-bottom-nav');
+  if (nav) nav.style.display = screenId === 'screen-splash' ? 'none' : 'flex';
+
   // Actualizar cuál es la pantalla actual
   currentScreen = screenId;
 }
@@ -114,13 +118,13 @@ function navTo(screenId, btn) {
   // Cambiar de pantalla
   goTo(screenId);
 
-  // Dentro de esa pantalla, quitarle el resaltado a todos los botones del menú
-  const pantalla = document.getElementById(screenId);
-  if (!pantalla) return;
-  pantalla.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-  // Resaltar solo el botón que se tocó
-  if (btn) btn.classList.add('active');
+  // Actualizar estado activo en el nav global
+  const nav = document.getElementById('global-bottom-nav');
+  if (nav) {
+    nav.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const target = nav.querySelector('[data-nav="' + screenId + '"]');
+    if (target) target.classList.add('active');
+  }
 }
 
 

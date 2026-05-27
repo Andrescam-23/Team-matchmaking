@@ -128,8 +128,8 @@ body {
      · leve brillo verde alrededor
    ────────────────────────────────────────────────────── */
 #phone-container {
-  width: 390px;
-  height: 844px;
+  width: 393px;
+  height: 852px;
   position: relative;
   overflow: hidden;
   border-radius: 48px;
@@ -546,6 +546,19 @@ body {
   display:flex; align-items:center; justify-content:space-around;
   padding:0 6px 12px; z-index:20;
   box-shadow:0 -2px 32px rgba(0,0,0,0.6);
+}
+
+/* En móvil real (sin phone-container de escritorio), el nav debe ser fixed */
+@media (max-width: 500px) {
+  #global-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .screen-content {
+    bottom: 80px;
+  }
 }
 
 /* Cada ícono de la barra: ícono SVG + etiqueta */
