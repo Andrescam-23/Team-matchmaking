@@ -492,6 +492,8 @@ function toggleRivalesFilters() {
 
   // El botón se resalta en verde cuando el panel está abierto
   if (boton) boton.classList.toggle('filter-btn-active', !panel.classList.contains('hidden'));
+
+  if (!panel.classList.contains('hidden')) renderRivalCalendar();
 }
 
 
@@ -1284,5 +1286,490 @@ function toggleChatAttach(btn) {
   const menu = document.getElementById('chat-attach-menu');
   if (!menu) return;
   menu.classList.toggle('hidden');
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PANEL DE NOTIFICACIONES
+   ══════════════════════════════════════════════════════════════════
+   Lleva la cuenta de notificaciones no leídas por categoría y
+   actualiza el badge de la campana en el top bar.
+*/
+
+// Contadores de no leídas por categoría
+const notifCounts = { fichajes: 3, retos: 2 };
+
+function openNotifPanel() {
+  document.getElementById('notif-overlay').classList.remove('hidden');
+  document.getElementById('notif-panel').classList.add('open');
+}
+
+function closeNotifPanel() {
+  document.getElementById('notif-overlay').classList.add('hidden');
+  document.getElementById('notif-panel').classList.remove('open');
+}
+
+// Cambia entre las pestañas del panel de notificaciones
+function setNotifTab(tab, btnEl) {
+  // Desactivar todas las pestañas y contenidos
+  document.querySelectorAll('.notif-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.notif-tab-content').forEach(c => c.classList.remove('active'));
+
+  // Activar la seleccionada
+  if (btnEl) btnEl.classList.add('active');
+  const content = document.getElementById('ntab-content-' + tab);
+  if (content) content.classList.add('active');
+}
+
+// Actualiza el badge global de la campana con el total de no leídas
+function updateNotifBadge() {
+  const total = notifCounts.fichajes + notifCounts.retos;
+  const badge = document.getElementById('notif-count-badge');
+  if (!badge) return;
+  if (total > 0) {
+    badge.textContent = total;
+    badge.style.display = '';
+  } else {
+    badge.style.display = 'none';
+  }
+  // Actualizar badge de cada pestaña
+  const bf = document.getElementById('ntab-badge-fichajes');
+  const br = document.getElementById('ntab-badge-retos');
+  if (bf) bf.textContent = notifCounts.fichajes > 0 ? notifCounts.fichajes : '';
+  if (br) br.textContent = notifCounts.retos > 0 ? notifCounts.retos : '';
+}
+
+// Acepta una solicitud de fichaje: marca como leída y oculta acciones
+function acceptFichaje(itemId) {
+  const item = document.getElementById(itemId);
+  if (!item) return;
+  resolveNotif(item, 'fichajes', '✅ Solicitud aceptada — jugador añadido al equipo.');
+}
+
+// Acepta un reto: navega al detalle del reto y cierra el panel
+function acceptReto(itemId) {
+  const item = document.getElementById(itemId);
+  if (!item) return;
+  resolveNotif(item, 'retos', '⚔️ Reto aceptado — el rival ha sido notificado.');
+}
+
+// Rechaza cualquier notificación
+function rejectNotif(itemId) {
+  const item = document.getElementById(itemId);
+  if (!item) return;
+  // Detectar categoría según el prefijo del id
+  const cat = itemId.startsWith('nfich') ? 'fichajes' : 'retos';
+  resolveNotif(item, cat, null);
+}
+
+// Lógica común: marca la notif como resuelta, descuenta el badge y
+// muestra estado vacío si ya no quedan notificaciones en esa categoría
+function resolveNotif(item, cat, feedbackMsg) {
+  // Mostrar feedback breve si hay mensaje
+  if (feedbackMsg) {
+    showNotifToast(feedbackMsg);
+  }
+
+  // Animar salida y eliminar del DOM
+  item.style.transition = 'opacity 0.25s, max-height 0.3s';
+  item.style.overflow = 'hidden';
+  item.style.opacity = '0';
+  item.style.maxHeight = item.offsetHeight + 'px';
+  setTimeout(() => { item.style.maxHeight = '0'; item.style.padding = '0'; }, 50);
+  setTimeout(() => {
+    item.remove();
+    // Reducir contador
+    if (notifCounts[cat] > 0) notifCounts[cat]--;
+    updateNotifBadge();
+    // Mostrar estado vacío si no quedan items en esa categoría
+    const content = document.getElementById('ntab-content-' + cat);
+    if (content) {
+      const remaining = content.querySelectorAll('.notif-item');
+      const emptyEl = document.getElementById('n' + (cat === 'fichajes' ? 'fich' : 'reto') + '-empty');
+      if (remaining.length === 0 && emptyEl) emptyEl.classList.remove('hidden');
+    }
+  }, 350);
+}
+
+// Marca todas las notificaciones visibles como leídas (quita punto y estilo unread)
+function markAllRead() {
+  document.querySelectorAll('.notif-item.unread').forEach(item => {
+    item.classList.remove('unread');
+    item.classList.add('read');
+    const dot = item.querySelector('.notif-unread-dot');
+    if (dot) dot.remove();
+  });
+  notifCounts.fichajes = 0;
+  notifCounts.retos = 0;
+  updateNotifBadge();
+}
+
+// Toast temporal de confirmación
+function showNotifToast(msg) {
+  let toast = document.getElementById('notif-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'notif-toast';
+    toast.style.cssText = [
+      'position:absolute', 'bottom:100px', 'left:50%',
+      'transform:translateX(-50%)',
+      'background:#1e2d1e', 'color:#3dd68c',
+      'border:1px solid rgba(61,214,140,0.3)',
+      'border-radius:20px', 'padding:10px 18px',
+      'font-size:12px', 'font-weight:600',
+      'white-space:nowrap', 'z-index:300',
+      'transition:opacity 0.3s', 'pointer-events:none'
+    ].join(';');
+    document.getElementById('phone-container').appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODAL DE PUBLICACIÓN EN FEED
+   ══════════════════════════════════════════════════════════════════
+   Flujo de 2 pasos: elegir tipo → formulario específico → publicar.
+*/
+
+function openPublishModal() {
+  document.getElementById('publish-modal-overlay').classList.remove('hidden');
+  document.getElementById('publish-modal').classList.remove('hidden');
+  showPublishStep(1);
+}
+
+function closePublishModal() {
+  document.getElementById('publish-modal-overlay').classList.add('hidden');
+  document.getElementById('publish-modal').classList.add('hidden');
+}
+
+function showPublishStep(step) {
+  document.getElementById('publish-step-1').style.display = step === 1 ? '' : 'none';
+  ['convocatoria', 'resultado', 'video'].forEach(function(tipo) {
+    var el = document.getElementById('publish-form-' + tipo);
+    if (el) el.classList.add('hidden');
+  });
+}
+
+function openPublishForm(tipo) {
+  document.getElementById('publish-step-1').style.display = 'none';
+  var form = document.getElementById('publish-form-' + tipo);
+  if (form) form.classList.remove('hidden');
+  document.getElementById('publish-modal').scrollTop = 0;
+}
+
+function backToPublishStep1() {
+  showPublishStep(1);
+}
+
+function selectPublishPos(btn) {
+  btn.closest('.publish-pos-grid').querySelectorAll('.publish-pos-pill')
+    .forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function selectPublishFormat(btn) { selectPublishPos(btn); }
+
+function submitConvocatoria() {
+  var posEl  = document.querySelector('#publish-form-convocatoria .publish-pos-pill.active');
+  var grids  = document.querySelectorAll('#publish-form-convocatoria .publish-pos-grid');
+  var fmtEl  = grids[1] ? grids[1].querySelector('.active') : null;
+  var zona   = (document.getElementById('conv-zona') || {}).value || '';
+  var desc   = (document.getElementById('conv-desc') || {}).value || '';
+  zona = zona.trim(); desc = desc.trim();
+
+  var pos   = posEl ? posEl.textContent : 'Jugador';
+  var fmt   = fmtEl ? fmtEl.textContent : '11v11';
+  var lugar = zona || 'Bogotá';
+  var abbr  = pos.slice(0, 3).toUpperCase();
+
+  var descHtml = desc ? '<div class="conv-meta" style="margin-top:4px;color:var(--text2)">' + desc + '</div>' : '';
+  var postHtml = '<div class="post-card" data-tipo="convocatorias" style="animation:fadeInPost 0.35s ease">'
+    + '<div class="post-header">'
+    + '<span class="post-type-badge" style="background:#3B82F622;color:#3B82F6">&#128100; Convocatoria</span>'
+    + '<div class="post-author-info">'
+    + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
+    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
+    + '<span class="post-time">Ahora</span></div>'
+    + '<div class="conv-body">'
+    + '<div class="conv-pos-row"><span class="pill-green">' + abbr + '</span>'
+    + '<span class="conv-title">Se busca ' + pos.toLowerCase() + '</span></div>'
+    + '<div class="conv-meta">' + fmt + ' &middot; &#193;guilas Calvas &middot; ' + lugar + '</div>'
+    + descHtml
+    + '<div class="conv-pills"><span class="filter-pill">' + lugar + '</span>'
+    + '<span class="filter-pill">0 Postulados</span></div></div>'
+    + '<button class="btn-green w-full mt-8">Postular</button></div>';
+
+  prependPostToFeed(postHtml);
+  closePublishModal();
+  goTo('screen-community');
+  showNotifToast('¡Convocatoria publicada!');
+}
+
+function submitResultado() {
+  var teamHome  = ((document.getElementById('res-team-home') || {}).value || '').trim() || 'Mi equipo';
+  var teamAway  = ((document.getElementById('res-team-away') || {}).value || '').trim() || 'Rival';
+  var scoreHome = (document.getElementById('res-score-home') || {}).value || '0';
+  var scoreAway = (document.getElementById('res-score-away') || {}).value || '0';
+  var lugar     = ((document.getElementById('res-lugar') || {}).value || '').trim();
+  var desc      = ((document.getElementById('res-desc') || {}).value || '').trim();
+
+  var h = parseInt(scoreHome), a = parseInt(scoreAway);
+  var resultado   = h > a ? 'Victoria' : h < a ? 'Derrota' : 'Empate';
+  var badgeColor  = h > a ? '#4CAF50'  : h < a ? '#F05050'  : '#F5A623';
+
+  var lugarHtml = lugar ? '<div class="rc-meta">' + lugar + '</div>' : '';
+  var descHtml  = desc  ? '<div class="rc-meta" style="color:var(--text2);margin-top:4px">' + desc + '</div>' : '';
+
+  var postHtml = '<div class="post-card" data-tipo="resultados" style="animation:fadeInPost 0.35s ease">'
+    + '<div class="post-header">'
+    + '<span class="post-type-badge" style="background:#F59E0B22;color:#F59E0B">&#127942; Resultado</span>'
+    + '<div class="post-author-info">'
+    + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
+    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
+    + '<span class="post-time">Ahora</span></div>'
+    + '<div class="result-card" style="margin:0;border:none;padding:0;background:transparent">'
+    + '<span class="result-badge" style="background:' + badgeColor + '22;color:' + badgeColor + '">' + resultado + '</span>'
+    + '<div class="rc-score-row">'
+    + '<div class="rc-score-team-col"><span class="team-logo-sm logo-green">AV</span><span class="rc-score-name">' + teamHome + '</span></div>'
+    + '<span class="rc-big-score">' + scoreHome + ' - ' + scoreAway + '</span>'
+    + '<div class="rc-score-team-col"><span class="team-logo-sm logo-brown">RV</span><span class="rc-score-name">' + teamAway + '</span></div>'
+    + '</div>' + lugarHtml + descHtml + '</div>'
+    + '<div class="post-actions" style="margin-top:8px">'
+    + '<button class="post-action-btn">&#9825; 0</button>'
+    + '<button class="post-action-btn">&#128172; 0</button>'
+    + '<button class="post-action-btn">&#8599; Compartir</button></div></div>';
+
+  prependPostToFeed(postHtml);
+  closePublishModal();
+  goTo('screen-community');
+  showNotifToast('¡Resultado publicado!');
+}
+
+function submitVideo() {
+  var titulo = ((document.getElementById('vid-titulo') || {}).value || '').trim() || 'Mi clip';
+  var lugar  = ((document.getElementById('vid-lugar') || {}).value || '').trim();
+  var desc   = ((document.getElementById('vid-desc') || {}).value || '').trim();
+
+  var descHtml  = desc  ? '<div class="post-subcap">' + desc + '</div>' : '';
+  var lugarSpan = lugar ? lugar : 'Partido reciente';
+
+  var postHtml = '<div class="post-card" data-tipo="videos" style="animation:fadeInPost 0.35s ease">'
+    + '<div class="post-header">'
+    + '<span class="post-type-badge" style="background:#A855F722;color:#A855F7">&#9654; Video</span>'
+    + '<div class="post-author-info">'
+    + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
+    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
+    + '<span class="post-time">Ahora</span></div>'
+    + '<div class="post-video-thumb">'
+    + '<div class="video-play-btn">&#9654;</div>'
+    + '<div class="video-meta-bottom"><span>' + lugarSpan + '</span><span>0:00</span></div></div>'
+    + '<div class="post-caption">' + titulo + '</div>'
+    + descHtml
+    + '<div class="post-actions">'
+    + '<button class="post-action-btn">&#9825; 0</button>'
+    + '<button class="post-action-btn">&#128172; 0</button>'
+    + '<button class="post-action-btn">&#8599; Compartir</button></div></div>';
+
+  prependPostToFeed(postHtml);
+  closePublishModal();
+  goTo('screen-community');
+  showNotifToast('¡Video publicado!');
+}
+
+function prependPostToFeed(html) {
+  var feed = document.getElementById('community-feed');
+  if (!feed) return;
+  feed.insertAdjacentHTML('afterbegin', html);
+}
+
+function simulateVideoUpload(el) {
+  el.classList.add('selected');
+  el.querySelector('.publish-video-label').textContent = '✓ clip_partido.mp4';
+  el.querySelector('.publish-video-sub').textContent = 'Listo para publicar';
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   SECCIÓN — UNIRME A UN EQUIPO
+   ══════════════════════════════════════════════════════════════════
+   Lógica para la pantalla screen-join-team:
+   · Tabs buscar / código
+   · Filtros rápidos por formato y barrio
+   · Modal de confirmación de solicitud
+   · Modal de éxito
+*/
+
+const joinFilters = { formatos: new Set(), barrios: new Set() };
+
+function toggleJoinFilters() {
+  const panel = document.getElementById('join-filter-panel');
+  const boton = document.getElementById('join-filter-btn');
+  if (!panel) return;
+  panel.classList.toggle('hidden');
+  if (boton) boton.classList.toggle('filter-btn-active', !panel.classList.contains('hidden'));
+}
+
+function clearAllJoinFilters() {
+  joinFilters.formatos.clear();
+  joinFilters.barrios.clear();
+  document.querySelectorAll('#join-filter-panel .filter-sel-pill')
+    .forEach(p => p.classList.remove('active'));
+  const input = document.getElementById('join-search-input');
+  if (input) input.value = '';
+  applyJoinFilters();
+}
+
+// Cambia entre la pestaña "Buscar" y "Código"
+function setJoinTab(tab, btnEl) {
+  document.querySelectorAll('#join-team-tabs .tab-pill').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  ['buscar', 'codigo'].forEach(t => {
+    const el = document.getElementById('join-tab-' + t);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById('join-tab-' + tab);
+  if (target) target.classList.add('active');
+}
+
+// Activa/desactiva un filtro rápido (formato o barrio)
+function toggleJoinFilter(el, type) {
+  const key   = type + 's';
+  const valor = el.dataset.val;
+
+  if (joinFilters[key].has(valor)) {
+    joinFilters[key].delete(valor);
+    el.classList.remove('active');
+  } else {
+    joinFilters[key].add(valor);
+    el.classList.add('active');
+  }
+  applyJoinFilters();
+}
+
+// Filtra la lista de equipos según texto y pills activas
+function applyJoinFilters() {
+  const texto    = (document.getElementById('join-search-input')?.value || '').toLowerCase();
+  const formatos = joinFilters.formatos;
+  const barrios  = joinFilters.barrios;
+
+  const cards = document.querySelectorAll('#join-team-list .join-team-card[data-formato]');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const cumpleFormato  = formatos.size === 0 || formatos.has(card.dataset.formato);
+    const cumpleBarrio   = barrios.size  === 0 || barrios.has(card.dataset.barrio);
+    const cumpleTexto    = !texto || card.textContent.toLowerCase().includes(texto);
+    const mostrar = cumpleFormato && cumpleBarrio && cumpleTexto;
+    card.style.display = mostrar ? '' : 'none';
+    if (mostrar) visible++;
+  });
+
+  const contador = document.getElementById('join-count');
+  if (contador) contador.textContent = `${visible} equipo${visible !== 1 ? 's' : ''} encontrado${visible !== 1 ? 's' : ''}`;
+
+  const empty = document.getElementById('join-empty');
+  if (empty) empty.classList.toggle('hidden', visible > 0);
+
+  const hayActivos = joinFilters.formatos.size > 0 || joinFilters.barrios.size > 0 || !!texto;
+  const boton = document.getElementById('join-filter-btn');
+  if (boton) boton.classList.toggle('filter-btn-active', hayActivos);
+}
+
+// Códigos de prueba conocidos (simulación)
+const KNOWN_CODES = {
+  'RC-4829': { name: 'Real Chapinero', logo: 'RC', cls: 'logo-green', sub: 'Amateur B · 11v11 · 📍 Chapinero', meta: '👥 14/18 · 4 cupos disponibles', cupos: 4 },
+  'LS-7731': { name: 'Los Sabaderos',  logo: 'LS', cls: 'logo-purple', sub: 'Amateur C · 7v7 · 📍 Suba',      meta: '👥 9/11 · 2 cupos disponibles', cupos: 2 },
+};
+
+// Valida el código ingresado y muestra la info del equipo
+function checkJoinCode() {
+  const raw  = (document.getElementById('join-code-value')?.value || '').trim().toUpperCase();
+  const hint = document.getElementById('join-code-hint');
+  const btn  = document.getElementById('join-code-btn');
+  const result = document.getElementById('join-code-result');
+
+  if (raw.length < 4) {
+    if (hint) hint.textContent = '';
+    if (btn) btn.disabled = true;
+    if (result) result.classList.add('hidden');
+    return;
+  }
+
+  const team = KNOWN_CODES[raw];
+  if (team) {
+    if (hint)   { hint.textContent = '✓ Equipo encontrado'; hint.style.color = 'var(--green)'; }
+    if (btn)    btn.disabled = false;
+    // Rellenar la tarjeta de resultado
+    const logo = document.getElementById('jcr-logo');
+    if (logo)  { logo.textContent = team.logo; logo.className = 'team-logo-md ' + team.cls; }
+    const nameEl = document.getElementById('jcr-name');
+    if (nameEl) nameEl.textContent = team.name;
+    const subEl  = document.getElementById('jcr-sub');
+    if (subEl)  subEl.textContent = team.sub;
+    const metaEl = document.getElementById('jcr-meta');
+    if (metaEl) metaEl.textContent = team.meta;
+    if (result) result.classList.remove('hidden');
+  } else {
+    if (hint)   { hint.textContent = 'Código no encontrado'; hint.style.color = 'var(--red)'; }
+    if (btn)    btn.disabled = true;
+    if (result) result.classList.add('hidden');
+  }
+}
+
+// Guarda el equipo seleccionado temporalmente para el modal
+let _joinTarget = {};
+
+// Navega a la pantalla de confirmación con los datos del equipo
+function openJoinConfirm(name, initials, logoClass, formato, barrio, cupos) {
+  _joinTarget = { name, initials, logoClass, formato, barrio, cupos };
+
+  const logo = document.getElementById('jc-logo');
+  if (logo) { logo.textContent = initials; logo.className = 'team-logo-lg ' + logoClass; }
+
+  const nameEl = document.getElementById('jc-name');
+  if (nameEl) nameEl.textContent = name;
+
+  const subEl = document.getElementById('jc-sub');
+  if (subEl) subEl.textContent = `${formato} · ${barrio}`;
+
+  const cuposEl = document.getElementById('jc-cupos');
+  if (cuposEl) cuposEl.textContent = cupos;
+
+  const msg = document.getElementById('jc-msg');
+  if (msg) msg.value = '';
+
+  goTo('screen-join-confirm');
+}
+
+// Navega a confirmación desde el flujo de código
+function openJoinConfirmCode() {
+  const raw  = (document.getElementById('join-code-value')?.value || '').trim().toUpperCase();
+  const team = KNOWN_CODES[raw];
+  if (!team) return;
+  openJoinConfirm(team.name, team.logo, team.cls, team.sub.split('·')[1]?.trim() || '11v11', team.sub.split('📍')[1]?.trim() || '', team.cupos);
+}
+
+// Envía la solicitud → cierra confirmación y navega a la pantalla de éxito
+function submitJoinRequest() {
+  closeJoinConfirm();
+
+  const nameEl = document.getElementById('jss-team-name');
+  if (nameEl) nameEl.textContent = _joinTarget.name || 'el equipo';
+
+  const logoEl = document.getElementById('jss-logo');
+  if (logoEl) {
+    logoEl.textContent  = _joinTarget.initials  || '??';
+    logoEl.className    = 'team-logo-lg ' + (_joinTarget.logoClass || '');
+  }
+
+  goTo('screen-join-request-success');
 }
 

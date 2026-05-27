@@ -151,18 +151,18 @@
             <span class="drawer-online-dot"></span>
           </div>
           <div class="drawer-user-info">
-            <div class="drawer-user-name">Andrés Salazar</div>
-            <div class="drawer-user-handle">@andresalo</div>
+            <div class="drawer-user-name">Andrés Vega</div>
+            <div class="drawer-user-handle">@andresveg</div>
           </div>
           <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
         </div>
 
         <!-- Mis equipos -->
         <div class="drawer-section-label">MIS EQUIPOS</div>
-        <div class="drawer-team-item" onclick="openTeamManagement('Real Chapinero')">
-          <div class="team-logo-sm logo-green">RC</div>
+        <div class="drawer-team-item" onclick="openTeamManagement('Águilas Calvas FC')">
+          <div class="team-logo-sm logo-green">AC</div>
           <div class="drawer-team-info">
-            <div class="drawer-team-name">Real Chapinero</div>
+            <div class="drawer-team-name">Águilas Calvas FC</div>
             <div class="drawer-team-sub">Capitán · 14 miembros</div>
           </div>
           <span class="drawer-crown">👑</span>
@@ -182,11 +182,11 @@
           </div>
           <span class="drawer-crown">👑</span>
         </div>
-        <div class="drawer-team-item" onclick="openTeamManagement('Águilas Usaquén')">
-          <div class="team-logo-sm logo-brown">AU</div>
+        <div class="drawer-team-item" onclick="openTeamManagement('Macondo FC')">
+          <div class="team-logo-sm logo-brown">MF</div>
           <div class="drawer-team-info">
-            <div class="drawer-team-name">Águilas Usaquén</div>
-            <div class="drawer-team-sub">Jugador · 18 miembros</div>
+            <div class="drawer-team-name">Macondo FC</div>
+            <div class="drawer-team-sub">Jugador · 12 miembros</div>
           </div>
         </div>
 
@@ -198,7 +198,7 @@
             <div class="drawer-action-sub">Reúne a tus parceros</div>
           </div>
         </button>
-        <button class="drawer-action-btn" onclick="closeDrawer()">
+        <button class="drawer-action-btn" onclick="closeDrawer(); goTo('screen-join-team')">
           <div class="drawer-action-icon">👤</div>
           <div class="drawer-action-info">
             <div class="drawer-action-title">Unirme a un equipo</div>
@@ -229,8 +229,8 @@
           <span class="greeting-name">Hola, Andrés 👋</span>
           <span class="greeting-sub">Listo para jugar hoy?</span>
         </div>
-        <button class="icon-btn notif-btn" onclick="void(0)">
-          🔔<span class="notif-badge">2</span>
+        <button class="icon-btn notif-btn" onclick="openNotifPanel()">
+          🔔<span class="notif-badge" id="notif-count-badge">5</span>
         </button>
       </div>
 
@@ -265,7 +265,7 @@
         <section class="section">
           <div class="section-header">
             <span class="section-title">Retos pendientes <span class="badge-red">2</span></span>
-            <button class="see-all">Ver todos ›</button>
+            <button class="see-all" onclick="goTo('screen-retos-pendientes')">Ver todos ›</button>
           </div>
           <div class="reto-card" onclick="goTo('screen-reto-detail')">
             <div class="team-logo-sm logo-brown">GF</div>
@@ -366,11 +366,11 @@
       </div>
 
       <nav class="bottom-nav">
-        <button class="nav-btn active" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn active" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -442,11 +442,11 @@
       </div>
 
       <nav class="bottom-nav">
-        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn active" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn active" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -1053,11 +1053,11 @@
         </div><!-- /community-feed -->
       </div>
       <nav class="bottom-nav">
-        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn active" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn active" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -1197,11 +1197,11 @@
 
       </div>
       <nav class="bottom-nav">
-        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -1284,11 +1284,11 @@
         </div>
       </div>
       <nav class="bottom-nav">
-        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn active" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn active" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -1334,15 +1334,16 @@
          (el botón "Editar ›" está pero no hace nada aún).
          ══════════════════════════════════════════════════ -->
     <div id="screen-profile" class="screen">
-      <div class="top-bar-simple">
-        <div class="tbs-title">Mi perfil</div>
-        <button class="see-all" style="color:#4CAF50">Editar ›</button>
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Mi perfil</span>
+        <button class="see-all" style="color:#4CAF50;margin-left:auto">Editar ›</button>
       </div>
       <div class="screen-content no-top-pad">
         <div class="profile-hero">
           <div class="profile-avatar-lg">AV</div>
           <div class="profile-name">Andrés Vega</div>
-          <div class="profile-handle">@andresalo</div>
+          <div class="profile-handle">@andresveg</div>
           <div class="profile-sub">Chapinero · Mediocampista</div>
           <div class="profile-stats-row">
             <div class="profile-stat"><span class="ps-num">28</span><span class="ps-label">Partidos</span></div>
@@ -1369,6 +1370,13 @@
             <div class="team-row-sub">Jugador · 11 miembros</div>
           </div>
         </div>
+        <div class="team-row-item">
+          <div class="team-logo-sm logo-brown">MF</div>
+          <div class="team-row-info">
+            <div class="team-row-name">Macondo FC</div>
+            <div class="team-row-sub">Jugador · 12 miembros</div>
+          </div>
+        </div>
         <button class="btn-outline w-full mt-8" onclick="goTo('screen-create-team')">Crear equipo +</button>
 
         <div class="section-header mt-16"><span class="section-title-sm">INFORMACIÓN</span></div>
@@ -1383,21 +1391,13 @@
         <div class="section-header mt-16"><span class="section-title-sm">SOBRE MÍ</span></div>
         <div class="sobre-mi-card">Mediocampista con experiencia en fútbol 7. Busco equipo serio con buen ambiente.</div>
 
-        <div class="section-header mt-16"><span class="section-title-sm">EQUIPOS ANTERIORES</span></div>
-        <div class="team-row-item">
-          <div class="team-logo-sm logo-red">BT</div>
-          <div class="team-row-info">
-            <div class="team-row-name">Buitres de Teusaquillo</div>
-            <div class="team-row-sub">2023 – 2024 · 7v7</div>
-          </div>
-        </div>
       </div>
       <nav class="bottom-nav">
-        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon">🔍</span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
-        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">＋</span></button>
-        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon">👥</span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
-        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon">💬</span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
+        <button class="nav-btn" onclick="navTo('screen-home',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg></span><span class="nav-label">Inicio</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></span><span class="nav-label">Buscar</span><span class="nav-dot"></span></button>
+        <button class="nav-btn nav-create-btn" onclick="openCreateModal()"><span class="nav-plus">Crear</span></button>
+        <button class="nav-btn" onclick="navTo('screen-community',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></span><span class="nav-label">Comunidad</span><span class="nav-dot"></span></button>
+        <button class="nav-btn" onclick="navTo('screen-chat',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span><span class="nav-label">Chat</span><span class="nav-dot"></span><span class="notif-badge nav-badge">2</span></button>
       </nav>
     </div>
 
@@ -1897,6 +1897,118 @@
         <div class="success-sub">2 equipos recibieron tu reto. El primero en aceptar confirmará el partido.</div>
         <button class="btn-green" onclick="goTo('screen-mis-partidos')">Ver mis partidos</button>
         <button class="btn-outline mt-8" onclick="goTo('screen-home')">Seguir explorando</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA — RETOS PENDIENTES (listado completo)
+         Lista de todos los retos pendientes del usuario.
+         Cada reto muestra el equipo rival, el equipo propio
+         que fue retado (ya que el usuario puede ser capitán
+         de varios equipos) y la info del partido.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-retos-pendientes" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Retos pendientes</span>
+        <span class="badge-red" style="margin-left:8px;font-size:13px;padding:2px 8px">2</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+
+        <!-- Sección: retos recibidos (otros te retaron) -->
+        <div class="live-section-header green-text">RETOS RECIBIDOS</div>
+
+        <!-- Reto 1 -->
+        <div class="reto-detail-card" onclick="goTo('screen-reto-detail')">
+          <div class="reto-detail-teams">
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-brown">GF</div>
+              <div class="reto-detail-team-name">Los Guerreros FC</div>
+              <div class="reto-detail-team-sub">Retador</div>
+            </div>
+            <div class="reto-vs-col">
+              <span class="vs-text" style="font-size:18px">VS</span>
+              <span class="reto-status-pill pill-red-xs">Pendiente</span>
+            </div>
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-green">RC</div>
+              <div class="reto-detail-team-name">Real Chapinero</div>
+              <div class="reto-detail-team-sub">Tu equipo 👑</div>
+            </div>
+          </div>
+          <div class="reto-detail-info">
+            <span>📍 Chapinero</span>
+            <span>📅 Mañana · 6:00 PM</span>
+            <span>⚽ 11v11</span>
+          </div>
+          <div class="reto-detail-expiry">⏱ Expira en 8h</div>
+          <div class="reto-detail-actions">
+            <button class="btn-outline-sm" onclick="event.stopPropagation(); goBack()">Rechazar</button>
+            <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-reto-detail')">Ver reto</button>
+          </div>
+        </div>
+
+        <!-- Reto 2 -->
+        <div class="reto-detail-card" onclick="goTo('screen-reto-detail')">
+          <div class="reto-detail-teams">
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-blue2">VF</div>
+              <div class="reto-detail-team-name">Villa FC</div>
+              <div class="reto-detail-team-sub">Retador</div>
+            </div>
+            <div class="reto-vs-col">
+              <span class="vs-text" style="font-size:18px">VS</span>
+              <span class="reto-status-pill pill-red-xs">Pendiente</span>
+            </div>
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-blue2">FS</div>
+              <div class="reto-detail-team-name">FC Salitre</div>
+              <div class="reto-detail-team-sub">Tu equipo 👑</div>
+            </div>
+          </div>
+          <div class="reto-detail-info">
+            <span>📍 Teusaquillo</span>
+            <span>📅 Domingo · 9:00 AM</span>
+            <span>⚽ 7v7</span>
+          </div>
+          <div class="reto-detail-expiry">⏱ Expira en 22h</div>
+          <div class="reto-detail-actions">
+            <button class="btn-outline-sm" onclick="event.stopPropagation(); goBack()">Rechazar</button>
+            <button class="btn-green-sm" onclick="event.stopPropagation(); goTo('screen-reto-detail')">Ver reto</button>
+          </div>
+        </div>
+
+        <!-- Sección: retos enviados (tú retaste) -->
+        <div class="live-section-header green-text mt-16">RETOS ENVIADOS</div>
+
+        <div class="reto-detail-card reto-card-sent">
+          <div class="reto-detail-teams">
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-green">RC</div>
+              <div class="reto-detail-team-name">Real Chapinero</div>
+              <div class="reto-detail-team-sub">Tu equipo 👑</div>
+            </div>
+            <div class="reto-vs-col">
+              <span class="vs-text" style="font-size:18px">VS</span>
+              <span class="reto-status-pill pill-yellow-xs">Esperando</span>
+            </div>
+            <div class="reto-detail-team">
+              <div class="team-logo-md logo-red">GF</div>
+              <div class="reto-detail-team-name">Los Guerreros</div>
+              <div class="reto-detail-team-sub">Rival</div>
+            </div>
+          </div>
+          <div class="reto-detail-info">
+            <span>📍 Chapinero</span>
+            <span>📅 Dom 27 May · 3:00 PM</span>
+            <span>⚽ 7v7</span>
+          </div>
+          <div class="reto-detail-expiry" style="color:var(--text2)">Enviado hace 2h · expira en 4h</div>
+          <div class="reto-detail-actions">
+            <button class="btn-outline-sm" onclick="event.stopPropagation()">Cancelar reto</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -2868,18 +2980,602 @@
           </div>
           <span class="create-opt-arrow">›</span>
         </button>
-        <button class="create-option" onclick="closeCreateModal(); goTo('screen-community')">
+        <button class="create-option" onclick="closeCreateModal(); openPublishModal()">
           <div class="create-opt-icon" style="background:linear-gradient(135deg,#2a1a0a,#4a2e0a)">
             <span style="font-size:20px">✏️</span>
           </div>
           <div class="create-opt-text">
             <div class="create-opt-title">Publicar en feed</div>
-            <div class="create-opt-sub">Resultado, jugador buscado, novedad</div>
+            <div class="create-opt-sub">Resultado, jugador buscado, video</div>
           </div>
           <span class="create-opt-arrow">›</span>
         </button>
       </div>
-      <button class="create-modal-cta" onclick="closeCreateModal()">Continuar</button>
+      <button class="create-modal-cta" onclick="closeCreateModal()">Cancelar</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         MODAL DE PUBLICACIÓN EN FEED
+         Se abre al tocar "Publicar en feed" en el modal +.
+         Paso 1: elegir tipo (convocatoria, resultado, video).
+         Paso 2: formulario específico del tipo elegido.
+         ══════════════════════════════════════════════════ -->
+    <div id="publish-modal-overlay" class="create-modal-overlay hidden" onclick="closePublishModal()"></div>
+    <div id="publish-modal" class="create-modal publish-modal hidden">
+      <div class="create-modal-handle"></div>
+
+      <!-- PASO 1: Elegir tipo -->
+      <div id="publish-step-1">
+        <div class="create-modal-title">¿Qué quieres publicar?</div>
+        <div class="create-options">
+          <button class="create-option" onclick="openPublishForm('convocatoria')">
+            <div class="create-opt-icon" style="background:linear-gradient(135deg,#0d1f3c,#1a3a6e)">
+              <span style="font-size:20px">👤</span>
+            </div>
+            <div class="create-opt-text">
+              <div class="create-opt-title">Convocatoria</div>
+              <div class="create-opt-sub">Busca un jugador para tu equipo</div>
+            </div>
+            <span class="create-opt-arrow">›</span>
+          </button>
+          <button class="create-option" onclick="openPublishForm('resultado')">
+            <div class="create-opt-icon" style="background:linear-gradient(135deg,#1a0d0d,#3a1a1a)">
+              <span style="font-size:20px">🏆</span>
+            </div>
+            <div class="create-opt-text">
+              <div class="create-opt-title">Resultado</div>
+              <div class="create-opt-sub">Comparte el marcador de un partido</div>
+            </div>
+            <span class="create-opt-arrow">›</span>
+          </button>
+          <button class="create-option" onclick="openPublishForm('video')">
+            <div class="create-opt-icon" style="background:linear-gradient(135deg,#1a0a2a,#3a1a5a)">
+              <span style="font-size:20px">▶️</span>
+            </div>
+            <div class="create-opt-text">
+              <div class="create-opt-title">Video</div>
+              <div class="create-opt-sub">Comparte un clip de un partido</div>
+            </div>
+            <span class="create-opt-arrow">›</span>
+          </button>
+        </div>
+        <button class="create-modal-cta create-modal-cta-ghost" onclick="closePublishModal()">Cancelar</button>
+      </div>
+
+      <!-- PASO 2a: Formulario CONVOCATORIA -->
+      <div id="publish-form-convocatoria" class="publish-form hidden">
+        <div class="publish-form-header">
+          <button class="publish-back-btn" onclick="backToPublishStep1()">‹</button>
+          <div class="create-modal-title" style="margin:0">Publicar convocatoria</div>
+        </div>
+        <div class="publish-fields">
+          <div class="publish-field-label">Posición buscada</div>
+          <div class="publish-pos-grid">
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Portero</button>
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Defensa</button>
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Lateral</button>
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Mediocampista</button>
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Mediapunta</button>
+            <button class="publish-pos-pill" onclick="selectPublishPos(this)">Delantero</button>
+          </div>
+          <div class="publish-field-label">Formato</div>
+          <div class="publish-pos-grid">
+            <button class="publish-pos-pill" onclick="selectPublishFormat(this)">5v5</button>
+            <button class="publish-pos-pill" onclick="selectPublishFormat(this)">7v7</button>
+            <button class="publish-pos-pill" onclick="selectPublishFormat(this)">8v8</button>
+            <button class="publish-pos-pill" onclick="selectPublishFormat(this)">11v11</button>
+          </div>
+          <div class="publish-field-label">Zona / Barrio</div>
+          <input class="publish-input" id="conv-zona" placeholder="Ej: Chapinero, Usaquén…">
+          <div class="publish-field-label">Descripción (opcional)</div>
+          <textarea class="publish-textarea" id="conv-desc" placeholder="Cuéntanos más sobre el perfil que buscas…" rows="3"></textarea>
+        </div>
+        <button class="create-modal-cta" onclick="submitConvocatoria()">Publicar convocatoria</button>
+      </div>
+
+      <!-- PASO 2b: Formulario RESULTADO -->
+      <div id="publish-form-resultado" class="publish-form hidden">
+        <div class="publish-form-header">
+          <button class="publish-back-btn" onclick="backToPublishStep1()">‹</button>
+          <div class="create-modal-title" style="margin:0">Publicar resultado</div>
+        </div>
+        <div class="publish-fields">
+          <div class="publish-score-row">
+            <div class="publish-score-team">
+              <div class="publish-field-label">Mi equipo</div>
+              <input class="publish-input publish-input-team" id="res-team-home" placeholder="Real Chapinero">
+              <input class="publish-input publish-input-score" id="res-score-home" placeholder="0" type="number" min="0">
+            </div>
+            <div class="publish-vs">VS</div>
+            <div class="publish-score-team">
+              <div class="publish-field-label">Rival</div>
+              <input class="publish-input publish-input-team" id="res-team-away" placeholder="Macondo FC">
+              <input class="publish-input publish-input-score" id="res-score-away" placeholder="0" type="number" min="0">
+            </div>
+          </div>
+          <div class="publish-field-label">Formato y lugar</div>
+          <input class="publish-input" id="res-lugar" placeholder="Ej: 7v7 · Cancha Norte · Chapinero">
+          <div class="publish-field-label">Descripción (opcional)</div>
+          <textarea class="publish-textarea" id="res-desc" placeholder="¿Cómo estuvo el partido?" rows="3"></textarea>
+        </div>
+        <button class="create-modal-cta" onclick="submitResultado()">Publicar resultado</button>
+      </div>
+
+      <!-- PASO 2c: Formulario VIDEO -->
+      <div id="publish-form-video" class="publish-form hidden">
+        <div class="publish-form-header">
+          <button class="publish-back-btn" onclick="backToPublishStep1()">‹</button>
+          <div class="create-modal-title" style="margin:0">Publicar video</div>
+        </div>
+        <div class="publish-fields">
+          <div class="publish-video-upload" onclick="simulateVideoUpload(this)">
+            <div class="publish-video-icon">▶</div>
+            <div class="publish-video-label">Toca para seleccionar un clip</div>
+            <div class="publish-video-sub">MP4, MOV · máx. 60 seg</div>
+          </div>
+          <div class="publish-field-label">Título del clip</div>
+          <input class="publish-input" id="vid-titulo" placeholder="Ej: Golazo vs Los Bravos">
+          <div class="publish-field-label">Partido / Cancha</div>
+          <input class="publish-input" id="vid-lugar" placeholder="Ej: Fútbol 7 · Cancha Norte · Sáb 10 may">
+          <div class="publish-field-label">Descripción (opcional)</div>
+          <textarea class="publish-textarea" id="vid-desc" placeholder="Añade contexto al clip…" rows="2"></textarea>
+        </div>
+        <button class="create-modal-cta" onclick="submitVideo()">Publicar video</button>
+      </div>
+    </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       PANEL DE NOTIFICACIONES (global, flota sobre todas las pantallas)
+       Se abre al tocar la campana 🔔 en el inicio.
+       Tiene dos pestañas: Solicitudes de fichaje y Retos recibidos.
+       ══════════════════════════════════════════════════════════════════ -->
+  <div id="notif-overlay" class="notif-overlay hidden" onclick="closeNotifPanel()"></div>
+  <div id="notif-panel" class="notif-panel">
+    <div class="notif-panel-handle"></div>
+    <div class="notif-panel-header">
+      <span class="notif-panel-title">Notificaciones</span>
+      <button class="notif-mark-all" onclick="markAllRead()">Marcar todo como leído</button>
+    </div>
+
+    <!-- Pestañas -->
+    <div class="notif-tabs">
+      <button class="notif-tab active" id="ntab-fichajes" onclick="setNotifTab('fichajes', this)">
+        Solicitudes de fichaje
+        <span class="notif-tab-badge" id="ntab-badge-fichajes">3</span>
+      </button>
+      <button class="notif-tab" id="ntab-retos" onclick="setNotifTab('retos', this)">
+        Retos recibidos
+        <span class="notif-tab-badge" id="ntab-badge-retos">2</span>
+      </button>
+    </div>
+
+    <!-- Contenido: Solicitudes de fichaje -->
+    <div class="notif-tab-content active" id="ntab-content-fichajes">
+
+      <!-- #1 — no leída -->
+      <div class="notif-item unread" id="nfich-1">
+        <div class="notif-avatar notif-avatar-green">LF</div>
+        <div class="notif-body">
+          <div class="notif-name">Lucas Fernández <span class="notif-unread-dot"></span></div>
+          <div class="notif-desc">quiere fichar por <strong>Los Cóndores FC</strong> como <strong>Mediocampista</strong>. Tiene valoración 4.8 ⭐</div>
+          <div class="notif-time">Hace 20 min</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptFichaje('nfich-1')">Aceptar</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nfich-1')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #2 — no leída -->
+      <div class="notif-item unread" id="nfich-2">
+        <div class="notif-avatar notif-avatar-red">SM</div>
+        <div class="notif-body">
+          <div class="notif-name">Santiago Morales <span class="notif-unread-dot"></span></div>
+          <div class="notif-desc">quiere fichar por <strong>Los Cóndores FC</strong> como <strong>Delantero</strong>. 12 goles esta temporada.</div>
+          <div class="notif-time">Hace 45 min</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptFichaje('nfich-2')">Aceptar</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nfich-2')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #3 — no leída -->
+      <div class="notif-item unread" id="nfich-3">
+        <div class="notif-avatar notif-avatar-blue">CR</div>
+        <div class="notif-body">
+          <div class="notif-name">Camila Ríos <span class="notif-unread-dot"></span></div>
+          <div class="notif-desc">quiere fichar por <strong>Los Cóndores FC</strong> como <strong>Portera</strong>. Solo 3 goles encajados en 8 partidos.</div>
+          <div class="notif-time">Hace 2 horas</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptFichaje('nfich-3')">Aceptar</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nfich-3')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #4 — ya leída -->
+      <div class="notif-item read" id="nfich-4">
+        <div class="notif-avatar notif-avatar-green">JP</div>
+        <div class="notif-body">
+          <div class="notif-name">Julián Pérez</div>
+          <div class="notif-desc">quiere fichar por <strong>Los Cóndores FC</strong> como <strong>Defensa Central</strong>.</div>
+          <div class="notif-time">Ayer · 18:30</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptFichaje('nfich-4')">Aceptar</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nfich-4')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #5 — ya leída -->
+      <div class="notif-item read" id="nfich-5">
+        <div class="notif-avatar notif-avatar-red">MV</div>
+        <div class="notif-body">
+          <div class="notif-name">Mateo Vargas</div>
+          <div class="notif-desc">quiere fichar por <strong>Los Cóndores FC</strong> como <strong>Lateral Derecho</strong>. Ex-jugador de Halcones FC.</div>
+          <div class="notif-time">Ayer · 09:15</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptFichaje('nfich-5')">Aceptar</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nfich-5')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado vacío (oculto al inicio) -->
+      <div class="notif-empty hidden" id="nfich-empty">
+        <span class="notif-empty-icon">📭</span>
+        <p>No hay solicitudes de fichaje pendientes</p>
+      </div>
+    </div>
+
+    <!-- Contenido: Retos recibidos -->
+    <div class="notif-tab-content" id="ntab-content-retos">
+
+      <!-- #1 — no leída -->
+      <div class="notif-item unread" id="nreto-1">
+        <div class="notif-avatar notif-avatar-blue">ÁE</div>
+        <div class="notif-body">
+          <div class="notif-name">Águilas del Este <span class="notif-unread-dot"></span></div>
+          <div class="notif-desc">te retó a un partido de <strong>Fútbol 11</strong> el <strong>Sáb 31 May · 10:00</strong> en Cancha Norte. Apuesta: honor del barrio 🏆</div>
+          <div class="notif-time">Hace 1 hora</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptReto('nreto-1')">Aceptar reto</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nreto-1')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #2 — no leída -->
+      <div class="notif-item unread" id="nreto-2">
+        <div class="notif-avatar notif-avatar-red">TN</div>
+        <div class="notif-body">
+          <div class="notif-name">Tigres del Norte <span class="notif-unread-dot"></span></div>
+          <div class="notif-desc">te retó a un partido de <strong>Fútbol 7</strong> el <strong>Dom 1 Jun · 08:00</strong> en Cancha El Prado. ¡Vienen de ganar 5 seguidos!</div>
+          <div class="notif-time">Hace 3 horas</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptReto('nreto-2')">Aceptar reto</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nreto-2')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #3 — ya leída -->
+      <div class="notif-item read" id="nreto-3">
+        <div class="notif-avatar notif-avatar-green">LG</div>
+        <div class="notif-body">
+          <div class="notif-name">Los Guerreros FC</div>
+          <div class="notif-desc">te retó a un partido de <strong>Fútbol 5</strong> el <strong>Vie 30 May · 20:00</strong> en Cancha Techada Sur.</div>
+          <div class="notif-time">Ayer · 14:00</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptReto('nreto-3')">Aceptar reto</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nreto-3')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- #4 — ya leída -->
+      <div class="notif-item read" id="nreto-4">
+        <div class="notif-avatar notif-avatar-blue">VP</div>
+        <div class="notif-body">
+          <div class="notif-name">Villa Park SC</div>
+          <div class="notif-desc">te retó a un partido de <strong>Fútbol 11</strong> el <strong>Sáb 7 Jun · 15:00</strong> en Estadio El Campín (mini).</div>
+          <div class="notif-time">Hace 2 días</div>
+          <div class="notif-actions">
+            <button class="notif-btn-accept" onclick="acceptReto('nreto-4')">Aceptar reto</button>
+            <button class="notif-btn-reject" onclick="rejectNotif('nreto-4')">Rechazar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado vacío (oculto al inicio) -->
+      <div class="notif-empty hidden" id="nreto-empty">
+        <span class="notif-empty-icon">🏆</span>
+        <p>No hay retos pendientes</p>
+      </div>
+    </div>
+  </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 32 — UNIRME A UN EQUIPO
+         Buscador de equipos donde el jugador puede enviar
+         una solicitud de fichaje. Tiene dos modos:
+         · Pestaña "Buscar" → búsqueda por texto libre
+         · Pestaña "Código" → ingreso de código de invitación
+         Al tocar "Solicitar unión" se abre el modal de éxito.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-join-team" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Unirme a un equipo</span>
+      </div>
+
+      <div class="screen-content" style="top:56px">
+
+        <!-- Tabs: Buscar / Código -->
+        <div class="tab-pills" id="join-team-tabs" style="margin-bottom:0">
+          <button class="tab-pill active" onclick="setJoinTab('buscar',this)">Buscar</button>
+          <button class="tab-pill" onclick="setJoinTab('codigo',this)">Ingresar código</button>
+        </div>
+
+        <!-- ── TAB: BUSCAR ── -->
+        <div id="join-tab-buscar" class="join-tab-content active">
+          <div class="search-filter-row" style="margin-top:12px">
+            <div class="search-bar-wrap search-bar-flex">
+              <span class="search-icon">🔍</span>
+              <input class="search-input" id="join-search-input"
+                     placeholder="Nombre del equipo o barrio..."
+                     oninput="applyJoinFilters()">
+            </div>
+            <button class="filter-toggle-btn" id="join-filter-btn" onclick="toggleJoinFilters()">
+              <span class="filter-icon-svg">⚙</span> Filtros
+            </button>
+          </div>
+
+          <!-- Panel de filtros colapsable -->
+          <div id="join-filter-panel" class="filter-panel hidden">
+            <div class="filter-panel-section">
+              <div class="filter-panel-label">Modalidad</div>
+              <div class="filter-panel-pills">
+                <span class="filter-sel-pill" data-val="11v11" onclick="toggleJoinFilter(this,'formato')">11v11</span>
+                <span class="filter-sel-pill" data-val="8v8"   onclick="toggleJoinFilter(this,'formato')">8v8</span>
+                <span class="filter-sel-pill" data-val="7v7"   onclick="toggleJoinFilter(this,'formato')">7v7</span>
+                <span class="filter-sel-pill" data-val="5v5"   onclick="toggleJoinFilter(this,'formato')">5v5</span>
+              </div>
+            </div>
+            <div class="filter-panel-section">
+              <div class="filter-panel-label">Barrio</div>
+              <div class="filter-panel-pills">
+                <span class="filter-sel-pill" data-val="Chapinero"    onclick="toggleJoinFilter(this,'barrio')">Chapinero</span>
+                <span class="filter-sel-pill" data-val="Usaquén"      onclick="toggleJoinFilter(this,'barrio')">Usaquén</span>
+                <span class="filter-sel-pill" data-val="Teusaquillo"  onclick="toggleJoinFilter(this,'barrio')">Teusaquillo</span>
+                <span class="filter-sel-pill" data-val="Suba"         onclick="toggleJoinFilter(this,'barrio')">Suba</span>
+                <span class="filter-sel-pill" data-val="Kennedy"      onclick="toggleJoinFilter(this,'barrio')">Kennedy</span>
+                <span class="filter-sel-pill" data-val="La Candelaria" onclick="toggleJoinFilter(this,'barrio')">La Candelaria</span>
+              </div>
+            </div>
+            <div class="filter-action-row">
+              <button class="filter-clear-btn" onclick="clearAllJoinFilters()">Limpiar</button>
+              <button class="filter-apply-btn filter-apply-flex" onclick="applyJoinFilters(); toggleJoinFilters()">Aplicar filtros</button>
+            </div>
+          </div>
+
+          <div class="results-count" id="join-count">8 equipos encontrados</div>
+
+          <div id="join-team-list">
+
+            <!-- Card: acepta solicitudes (cupos disponibles) -->
+            <div class="join-team-card" data-formato="11v11" data-barrio="Chapinero" onclick="openJoinConfirm('Macondo FC','MF','logo-brown','11v11','Chapinero',2)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-brown">MF</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Macondo FC</div>
+                  <div class="join-team-sub">Amateur B · 11v11 · 📍 Chapinero</div>
+                  <div class="join-team-meta">👥 9/11 jugadores · <span style="color:var(--green)">2 cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.4 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Macondo FC','MF','logo-brown','11v11','Chapinero',2)">Solicitar</button>
+            </div>
+
+            <div class="join-team-card" data-formato="7v7" data-barrio="Usaquén" onclick="openJoinConfirm('Los Guerreros FC','GF','logo-red','7v7','Usaquén',3)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-red">GF</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Los Guerreros FC</div>
+                  <div class="join-team-sub">Amateur A · 7v7 · 📍 Usaquén</div>
+                  <div class="join-team-meta">👥 8/11 jugadores · <span style="color:var(--green)">3 cupos</span></div>
+                  <div class="join-team-meta">⭐ 3.9 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Los Guerreros FC','GF','logo-red','7v7','Usaquén',3)">Solicitar</button>
+            </div>
+
+            <div class="join-team-card" data-formato="11v11" data-barrio="Suba" onclick="openJoinConfirm('Guerreros del Salitre','GS','logo-purple','11v11','Suba',5)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-purple">GS</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Guerreros del Salitre</div>
+                  <div class="join-team-sub">Amateur A · 11v11 · 📍 Suba</div>
+                  <div class="join-team-meta">👥 6/11 jugadores · <span style="color:var(--green)">5 cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.5 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Guerreros del Salitre','GS','logo-purple','11v11','Suba',5)">Solicitar</button>
+            </div>
+
+            <div class="join-team-card" data-formato="7v7" data-barrio="Chapinero" onclick="openJoinConfirm('Siete Águilas','SA','logo-brown','7v7','Chapinero',1)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-brown">SA</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Siete Águilas</div>
+                  <div class="join-team-sub">Amateur A · 7v7 · 📍 Teusaquillo</div>
+                  <div class="join-team-meta">👥 10/11 jugadores · <span style="color:var(--yellow)">1 cupo</span></div>
+                  <div class="join-team-meta">⭐ 4.8 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Siete Águilas','SA','logo-brown','7v7','Chapinero',1)">Solicitar</button>
+            </div>
+
+            <div class="join-team-card" data-formato="5v5" data-barrio="Usaquén" onclick="openJoinConfirm('Estrellas del Sur','ES','logo-green','5v5','Usaquén',4)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-green">ES</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Estrellas del Sur</div>
+                  <div class="join-team-sub">Amateur C · 5v5 · 📍 Usaquén</div>
+                  <div class="join-team-meta">👥 4/8 jugadores · <span style="color:var(--green)">4 cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.3 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Estrellas del Sur','ES','logo-green','5v5','Usaquén',4)">Solicitar</button>
+            </div>
+
+            <!-- Card: equipo cerrado (no acepta) -->
+            <div class="join-team-card join-team-card-closed" data-formato="11v11" data-barrio="Chapinero">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-blue2">LF</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Lobos FC</div>
+                  <div class="join-team-sub">Amateur B · 11v11 · 📍 Teusaquillo</div>
+                  <div class="join-team-meta">👥 11/11 jugadores · <span style="color:var(--text3)">Sin cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.1 · No acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-outline-sm" disabled style="opacity:0.4;cursor:not-allowed">Lleno</button>
+            </div>
+
+            <div class="join-team-card join-team-card-closed" data-formato="5v5" data-barrio="Suba">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-yellow">RP</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Rápidos del Parque</div>
+                  <div class="join-team-sub">Recreativo · 5v5 · 📍 Kennedy</div>
+                  <div class="join-team-meta">👥 5/5 jugadores · <span style="color:var(--text3)">Sin cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.2 · Equipo cerrado</div>
+                </div>
+              </div>
+              <button class="btn-outline-sm" disabled style="opacity:0.4;cursor:not-allowed">Cerrado</button>
+            </div>
+
+            <div class="join-team-card" data-formato="11v11" data-barrio="Usaquén" onclick="openJoinConfirm('Águilas del Centro','AC','logo-green','11v11','La Candelaria',6)">
+              <div class="join-team-left">
+                <div class="team-logo-md logo-green">AC</div>
+                <div class="join-team-info">
+                  <div class="join-team-name">Águilas del Centro</div>
+                  <div class="join-team-sub">Amateur A · 11v11 · 📍 La Candelaria</div>
+                  <div class="join-team-meta">👥 5/11 jugadores · <span style="color:var(--green)">6 cupos</span></div>
+                  <div class="join-team-meta">⭐ 4.6 · Acepta solicitudes</div>
+                </div>
+              </div>
+              <button class="btn-green-sm join-req-btn" onclick="event.stopPropagation(); openJoinConfirm('Águilas del Centro','AC','logo-green','11v11','La Candelaria',6)">Solicitar</button>
+            </div>
+
+            <!-- Estado vacío -->
+            <div id="join-empty" class="filter-empty-state hidden">
+              <div class="filter-empty-icon">🔍</div>
+              <div class="filter-empty-title">Sin resultados</div>
+              <div class="filter-empty-sub">Prueba con otro nombre o filtro</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB: CÓDIGO ── -->
+        <div id="join-tab-codigo" class="join-tab-content">
+          <div class="join-code-section">
+            <div class="join-code-icon">🔑</div>
+            <div class="join-code-title">Ingresa el código del equipo</div>
+            <div class="join-code-sub">Pídele el código a tu capitán o encuéntralo en el perfil del equipo</div>
+            <div class="join-code-input-wrap">
+              <input class="join-code-input" id="join-code-value" maxlength="8"
+                     placeholder="Ej: RC-4829"
+                     oninput="this.value=this.value.toUpperCase(); checkJoinCode()">
+              <div class="join-code-hint" id="join-code-hint"></div>
+            </div>
+            <button class="btn-green w-full" id="join-code-btn" disabled
+                    onclick="openJoinConfirmCode()">Unirme al equipo</button>
+
+            <!-- Resultado de búsqueda por código -->
+            <div id="join-code-result" class="join-code-result hidden">
+              <div class="join-team-card" style="margin:0">
+                <div class="join-team-left">
+                  <div class="team-logo-md logo-green" id="jcr-logo">RC</div>
+                  <div class="join-team-info">
+                    <div class="join-team-name" id="jcr-name">Real Chapinero</div>
+                    <div class="join-team-sub" id="jcr-sub">Amateur B · 11v11 · 📍 Chapinero</div>
+                    <div class="join-team-meta" id="jcr-meta">👥 14/18 · 4 cupos disponibles</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 33 — CONFIRMAR SOLICITUD DE FICHAJE
+         Pantalla completa de confirmación antes de enviar.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-join-confirm" class="screen">
+      <div class="top-bar-back">
+        <button class="back-arrow" onclick="goBack()">‹</button>
+        <span class="tbb-title">Confirmar solicitud</span>
+      </div>
+      <div class="screen-content" style="top:56px">
+        <div class="join-confirm-logo-wrap" style="margin-top:16px">
+          <div class="team-logo-lg" id="jc-logo">MF</div>
+        </div>
+        <div class="join-confirm-title" id="jc-name">Macondo FC</div>
+        <div class="join-confirm-sub" id="jc-sub">Amateur B · 11v11 · Chapinero</div>
+
+        <div class="join-confirm-info-row">
+          <div class="join-confirm-stat">
+            <div class="join-confirm-stat-val" id="jc-cupos">2</div>
+            <div class="join-confirm-stat-label">Cupos disponibles</div>
+          </div>
+          <div class="join-confirm-stat">
+            <div class="join-confirm-stat-val">24h</div>
+            <div class="join-confirm-stat-label">Tiempo de respuesta</div>
+          </div>
+          <div class="join-confirm-stat">
+            <div class="join-confirm-stat-val">⭐ 4.4</div>
+            <div class="join-confirm-stat-label">Valoración</div>
+          </div>
+        </div>
+
+        <div class="join-confirm-msg">
+          <div class="join-confirm-msg-label">Mensaje para el capitán (opcional)</div>
+          <textarea class="join-confirm-textarea" id="jc-msg" rows="4"
+                    placeholder="Cuéntale por qué quieres unirte, tu posición favorita..."></textarea>
+        </div>
+
+        <button class="btn-green w-full" onclick="submitJoinRequest()">Enviar solicitud de fichaje</button>
+        <button class="btn-ghost-cancel" onclick="goBack()">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PANTALLA 34 — SOLICITUD DE FICHAJE ENVIADA
+         Pantalla completa de confirmación. Se llega aquí
+         después de enviar la solicitud desde screen-join-team.
+         ══════════════════════════════════════════════════ -->
+    <div id="screen-join-request-success" class="screen">
+      <div class="join-success-screen-body">
+        <div class="join-success-glow"></div>
+        <div class="join-success-logo-wrap">
+          <div class="team-logo-lg" id="jss-logo">MF</div>
+        </div>
+        <div class="join-success-screen-icon">✅</div>
+        <div class="join-success-screen-title">¡Solicitud enviada!</div>
+        <div class="join-success-screen-sub">Tu solicitud llegó a <strong id="jss-team-name">Macondo FC</strong>.<br>El capitán tiene hasta 24h para responder.</div>
+        <div class="join-success-screen-tip">Te notificaremos en cuanto el capitán acepte o rechace tu solicitud.</div>
+        <div class="join-success-screen-actions">
+          <button class="btn-green w-full" onclick="goTo('screen-home')">Volver al inicio</button>
+          <button class="btn-ghost-cancel" onclick="goTo('screen-join-team')">Seguir buscando equipos</button>
+        </div>
+      </div>
     </div>
 
   </div><!-- /phone-container — fin de la simulación del celular -->
