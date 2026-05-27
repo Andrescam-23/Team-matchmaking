@@ -395,7 +395,7 @@ function selectColor(btn) {
  * ────────────────────────
  * Mientras el usuario escribe el nombre del equipo, esta función
  * actualiza en tiempo real las iniciales que aparecen en el avatar.
- * Ejemplo: "Águilas Calvas" → "AC"
+ * Ejemplo: "Halcones FC" → "HA"
  */
 function updateTeamInitials(name) {
   const avatar = document.getElementById('new-team-avatar');
@@ -1496,7 +1496,7 @@ function submitConvocatoria() {
     + '<span class="post-type-badge" style="background:#3B82F622;color:#3B82F6">&#128100; Convocatoria</span>'
     + '<div class="post-author-info">'
     + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
-    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div><div class="post-author-name">Carlos Pérez</div>'
     + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
     + '<span class="post-time">Ahora</span></div>'
     + '<div class="conv-body">'
@@ -1534,7 +1534,7 @@ function submitResultado() {
     + '<span class="post-type-badge" style="background:#F59E0B22;color:#F59E0B">&#127942; Resultado</span>'
     + '<div class="post-author-info">'
     + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
-    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div><div class="post-author-name">Carlos Pérez</div>'
     + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
     + '<span class="post-time">Ahora</span></div>'
     + '<div class="result-card" style="margin:0;border:none;padding:0;background:transparent">'
@@ -1568,7 +1568,7 @@ function submitVideo() {
     + '<span class="post-type-badge" style="background:#A855F722;color:#A855F7">&#9654; Video</span>'
     + '<div class="post-author-info">'
     + '<div class="post-avatar" style="background:linear-gradient(135deg,#4CAF50,#2e7d32)">AV</div>'
-    + '<div><div class="post-author-name">Andrés Vega</div>'
+    + '<div><div class="post-author-name">Carlos Pérez</div>'
     + '<div class="post-author-sub">&#193;guilas Calvas &middot; Cap.</div></div></div>'
     + '<span class="post-time">Ahora</span></div>'
     + '<div class="post-video-thumb">'
