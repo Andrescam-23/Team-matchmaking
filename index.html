@@ -833,7 +833,6 @@
             <div class="filter-panel-pills" id="cf-tipo">
               <span class="filter-sel-pill" data-val="Sintética" onclick="toggleCanchaFilter(this,'tipo')">Sintética</span>
               <span class="filter-sel-pill" data-val="Césped"    onclick="toggleCanchaFilter(this,'tipo')">Césped natural</span>
-              <span class="filter-sel-pill" data-val="Madera"    onclick="toggleCanchaFilter(this,'tipo')">Madera</span>
             </div>
           </div>
           <div class="filter-panel-section">
@@ -906,10 +905,10 @@
             </div>
             <span class="pill-green-xs">Disponible</span>
           </div>
-          <div class="cancha-row" data-tipo="Madera" data-formato="5v5" data-barrio="Kennedy" onclick="goTo('screen-cancha-detail')">
+          <div class="cancha-row" data-tipo="Sintética" data-formato="5v5" data-barrio="Kennedy" onclick="goTo('screen-cancha-detail')">
             <div class="cancha-row-info">
               <div class="cancha-row-name">Centro Kennedy Indoor</div>
-              <div class="cancha-row-meta">Madera · 5v5 · Av. 1 de mayo #70 · $70.000/h</div>
+              <div class="cancha-row-meta">Sintética · 5v5 · Av. 1 de mayo #70 · $70.000/h</div>
             </div>
             <span class="pill-green-xs">Disponible</span>
           </div>
@@ -1317,6 +1316,11 @@
         <div class="bubble-me">Perfecto, ahí estaré 💪</div>
       </div>
       <div class="chat-input-bar">
+        <button class="chat-attach-btn" onclick="toggleChatAttach(this)">+</button>
+        <div class="chat-attach-menu hidden" id="chat-attach-menu">
+          <button class="chat-attach-option" onclick="this.closest('.chat-attach-menu').classList.add('hidden')">📷 Foto</button>
+          <button class="chat-attach-option" onclick="this.closest('.chat-attach-menu').classList.add('hidden')">📍 Ubicación</button>
+        </div>
         <input class="chat-input" placeholder="Escribe un mensaje...">
         <button class="send-btn">➤</button>
       </div>
@@ -2140,11 +2144,14 @@
       <div class="success-screen">
         <div class="success-icon">🏆</div>
         <div class="success-title">¡Equipo creado!</div>
-        <div class="success-sub">Código de invitación: <strong>AC-7X3K</strong></div>
+        <div class="success-sub">Comparte este código para que tus amigos se unan al equipo</div>
+        <div class="invite-code-box">
+          <div class="invite-code-label">CÓDIGO DE INVITACIÓN</div>
+          <div class="invite-code-value">AC-7X3K</div>
+        </div>
         <div class="share-row">
           <button class="share-btn">💬 WhatsApp</button>
           <button class="share-btn">🔗 Copiar link</button>
-          <button class="share-btn">··· Más...</button>
         </div>
         <button class="btn-green mt-16" onclick="goTo('screen-profile')">Ir a mi equipo</button>
       </div>

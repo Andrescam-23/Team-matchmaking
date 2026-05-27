@@ -1520,6 +1520,11 @@ body {
 .chat-input-bar { position:absolute; bottom:0; left:0; right:0; height:60px; background:var(--bg2); border-top:1px solid var(--card-border); display:flex; align-items:center; gap:10px; padding:0 16px; }
 .chat-input     { flex:1; background:var(--card); border:1px solid var(--card-border); border-radius:50px; padding:10px 16px; color:var(--text); font-size:14px; outline:none; font-family:'Inter',sans-serif; }
 .send-btn       { background:var(--green); color:#000; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; }
+.chat-attach-btn { background:var(--card); border:1px solid var(--card-border); color:var(--text); border-radius:50%; width:36px; height:36px; font-size:22px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.chat-attach-menu { position:absolute; bottom:68px; left:16px; background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:8px; display:flex; flex-direction:column; gap:4px; box-shadow:0 4px 20px rgba(0,0,0,0.4); z-index:10; }
+.chat-attach-menu.hidden { display:none; }
+.chat-attach-option { background:none; border:none; color:var(--text); font-size:14px; font-family:'Inter',sans-serif; padding:10px 16px; border-radius:10px; text-align:left; cursor:pointer; white-space:nowrap; }
+.chat-attach-option:hover { background:var(--bg2); }
 
 
 /* =====================================================
@@ -1598,6 +1603,30 @@ body {
 .success-icon   { font-size:64px; margin-bottom:8px; }
 .success-title  { font-size:24px; font-weight:800; color:var(--text); }
 .success-sub    { font-size:14px; color:var(--text2); line-height:1.6; max-width:280px; }
+
+.invite-code-box {
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+  border-radius: 16px;
+  padding: 16px 32px;
+  margin: 4px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.invite-code-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+}
+.invite-code-value {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: var(--accent);
+}
 
 
 /* =====================================================

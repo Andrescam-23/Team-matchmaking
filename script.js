@@ -1042,7 +1042,7 @@ function applyPartidosFilters() {
    SECCIÓN 12 — FILTROS DE "BUSCAR CANCHAS"
    ══════════════════════════════════════════════════════════════════
    Filtra la lista de canchas por:
-     • Tipo de superficie (Sintética, Césped, Madera)
+     • Tipo de superficie (Sintética, Césped natural)
      • Formato del partido (5v5, 7v7, 8v8, 11v11)
      • Barrio
    No tiene calendario porque las canchas no cambian por fecha.
@@ -1279,3 +1279,10 @@ function closeCancelModal() {
   document.getElementById('cancel-modal-overlay').classList.add('hidden');
   document.getElementById('cancel-modal').classList.add('hidden');
 }
+
+function toggleChatAttach(btn) {
+  const menu = document.getElementById('chat-attach-menu');
+  if (!menu) return;
+  menu.classList.toggle('hidden');
+}
+
